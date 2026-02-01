@@ -556,16 +556,12 @@ function App({ onAdminClick }) {
             </Flex>
 
             <Flex justifyContent="end" alignItems="center" className="gap-4">
-              {/* Last Updated Status */}
-              <Flex justifyContent="end" alignItems="center" className="gap-2 text-gray-500">
-                <Text className="text-xs hidden sm:inline">
-                  {secondaryLoading
-                    ? 'Loading details...'
-                    : lastRefresh
-                      ? `Updated ${lastRefresh.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`
-                      : 'Loading...'}
+              {/* Last Updated Status - Only show timestamp, no loading flicker */}
+              {lastRefresh && (
+                <Text className="text-xs text-gray-500 hidden sm:inline">
+                  Updated {lastRefresh.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                 </Text>
-              </Flex>
+              )}
 
               {/* Sync Data Button - Ghost style, fixed width for stability */}
               <button
