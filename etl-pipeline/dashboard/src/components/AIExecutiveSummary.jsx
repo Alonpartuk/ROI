@@ -1,20 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, Title, Text, Flex, Badge, TextInput, Button } from '@tremor/react';
 import { SparklesIcon, ClockIcon, ChatBubbleLeftRightIcon, ArrowPathIcon, ShareIcon } from '@heroicons/react/24/outline';
 import { MessageCircle } from 'lucide-react';
+import { askPipeline } from '../services/api';
+
+// Executive summary prompt - hidden from UI, sent automatically on load
+const EXECUTIVE_SUMMARY_PROMPT = `Analyze the current pipeline data from the views. Give me a 3-sentence executive summary focusing on:
+1. The Pace Delta (are we ahead or behind Q1 target?)
+2. The biggest risk in the pipeline (from deal focus scores or contact health)
+3. One specific, actionable strategic recommendation
+
+Be direct and data-driven. Use specific numbers.`;
 
 /**
  * AIExecutiveSummary Component
  * Displays AI-generated insights and supports natural language queries
  *
  * Props:
- * - data: AI summary data from ceo_summaries_history
+ * - data: AI summary data from ceo_summaries_history (used as fallback)
  * - onQuery: callback for natural language query submission
  * - queryResult: result from AI query
  * - queryLoading: loading state for AI query
+ * - dashboardLoaded: boolean indicating if dashboard data has finished loading
  */
-const AIExecutiveSummary = ({ data, onQuery, queryResult, queryLoading }) => {
+const AIExecutiveSummary = ({ data, onQuery, queryResult, queryLoading, dashboardLoaded = false }) => {
   const [queryInput, setQueryInput] = useState('');
+
+  // Auto-generated executive summary state
+  const [autoSummary, setAutoSummary] = useState(null);
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState(null);
+  const hasFetchedRef = useRef(false);
+
+  // Fetch executive summary automatically when dashboard is loaded
+  useEffect(() => {
+    const fetchExecutiveSummary = async () => {
+      // Only fetch once when dashboard data is loaded
+      if (!dashboardLoaded || hasFetchedRef.current || summaryLoading) return;
+
+      hasFetchedRef.current = true;
+      setSummaryLoading(true);
+      setSummaryError(null);
+
+      try {
+        console.log('[AIExecutiveSummary] Fetching auto summary from Vertex AI...');
+        const result = await askPipeline(EXECUTIVE_SUMMARY_PROMPT);
+
+        if (result.success && result.response) {
+          setAutoSummary({
+            executive_insight: result.response,
+            generated_at: result.generated_at,
+            model_version: result.model || 'Gemini 2.0',
+            function_calls: result.function_calls,
+          });
+          console.log('[AIExecutiveSummary] Auto summary loaded successfully');
+        } else {
+          throw new Error(result.error || 'Failed to generate summary');
+        }
+      } catch (err) {
+        console.error('[AIExecutiveSummary] Error fetching auto summary:', err);
+        setSummaryError(err.message);
+      } finally {
+        setSummaryLoading(false);
+      }
+    };
+
+    fetchExecutiveSummary();
+  }, [dashboardLoaded]);
+
+  // Regenerate summary handler
+  const handleRegenerateSummary = async () => {
+    hasFetchedRef.current = false;
+    setAutoSummary(null);
+    setSummaryLoading(true);
+    setSummaryError(null);
+
+    try {
+      const result = await askPipeline(EXECUTIVE_SUMMARY_PROMPT);
+
+      if (result.success && result.response) {
+        setAutoSummary({
+          executive_insight: result.response,
+          generated_at: result.generated_at,
+          model_version: result.model || 'Gemini 2.0',
+          function_calls: result.function_calls,
+        });
+      } else {
+        throw new Error(result.error || 'Failed to regenerate summary');
+      }
+    } catch (err) {
+      console.error('[AIExecutiveSummary] Error regenerating summary:', err);
+      setSummaryError(err.message);
+    } finally {
+      setSummaryLoading(false);
+      hasFetchedRef.current = true;
+    }
+  };
 
   // Example queries for users
   const exampleQueries = [
@@ -100,9 +181,22 @@ const AIExecutiveSummary = ({ data, onQuery, queryResult, queryLoading }) => {
     });
   };
 
+  // Determine which summary data to use (priority: autoSummary > data prop > fallback)
+  const summaryData = autoSummary || data || {
+    executive_insight: null,
+    generated_at: new Date().toISOString(),
+    model_version: 'Gemini 2.0',
+    confidence_score: null,
+  };
+
   // Share to WhatsApp - formats AI insight for strategic sharing
   const handleWhatsAppShare = () => {
     const insight = summaryData?.executive_insight || '';
+
+    if (!insight || summaryLoading) {
+      alert('Please wait for the AI summary to load before sharing.');
+      return;
+    }
 
     // Extract key information from the AI insight
     const lines = insight.split('\n').filter(line => line.trim());
@@ -131,14 +225,6 @@ _Sent from Octup Intelligence_
     // Encode and open WhatsApp
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
-  };
-
-  // Provide fallback data if none provided
-  const summaryData = data || {
-    executive_insight: 'AI summary is loading... Ask questions about your pipeline below.',
-    generated_at: new Date().toISOString(),
-    model_version: 'Gemini 1.5',
-    confidence_score: null,
   };
 
   return (
@@ -180,8 +266,56 @@ _Sent from Octup Intelligence_
       </Flex>
 
       {/* AI Summary Content */}
-      <div className="mt-4 p-4 bg-white/60 rounded-lg border border-blue-100">
-        {formatInsight(summaryData.executive_insight)}
+      <div className="mt-4 p-4 bg-white/60 rounded-lg border border-blue-100 min-h-[100px]">
+        {summaryLoading ? (
+          // Loading state with pulse animation
+          <div className="flex flex-col items-center justify-center py-6 space-y-3">
+            <div className="flex items-center gap-2">
+              <SparklesIcon className="h-5 w-5 text-blue-500 animate-pulse" />
+              <Text className="text-blue-600 font-medium animate-pulse">
+                Gemini is analyzing your pipeline...
+              </Text>
+            </div>
+            <div className="flex gap-1">
+              <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+            <Text className="text-xs text-gray-400">
+              Querying BigQuery views and generating insights...
+            </Text>
+          </div>
+        ) : summaryError ? (
+          // Error state
+          <div className="flex flex-col items-center justify-center py-4 text-center">
+            <Text className="text-amber-600 font-medium mb-2">
+              Unable to generate AI summary
+            </Text>
+            <Text className="text-xs text-gray-500 mb-3">
+              {summaryError}
+            </Text>
+            <button
+              onClick={handleRegenerateSummary}
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center space-x-1"
+            >
+              <ArrowPathIcon className="h-4 w-4" />
+              <span>Try Again</span>
+            </button>
+          </div>
+        ) : summaryData.executive_insight ? (
+          // Display the AI-generated summary
+          formatInsight(summaryData.executive_insight)
+        ) : (
+          // Initial placeholder before loading starts
+          <div className="flex flex-col items-center justify-center py-6 text-center">
+            <Text className="text-gray-500">
+              Loading dashboard data...
+            </Text>
+            <Text className="text-xs text-gray-400 mt-1">
+              AI summary will appear once data is ready
+            </Text>
+          </div>
+        )}
       </div>
 
       {/* Natural Language Query Section */}
@@ -244,9 +378,13 @@ _Sent from Octup Intelligence_
 
       {/* Regenerate Button */}
       <Flex justifyContent="end" className="mt-3">
-        <button className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center space-x-1 transition-colors">
-          <ArrowPathIcon className="h-4 w-4" />
-          <span>Regenerate Summary</span>
+        <button
+          onClick={handleRegenerateSummary}
+          disabled={summaryLoading}
+          className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center space-x-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ArrowPathIcon className={`h-4 w-4 ${summaryLoading ? 'animate-spin' : ''}`} />
+          <span>{summaryLoading ? 'Generating...' : 'Regenerate Summary'}</span>
         </button>
       </Flex>
     </Card>

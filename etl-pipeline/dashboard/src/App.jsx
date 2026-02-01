@@ -682,6 +682,7 @@ function App({ onAdminClick }) {
               onQuery={handleAIQuery}
               queryResult={aiQueryResult}
               queryLoading={aiQueryLoading}
+              dashboardLoaded={!loading && !!dashboardData}
             />
           </div>
 
