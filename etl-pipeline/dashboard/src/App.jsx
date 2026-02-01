@@ -24,7 +24,7 @@ import AIExecutiveSummary from './components/AIExecutiveSummary';
 import RiskCommandCenter from './components/RiskCommandCenter';
 import RepRampChart from './components/RepRampChart';
 import PendingRebook from './components/PendingRebook';
-import ForecastAnalysis from './components/ForecastAnalysis';
+import Q1MissionControl from './components/Q1MissionControl';
 import StageLeakage from './components/StageLeakage';
 import CloseDateSlippage from './components/CloseDateSlippage';
 import SalesVelocity from './components/SalesVelocity';
@@ -51,7 +51,6 @@ import {
 // New RevOps Strategic Layer Components
 import LayerToggle, { LayerSection, LayerHeader } from './components/LayerToggle';
 import PipelineQualityChart from './components/PipelineQualityChart';
-import PaceToGoalTile from './components/PaceToGoalTile';
 import StageSlippageTable from './components/StageSlippageTable';
 import LeaderboardTimeTravel from './components/LeaderboardTimeTravel';
 import ContactHealthShield from './components/ContactHealthShield';
@@ -647,11 +646,18 @@ function App({ onAdminClick }) {
         <LayerSection id="pace" activeLayer={activeLayer} className="mb-12 lg:mb-20 xl:mb-24 scroll-mt-24 lg:scroll-mt-32">
           <LayerHeader layer="pace" />
 
-          {/* Pace to Goal & Pipeline Quality - HIGH PRIORITY at TOP */}
-          <Grid numItemsSm={1} numItemsLg={2} className="gap-4 lg:gap-8 mb-6 lg:mb-8">
-            <PaceToGoalTile data={dashboardData?.paceToGoal} />
+          {/* Q1 Mission Control - SINGLE SOURCE OF TRUTH */}
+          <div className="mb-6 lg:mb-8">
+            <Q1MissionControl
+              paceData={dashboardData?.paceToGoal}
+              forecastData={dashboardData?.forecastAnalysis}
+            />
+          </div>
+
+          {/* Pipeline Quality Chart */}
+          <div className="mb-6 lg:mb-8">
             <PipelineQualityChart data={dashboardData?.pipelineQualityTrend} />
-          </Grid>
+          </div>
 
           {/* KPI Cards - Click for drill-down */}
           <div className="mb-6 lg:mb-8">
@@ -676,14 +682,13 @@ function App({ onAdminClick }) {
             />
           </div>
 
-          {/* Forecast Analysis & Pipeline Trend */}
-          <Grid numItemsSm={1} numItemsLg={2} className="gap-4 lg:gap-8">
-            <ForecastAnalysis data={dashboardData?.forecastAnalysis} />
+          {/* Pipeline Trend */}
+          <div>
             <PipelineTrendChart
               data={dashboardData?.pipelineTrend}
               periodWonDeals={dashboardData?.periodWonDeals}
             />
-          </Grid>
+          </div>
         </LayerSection>
 
         {/* ============================================ */}
