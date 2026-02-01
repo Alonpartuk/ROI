@@ -59,7 +59,7 @@ import ZombieDealsTab from './components/ZombieDealsTab';
 import DealFocusScoreCard from './components/DealFocusScoreCard';
 
 // API Service (connects to BigQuery via backend)
-import { fetchDashboardData, processAIQuery, APIError } from './services/api';
+import { fetchCriticalData, fetchSecondaryData, processAIQuery, APIError } from './services/api';
 
 // Auth Context
 import { useAuth } from './contexts/AuthContext';
@@ -115,6 +115,7 @@ const SectionHeader = ({ icon: Icon, title, subtitle, color = 'blue', badge }) =
 function App({ onAdminClick }) {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [secondaryLoading, setSecondaryLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefresh, setLastRefresh] = useState(null);
   const [error, setError] = useState(null);
@@ -143,7 +144,7 @@ function App({ onAdminClick }) {
   // Auth context
   const { user, logout, isAdmin } = useAuth();
 
-  // Fetch dashboard data
+  // Two-phase data loading: Critical (Pace) first, then Secondary
   const loadData = useCallback(async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -153,18 +154,43 @@ function App({ onAdminClick }) {
       }
       setError(null);
 
-      let data;
-
+      // PHASE 1: Load critical data first (KPIs, Pace, AI Summary)
+      // This allows the user to see something immediately
+      let criticalData;
       if (DATA_SOURCE === 'mock') {
         const mockModule = await import('./data/mockData');
-        data = await mockModule.fetchDashboardData();
+        criticalData = await mockModule.fetchDashboardData();
       } else {
-        data = await fetchDashboardData();
+        criticalData = await fetchCriticalData();
       }
 
-      setDashboardData(data);
-      setLastRefresh(new Date());
+      // Show critical data immediately - user sees Pace layer
+      setDashboardData(prev => ({
+        ...prev,
+        ...criticalData,
+      }));
       setConnectionStatus('connected');
+      setLoading(false); // Stop main loading spinner - UI is usable!
+      setRefreshing(false);
+
+      // PHASE 2: Load secondary data in background
+      if (DATA_SOURCE !== 'mock') {
+        setSecondaryLoading(true);
+        try {
+          const secondaryData = await fetchSecondaryData();
+          setDashboardData(prev => ({
+            ...prev,
+            ...secondaryData,
+          }));
+        } catch (secondaryErr) {
+          console.error('Secondary data load failed:', secondaryErr);
+          // Don't show error - critical data is already displayed
+        } finally {
+          setSecondaryLoading(false);
+        }
+      }
+
+      setLastRefresh(new Date());
     } catch (err) {
       console.error('Failed to load dashboard data:', err);
 
@@ -200,7 +226,6 @@ function App({ onAdminClick }) {
       if (!dashboardData) {
         setConnectionStatus('error');
       }
-    } finally {
       setLoading(false);
       setRefreshing(false);
     }
@@ -530,11 +555,13 @@ function App({ onAdminClick }) {
 
             <Flex justifyContent="end" alignItems="center" className="gap-4">
               <Flex justifyContent="end" alignItems="center" className="gap-2 text-gray-500">
-                <ArrowPathIcon className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                <ArrowPathIcon className={`h-4 w-4 ${(refreshing || secondaryLoading) ? 'animate-spin' : ''}`} />
                 <Text className="text-xs hidden sm:inline">
-                  {lastRefresh
-                    ? `Updated ${lastRefresh.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`
-                    : 'Loading...'}
+                  {secondaryLoading
+                    ? 'Loading details...'
+                    : lastRefresh
+                      ? `Updated ${lastRefresh.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`
+                      : 'Loading...'}
                 </Text>
               </Flex>
 

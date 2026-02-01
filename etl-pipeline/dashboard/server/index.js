@@ -18,6 +18,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const path = require('path');
 const bigQueryService = require('./services/bigQueryService');
 const userService = require('./services/userService');
@@ -33,6 +34,7 @@ userService.ensureUsersTable()
   .catch(err => console.error('User service init error:', err.message));
 
 // Middleware
+app.use(compression()); // Gzip compression for all responses
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
@@ -85,6 +87,40 @@ app.get('/api/dashboard', async (req, res) => {
       error: 'Failed to fetch dashboard data',
       message: error.message,
       timestamp: new Date().toISOString(),
+    });
+  }
+});
+
+/**
+ * Fetch CRITICAL data first (Pace layer) - for instant UI render
+ * Returns: kpis, paceToGoal, pipelineQualityTrend, aiSummary, forecastAnalysis
+ */
+app.get('/api/dashboard/critical', async (req, res) => {
+  try {
+    const data = await bigQueryService.fetchCriticalData();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching critical data:', error);
+    res.status(500).json({
+      error: 'Failed to fetch critical data',
+      message: error.message,
+    });
+  }
+});
+
+/**
+ * Fetch SECONDARY data (lazy loaded after critical)
+ * Returns: dealsAtRisk, leaderboards, charts, etc.
+ */
+app.get('/api/dashboard/secondary', async (req, res) => {
+  try {
+    const data = await bigQueryService.fetchSecondaryData();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching secondary data:', error);
+    res.status(500).json({
+      error: 'Failed to fetch secondary data',
+      message: error.message,
     });
   }
 });

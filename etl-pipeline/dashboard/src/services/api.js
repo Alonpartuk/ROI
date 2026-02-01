@@ -139,6 +139,48 @@ export async function fetchDashboardData() {
 }
 
 /**
+ * Fetch CRITICAL data first (Pace layer) - for instant UI render
+ * Returns: kpis, paceToGoal, pipelineQualityTrend, aiSummary, forecastAnalysis
+ */
+export async function fetchCriticalData() {
+  const data = await apiRequest('/dashboard/critical');
+  return {
+    kpis: data.kpis,
+    aiSummary: data.aiSummary,
+    forecastAnalysis: data.forecastAnalysis,
+    paceToGoal: data.paceToGoal || null,
+    pipelineQualityTrend: data.pipelineQualityTrend || [],
+  };
+}
+
+/**
+ * Fetch SECONDARY data (lazy loaded after critical)
+ * Returns: dealsAtRisk, leaderboards, charts, etc.
+ */
+export async function fetchSecondaryData() {
+  const data = await apiRequest('/dashboard/secondary');
+  return {
+    dealsAtRisk: data.dealsAtRisk || [],
+    pendingRebook: data.pendingRebook || [],
+    repRamp: data.repRamp || [],
+    multiThreading: data.multiThreading || [],
+    stageLeakage: data.stageLeakage || [],
+    closeDateSlippage: data.closeDateSlippage || [],
+    salesVelocity: data.salesVelocity || [],
+    winRateAnalysis: data.winRateAnalysis || [],
+    nextStepCoverage: data.nextStepCoverage || [],
+    owners: data.owners || [],
+    ownerLeaderboard: data.ownerLeaderboard || [],
+    sdrLeaderboard: data.sdrLeaderboard || [],
+    sdrMeetingOutcomes: data.sdrMeetingOutcomes || [],
+    pipelineTrend: data.pipelineTrend || [],
+    dailyDealMovements: data.dailyDealMovements || [],
+    dealVelocity: data.dealVelocity || {},
+    periodWonDeals: data.periodWonDeals || [],
+  };
+}
+
+/**
  * Fetch CEO Dashboard KPIs
  */
 export async function fetchKPIs() {

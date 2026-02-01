@@ -17,10 +17,10 @@ const DATASET = process.env.BIGQUERY_DATASET || 'hubspot_data';
 const PROJECT = process.env.BIGQUERY_PROJECT_ID || 'octup-testing';
 
 // =============================================================================
-// Server-side Cache for Performance
+// Server-side Cache for Performance (15 minutes)
 // =============================================================================
 const cache = new Map();
-const CACHE_TTL = 60 * 1000; // 60 seconds
+const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
 function getCached(key) {
   const entry = cache.get(key);
@@ -2263,6 +2263,108 @@ async function fetchAllDashboardData() {
   return result;
 }
 
+/**
+ * Fetch CRITICAL data first (Pace layer) - for instant UI render
+ * This is the minimum data needed to show something meaningful
+ */
+async function fetchCriticalData() {
+  // Check cache first
+  const cached = getCached('critical');
+  if (cached) {
+    return cached;
+  }
+
+  const startTime = Date.now();
+  console.log('[fetchCriticalData] Fetching critical pace data...');
+
+  // Fetch only the most important data in parallel
+  const [kpis, paceToGoal, pipelineQualityTrend, aiSummary, forecastAnalysis] = await Promise.all([
+    fetchCEODashboard().catch(() => null),
+    fetchPaceToGoal().catch(() => null),
+    fetchPipelineQualityTrend(30).catch(() => []),
+    fetchAIExecutiveSummary().catch(() => ({
+      executive_insight: 'Loading insights...',
+      generated_at: new Date().toISOString(),
+    })),
+    fetchForecastAnalysis().catch(() => null),
+  ]);
+
+  const result = {
+    kpis,
+    paceToGoal,
+    pipelineQualityTrend,
+    aiSummary,
+    forecastAnalysis,
+    fetchedAt: new Date().toISOString(),
+  };
+
+  console.log(`[fetchCriticalData] Completed in ${Date.now() - startTime}ms`);
+  setCache('critical', result);
+
+  return result;
+}
+
+/**
+ * Fetch SECONDARY data (everything else) - lazy loaded after critical
+ */
+async function fetchSecondaryData() {
+  // Check cache first
+  const cached = getCached('secondary');
+  if (cached) {
+    return cached;
+  }
+
+  const startTime = Date.now();
+  console.log('[fetchSecondaryData] Fetching secondary data...');
+
+  const fetchConfig = [
+    { name: 'dealsAtRisk', fn: fetchDealsAtRisk, fallback: [] },
+    { name: 'pendingRebook', fn: fetchPendingRebook, fallback: [] },
+    { name: 'dailyDealMovements', fn: fetchDailyDealMovements, fallback: [] },
+    { name: 'dealVelocity', fn: fetchDealVelocity, fallback: {} },
+    { name: 'periodWonDeals', fn: fetchPeriodWonDeals, fallback: [] },
+    { name: 'ownerLeaderboard', fn: fetchOwnerLeaderboard, fallback: [] },
+    { name: 'sdrLeaderboard', fn: fetchSDRLeaderboard, fallback: [] },
+    { name: 'sdrMeetingOutcomes', fn: fetchSDRMeetingOutcomes, fallback: [] },
+    { name: 'repRamp', fn: fetchRepRampChart, fallback: [] },
+    { name: 'winRateAnalysis', fn: fetchWinRateAnalysis, fallback: [] },
+    { name: 'multiThreading', fn: fetchMultiThreading, fallback: [] },
+    { name: 'stageLeakage', fn: fetchStageLeakage, fallback: [] },
+    { name: 'closeDateSlippage', fn: fetchCloseDateSlippage, fallback: [] },
+    { name: 'salesVelocity', fn: fetchSalesVelocity, fallback: [] },
+    { name: 'nextStepCoverage', fn: fetchNextStepCoverage, fallback: [] },
+    { name: 'pipelineTrend', fn: fetchPipelineTrend, fallback: [] },
+    { name: 'owners', fn: fetchOwners, fallback: [] },
+  ];
+
+  const results = {};
+  const allResults = await Promise.all(
+    fetchConfig.map(async ({ name, fn, fallback }) => {
+      try {
+        const data = await fn();
+        return { name, data };
+      } catch (err) {
+        console.error(`[fetchSecondaryData] Error fetching ${name}:`, err.message);
+        return { name, data: fallback };
+      }
+    })
+  );
+
+  for (const { name, data } of allResults) {
+    results[name] = data;
+  }
+
+  const result = {
+    ...results,
+    fetchedAt: new Date().toISOString(),
+  };
+
+  console.log(`[fetchSecondaryData] Completed in ${Date.now() - startTime}ms`);
+  setCache('secondary', result);
+
+  return result;
+}
+
 module.exports = {
   fetchCEODashboard,
   fetchAIExecutiveSummary,
@@ -2288,6 +2390,8 @@ module.exports = {
   fetchDealVelocity,
   processAIQuery,
   fetchAllDashboardData,
+  fetchCriticalData,
+  fetchSecondaryData,
   fetchQTDWonDealsDebug,
   fetchPeriodWonDeals,
   fetchDealsByStageExit,
