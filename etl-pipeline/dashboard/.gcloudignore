@@ -1,0 +1,33 @@
+# Ignore node_modules - Cloud Build will install dependencies
+node_modules/
+
+# Ignore build directory - Cloud Build will rebuild
+build/
+
+# Development files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+**/*.test.js
+**/*.spec.js
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

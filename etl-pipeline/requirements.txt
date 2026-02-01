@@ -1,0 +1,22 @@
+# CEO Sales Metrics Suite - Dependencies
+# Python 3.11+
+
+# HubSpot API Client
+hubspot-api-client>=9.0.0
+
+# Google Cloud BigQuery
+google-cloud-bigquery>=3.14.0
+
+# Data manipulation
+pandas>=2.1.0
+
+# BigQuery pandas integration (for load_table_from_dataframe)
+pyarrow>=14.0.0
+
+# Additional utilities
+python-dateutil>=2.8.2
+requests>=2.31.0
+PyYAML>=6.0
+
+# Cloud Functions framework (for local testing)
+functions-framework>=3.0.0

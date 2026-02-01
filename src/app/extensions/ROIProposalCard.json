@@ -1,0 +1,15 @@
+{
+  "type": "crm-card",
+  "data": {
+    "title": "ROI Proposal Generator",
+    "location": "crm.record.tab",
+    "objectTypes": [
+      {
+        "name": "deals"
+      }
+    ],
+    "module": {
+      "file": "./ROIProposalCard.jsx"
+    }
+  }
+}

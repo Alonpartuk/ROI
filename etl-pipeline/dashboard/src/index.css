@@ -1,0 +1,424 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scrolling for the entire document */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Section scroll margin for fixed nav offset */
+section[id] {
+  scroll-margin-top: 100px;
+}
+
+/* Tremor Select dropdown - solid background */
+[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+}
+
+[role="listbox"] {
+  background-color: white !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+[role="option"] {
+  background-color: white !important;
+}
+
+[role="option"]:hover,
+[role="option"][data-highlighted] {
+  background-color: #f3f4f6 !important;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient section backgrounds */
+.section-gradient-blue {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 197, 253, 0.05) 100%);
+}
+
+.section-gradient-amber {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.03) 0%, rgba(252, 211, 77, 0.05) 100%);
+}
+
+.section-gradient-emerald {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(110, 231, 183, 0.05) 100%);
+}
+
+.section-gradient-purple {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.03) 0%, rgba(196, 181, 253, 0.05) 100%);
+}
+
+.section-gradient-rose {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.03) 0%, rgba(253, 164, 175, 0.05) 100%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Risk level animations */
+@keyframes pulse-risk {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-risk {
+  animation: pulse-risk 2s ease-in-out infinite;
+}
+
+/* Enterprise deal highlight */
+.enterprise-highlight {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
+  border-left: 3px solid #3b82f6;
+}
+
+/* Mobile-first utilities */
+@layer utilities {
+  /* Safe area padding for bottom navigation */
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Extra bottom padding for content above bottom nav */
+  .mobile-content-pb {
+    padding-bottom: 6rem; /* 96px - room for bottom nav */
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-content-pb {
+      padding-bottom: 2rem; /* 32px on desktop */
+    }
+  }
+}
+
+/* Section scroll margin - responsive */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+@media (max-width: 1023px) {
+  section[id] {
+    scroll-margin-top: 60px;
+  }
+}
+
+/* Hide scrollbar on mobile for cleaner look */
+@media (max-width: 767px) {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Mobile card hover states - touch feedback */
+@media (max-width: 767px) {
+  .mobile-card-touch {
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+  }
+  .mobile-card-touch:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Octup brand color utilities */
+.text-octup-primary { color: #809292; }
+.text-octup-teal { color: #00CBC0; }
+.text-octup-pink { color: #FF3489; }
+.text-octup-orange { color: #F9BD63; }
+.text-octup-dark { color: #282831; }
+
+.bg-octup-primary { background-color: #809292; }
+.bg-octup-teal { background-color: #00CBC0; }
+.bg-octup-pink { background-color: #FF3489; }
+.bg-octup-orange { background-color: #F9BD63; }
+.bg-octup-dark { background-color: #282831; }
+.bg-octup-light { background-color: #f0f4f4; }
+
+/* ============================================
+   Premium UI Polish - Spacious Layout Utilities
+   ============================================ */
+
+/* Premium Section Spacing */
+.section-premium {
+  padding-top: 5rem;    /* py-20 equivalent */
+  padding-bottom: 5rem;
+}
+
+@media (max-width: 767px) {
+  .section-premium {
+    padding-top: 2rem;   /* Tighter on mobile */
+    padding-bottom: 2rem;
+  }
+}
+
+/* Premium Grid Gaps */
+.grid-premium {
+  gap: 2rem;  /* gap-8 equivalent */
+}
+
+@media (max-width: 767px) {
+  .grid-premium {
+    gap: 1rem;  /* gap-4 on mobile */
+  }
+}
+
+/* Premium Card Styles - rounded-3xl with soft shadows */
+.card-premium {
+  border-radius: 1.5rem;  /* rounded-3xl */
+  background: white;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.card-premium:hover {
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* Premium Modal Styles */
+.modal-premium {
+  border-radius: 1.5rem;  /* rounded-3xl */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Deep Slate Text Color - High readability */
+.text-deep-slate {
+  color: #1e293b;  /* slate-800 */
+}
+
+/* Premium Header Styles with Brand Purple */
+.header-premium {
+  color: #809292;  /* Brand Purple */
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.header-premium-xl {
+  font-size: 2.25rem;  /* text-4xl */
+  line-height: 2.5rem;
+}
+
+.header-premium-2xl {
+  font-size: 3rem;  /* text-5xl */
+  line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .header-premium-xl {
+    font-size: 1.5rem;  /* text-2xl on mobile */
+    line-height: 2rem;
+  }
+  .header-premium-2xl {
+    font-size: 1.875rem;  /* text-3xl on mobile */
+    line-height: 2.25rem;
+  }
+}
+
+/* Subtle Dividers */
+.divider-subtle {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.divider-subtle-lg {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.08), transparent);
+}
+
+/* Premium Background */
+.bg-premium {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.bg-premium-pattern {
+  background-image:
+    radial-gradient(at 100% 0%, rgba(0, 203, 192, 0.08) 0, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(128, 146, 146, 0.08) 0, transparent 50%);
+}
+
+/* Soft Shadow Utilities */
+.shadow-soft {
+  box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+}
+
+.shadow-soft-lg {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 4px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-soft-xl {
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.15), 0 8px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Tremor Card Override for rounded-3xl */
+@layer components {
+  .tremor-Card-root {
+    border-radius: 1.5rem !important;
+  }
+}
+
+/* Premium Login Background */
+.login-bg-premium {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f0f4f4 100%);
+}
+
+/* Large Logo Container */
+.logo-premium {
+  width: 200px;
+  height: auto;
+}
+
+.logo-premium-fallback {
+  width: 200px;
+  height: 200px;
+  border-radius: 2rem;
+}
+
+/* ============================================
+   Mobile Precision UI/UX
+   ============================================ */
+
+/* Prevent horizontal overflow/wobble on mobile */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Number alignment utilities for tables and metrics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.number-cell {
+  font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Touch target optimization - 44px minimum */
+@layer utilities {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .touch-target-row {
+    min-height: 48px;
+  }
+}
+
+/* Mobile single-column grid overrides */
+@media (max-width: 767px) {
+  /* Force single column on mobile for all grids */
+  .mobile-single-col {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Ensure cards take full width */
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Compact padding on mobile */
+  .mobile-compact-px {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Number cells - right aligned with mono font */
+  .mobile-number {
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+}
+
+/* Full-screen mobile modal */
+@media (max-width: 767px) {
+  .mobile-fullscreen-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mobile-fullscreen-modal .modal-content {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+  }
+}
+
+/* Bottom nav safe area - extra protection */
+.bottom-nav-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+
+/* Content padding above bottom nav */
+.content-above-nav {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+  .content-above-nav {
+    padding-bottom: 2rem;
+  }
+}
+
+/* Hide text labels on very small screens */
+@media (max-width: 374px) {
+  .hide-on-tiny {
+    display: none !important;
+  }
+}

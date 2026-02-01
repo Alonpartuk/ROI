@@ -1,0 +1,8 @@
+{
+  "name": "roi-proposal-functions",
+  "version": "1.0.0",
+  "description": "Serverless functions for ROI proposal generator",
+  "dependencies": {
+    "@hubspot/api-client": "^11.0.0"
+  }
+}

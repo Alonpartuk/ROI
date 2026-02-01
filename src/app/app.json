@@ -1,0 +1,26 @@
+{
+  "name": "roi-proposal-generator",
+  "uid": "roi_proposal_generator",
+  "description": "Automated ROI proposal generator with HubSpot native Quotes - generates pricing and ROI calculations based on deal volume",
+  "version": "2.0.2",
+  "public": false,
+  "platformVersion": "2025.1",
+  "extensions": {
+    "crm": {
+      "cards": [
+        {
+          "file": "./extensions/ROIProposalCard.json"
+        }
+      ]
+    }
+  },
+  "scopes": [
+    "crm.objects.deals.read",
+    "crm.objects.deals.write",
+    "crm.objects.quotes.write",
+    "crm.objects.line_items.write",
+    "crm.objects.products.read",
+    "crm.objects.products.write",
+    "crm.schemas.quotes.read"
+  ]
+}

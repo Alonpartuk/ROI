@@ -1,0 +1,9 @@
+{
+  "name": "roi-proposal-extensions",
+  "version": "1.0.0",
+  "description": "UI Extensions for ROI proposal generator",
+  "dependencies": {
+    "@hubspot/ui-extensions": "^0.11.0",
+    "react": "^18.2.0"
+  }
+}

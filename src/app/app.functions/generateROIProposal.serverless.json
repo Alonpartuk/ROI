@@ -1,0 +1,8 @@
+{
+  "appFunctions": {
+    "generateROIProposal": {
+      "file": "generateROIProposal.js",
+      "secrets": ["HUBSPOT_ACCESS_TOKEN"]
+    }
+  }
+}

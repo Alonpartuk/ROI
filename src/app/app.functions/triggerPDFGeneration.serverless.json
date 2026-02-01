@@ -1,0 +1,7 @@
+{
+  "appFunctions": {
+    "triggerPDFGeneration": {
+      "file": "triggerPDFGeneration.js"
+    }
+  }
+}
