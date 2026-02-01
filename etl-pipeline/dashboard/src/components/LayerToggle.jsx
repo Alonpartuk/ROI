@@ -67,10 +67,11 @@ const LayerToggle = ({ activeLayer, onLayerChange, variant = 'auto', className =
   const handleLayerClick = (layerId) => {
     onLayerChange(layerId);
 
-    // Scroll to layer section
+    // Scroll to layer section using anchor navigation
     const element = document.getElementById(layerId);
     if (element) {
-      const headerOffset = 80; // Account for fixed header
+      // Account for fixed header + mobile nav bar
+      const headerOffset = window.innerWidth >= 1024 ? 100 : 140;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -173,7 +174,8 @@ const LayerToggle = ({ activeLayer, onLayerChange, variant = 'auto', className =
 
 /**
  * LayerSection Component
- * Wrapper for layer sections with optional dimming effect
+ * Wrapper for layer sections - all sections always visible
+ * Navigation menu acts as quick-jump tool, not visibility toggle
  */
 export const LayerSection = ({
   id,
@@ -181,16 +183,10 @@ export const LayerSection = ({
   children,
   className = ''
 }) => {
-  const isActive = activeLayer === id || activeLayer === 'all';
-
   return (
     <section
       id={id}
-      className={`
-        transition-opacity duration-300 scroll-mt-20
-        ${isActive ? 'opacity-100' : 'opacity-40'}
-        ${className}
-      `}
+      className={`scroll-mt-20 ${className}`}
     >
       {children}
     </section>
