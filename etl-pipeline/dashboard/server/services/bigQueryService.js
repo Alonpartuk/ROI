@@ -16,6 +16,29 @@ const bigquery = new BigQuery({
 const DATASET = process.env.BIGQUERY_DATASET || 'hubspot_data';
 const PROJECT = process.env.BIGQUERY_PROJECT_ID || 'octup-testing';
 
+// =============================================================================
+// Server-side Cache for Performance
+// =============================================================================
+const cache = new Map();
+const CACHE_TTL = 60 * 1000; // 60 seconds
+
+function getCached(key) {
+  const entry = cache.get(key);
+  if (entry && Date.now() - entry.timestamp < CACHE_TTL) {
+    console.log(`[Cache] HIT: ${key}`);
+    return entry.data;
+  }
+  if (entry) {
+    cache.delete(key);
+  }
+  return null;
+}
+
+function setCache(key, data) {
+  cache.set(key, { data, timestamp: Date.now() });
+  console.log(`[Cache] SET: ${key}`);
+}
+
 /**
  * Execute a BigQuery query and return results
  */
@@ -2153,6 +2176,12 @@ async function fetchLeaderboardTimeTravel(period = '7d', sortBy = 'net_pipeline'
  * and provide better error isolation
  */
 async function fetchAllDashboardData() {
+  // Check cache first
+  const cached = getCached('dashboard');
+  if (cached) {
+    return cached;
+  }
+
   const startTime = Date.now();
   console.log('[fetchAllDashboardData] Starting batched data fetch...');
 
@@ -2196,44 +2225,42 @@ async function fetchAllDashboardData() {
     { name: 'owners', fn: fetchOwners, fallback: [] },
   ];
 
-  const BATCH_SIZE = 5;
   const results = {};
 
-  // Process in batches
-  for (let i = 0; i < fetchConfig.length; i += BATCH_SIZE) {
-    const batchNum = Math.floor(i / BATCH_SIZE) + 1;
-    const batch = fetchConfig.slice(i, i + BATCH_SIZE);
-    const batchStart = Date.now();
+  // Run ALL queries in parallel for maximum speed
+  console.log(`[fetchAllDashboardData] Running ${fetchConfig.length} queries in parallel...`);
 
-    console.log(`[fetchAllDashboardData] Starting batch ${batchNum}/${Math.ceil(fetchConfig.length / BATCH_SIZE)}: ${batch.map(b => b.name).join(', ')}`);
+  const allResults = await Promise.all(
+    fetchConfig.map(async ({ name, fn, fallback }) => {
+      const queryStart = Date.now();
+      try {
+        const data = await fn();
+        console.log(`[fetchAllDashboardData] ${name} completed in ${Date.now() - queryStart}ms`);
+        return { name, data };
+      } catch (err) {
+        console.error(`[fetchAllDashboardData] Error fetching ${name}:`, err.message);
+        return { name, data: fallback };
+      }
+    })
+  );
 
-    const batchResults = await Promise.all(
-      batch.map(async ({ name, fn, fallback }) => {
-        try {
-          const data = await fn();
-          return { name, data };
-        } catch (err) {
-          console.error(`[fetchAllDashboardData] Error fetching ${name}:`, err.message);
-          return { name, data: fallback };
-        }
-      })
-    );
-
-    // Collect batch results
-    for (const { name, data } of batchResults) {
-      results[name] = data;
-    }
-
-    console.log(`[fetchAllDashboardData] Batch ${batchNum} completed in ${Date.now() - batchStart}ms`);
+  // Collect all results
+  for (const { name, data } of allResults) {
+    results[name] = data;
   }
 
   const totalTime = Date.now() - startTime;
   console.log(`[fetchAllDashboardData] All batches completed in ${totalTime}ms`);
 
-  return {
+  const result = {
     ...results,
     fetchedAt: new Date().toISOString(),
   };
+
+  // Cache the result
+  setCache('dashboard', result);
+
+  return result;
 }
 
 module.exports = {
