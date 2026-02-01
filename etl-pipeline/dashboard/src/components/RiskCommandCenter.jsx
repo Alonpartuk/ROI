@@ -35,29 +35,28 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '../services/api';
-import DealVelocityTimeline from './DealVelocityTimeline';
 import MetricInfo from './MetricInfo';
 
 const INITIAL_DISPLAY_COUNT = 10;
 const LOAD_MORE_COUNT = 10;
 
 /**
- * RiskCommandCenter Component
- * Displays deals at risk from v_deals_at_risk view
+ * Deal Rescue Center (formerly RiskCommandCenter)
+ * The SINGLE source of truth for deal-level intervention
  *
  * Features:
- * - Conditional formatting based on risk level
- * - Multi-threading warning badges
+ * - Contact Health Status (RED/YELLOW/GREEN)
+ * - Threading Level (Critical/Low/Moderate/Healthy)
+ * - Risk indicators (Stalled, Ghosted)
+ * - Recommended Actions based on all signals
  * - Enterprise deal highlighting (ARR >= $100K)
- * - Filtering by owner and risk type
- * - Recommended Actions based on risk indicators
  * - Click to open deal slide-over
  * - Pagination with Load More pattern
- * - Sticky table headers
  */
 const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
   const [ownerFilter, setOwnerFilter] = useState('all');
   const [riskFilter, setRiskFilter] = useState('all');
+  const [healthFilter, setHealthFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [displayCount, setDisplayCount] = useState(INITIAL_DISPLAY_COUNT);
 
@@ -65,6 +64,15 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
 
   // Get unique owners for filter
   const owners = [...new Set(data.map((d) => d.owner_name))].sort();
+
+  // Helper to calculate health status for filtering
+  const getHealthStatus = (deal) => {
+    const contactCount = deal.contact_count || 0;
+    const daysSinceActivity = deal.days_since_last_activity || 0;
+    if (contactCount === 0 || daysSinceActivity > 14) return 'RED';
+    if (contactCount === 1 || (daysSinceActivity >= 7 && daysSinceActivity <= 14)) return 'YELLOW';
+    return 'GREEN';
+  };
 
   // Filter data
   const filteredData = data.filter((deal) => {
@@ -75,12 +83,15 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
       (riskFilter === 'stalled' && deal.is_stalled) ||
       (riskFilter === 'ghosted' && deal.is_ghosted) ||
       (riskFilter === 'enterprise' && deal.is_enterprise);
+    const matchesHealth =
+      healthFilter === 'all' ||
+      getHealthStatus(deal) === healthFilter;
     const matchesSearch =
       !searchTerm ||
       deal.dealname.toLowerCase().includes(searchTerm.toLowerCase()) ||
       deal.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return matchesOwner && matchesRisk && matchesSearch;
+    return matchesOwner && matchesRisk && matchesHealth && matchesSearch;
   });
 
   // Sort by risk (at-risk first, then by ARR)
@@ -104,6 +115,55 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
     setDisplayCount(INITIAL_DISPLAY_COUNT);
   };
 
+  // Calculate Contact Health Status (RED/YELLOW/GREEN)
+  const getContactHealth = (deal) => {
+    const contactCount = deal.contact_count || 0;
+    const daysSinceActivity = deal.days_since_last_activity || 0;
+
+    // RED: 0 contacts OR no activity in 14+ days
+    if (contactCount === 0 || daysSinceActivity > 14) {
+      return {
+        status: 'RED',
+        color: 'red',
+        bgColor: 'bg-red-100',
+        textColor: 'text-red-700',
+        reason: contactCount === 0 ? 'No contacts' : `${daysSinceActivity}d silent`,
+      };
+    }
+
+    // YELLOW: Only 1 contact OR no activity 7-14 days
+    if (contactCount === 1 || (daysSinceActivity >= 7 && daysSinceActivity <= 14)) {
+      return {
+        status: 'YELLOW',
+        color: 'amber',
+        bgColor: 'bg-amber-100',
+        textColor: 'text-amber-700',
+        reason: contactCount === 1 ? 'Single-threaded' : `${daysSinceActivity}d ago`,
+      };
+    }
+
+    // GREEN: 2+ contacts AND activity within 7 days
+    return {
+      status: 'GREEN',
+      color: 'emerald',
+      bgColor: 'bg-emerald-100',
+      textColor: 'text-emerald-700',
+      reason: `${contactCount} contacts`,
+    };
+  };
+
+  // Get Contact Health Badge
+  const getContactHealthBadge = (deal) => {
+    const health = getContactHealth(deal);
+    return (
+      <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg ${health.bgColor}`}>
+        <div className={`w-2 h-2 rounded-full ${health.status === 'RED' ? 'bg-red-500' : health.status === 'YELLOW' ? 'bg-amber-500' : 'bg-emerald-500'}`} />
+        <span className={`text-xs font-semibold ${health.textColor}`}>{health.status}</span>
+        <span className={`text-[10px] ${health.textColor} opacity-75`}>{health.reason}</span>
+      </div>
+    );
+  };
+
   // Get threading badge color
   const getThreadingBadge = (level, isEnterprise) => {
     const config = {
@@ -115,14 +175,30 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
     const cfg = config[level] || config.Moderate;
 
     return (
-      <Flex justifyContent="start" className="space-x-1">
-        <Badge color={cfg.color} size="sm">
-          {level}
-        </Badge>
-        {cfg.icon && (
-          <ExclamationTriangleIcon className="h-4 w-4 text-red-500 animate-pulse" />
-        )}
-      </Flex>
+      <Badge color={cfg.color} size="sm">
+        {level}
+      </Badge>
+    );
+  };
+
+  // Get threading level with contact count
+  const getThreadingDisplay = (deal) => {
+    const level = deal.threading_level || 'Unknown';
+    const count = deal.contact_count || 0;
+    const config = {
+      Critical: { color: 'red', bgColor: 'bg-red-50' },
+      Low: { color: 'amber', bgColor: 'bg-amber-50' },
+      Moderate: { color: 'yellow', bgColor: 'bg-yellow-50' },
+      Healthy: { color: 'emerald', bgColor: 'bg-emerald-50' },
+    };
+    const cfg = config[level] || config.Moderate;
+
+    return (
+      <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg ${cfg.bgColor}`}>
+        <UserGroupIcon className="h-3.5 w-3.5 text-gray-500" />
+        <span className="text-sm font-medium">{count}</span>
+        <Badge color={cfg.color} size="xs">{level}</Badge>
+      </div>
     );
   };
 
@@ -263,20 +339,28 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
     return acc;
   }, {});
 
+  // Count health statuses
+  const healthCounts = sortedData.reduce((acc, deal) => {
+    const status = getHealthStatus(deal);
+    acc[status] = (acc[status] || 0) + 1;
+    return acc;
+  }, { RED: 0, YELLOW: 0, GREEN: 0 });
+
   return (
     <Card>
       <div className="mb-4 space-y-4">
         {/* Header */}
         <Flex justifyContent="start" className="space-x-2">
-          <ExclamationTriangleIcon className="h-6 w-6 text-red-500" />
+          <div className="p-2 bg-gradient-to-br from-[#FF3489] to-[#00CBC0] rounded-xl">
+            <Shield className="h-5 w-5 text-white" />
+          </div>
           <div>
             <div className="flex items-center gap-2">
-              <Title>Risk Command Center</Title>
-              <MetricInfo id="Risk Command Center" />
+              <Title className="text-[#809292]">Deal Rescue Center</Title>
+              <MetricInfo id="Deal Rescue Center" />
             </div>
             <Text className="text-gray-500">
-              {totalAtRisk} at-risk deals ({formatCurrency(atRiskARR)}) of{' '}
-              {sortedData.length} total ({formatCurrency(totalARR)})
+              {totalAtRisk} need attention ({formatCurrency(atRiskARR)}) • {sortedData.length} total deals ({formatCurrency(totalARR)})
             </Text>
           </div>
         </Flex>
@@ -322,6 +406,19 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
             <SelectItem value="ghosted">Ghosted</SelectItem>
             <SelectItem value="enterprise">Enterprise</SelectItem>
           </Select>
+          <Select
+            value={healthFilter}
+            onValueChange={(val) => {
+              setHealthFilter(val);
+              setDisplayCount(INITIAL_DISPLAY_COUNT);
+            }}
+            className="w-full sm:w-36"
+          >
+            <SelectItem value="all">All Health</SelectItem>
+            <SelectItem value="RED">🔴 Red Only</SelectItem>
+            <SelectItem value="YELLOW">🟡 Yellow Only</SelectItem>
+            <SelectItem value="GREEN">🟢 Green Only</SelectItem>
+          </Select>
         </div>
       </div>
 
@@ -331,12 +428,28 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
           Showing {Math.min(displayCount, sortedData.length)} of {sortedData.length} deals
         </Text>
 
-        {/* Action Summary Pills - Hidden on mobile */}
+        {/* Health Summary Pills - Hidden on mobile */}
         <div className="hidden sm:flex flex-wrap gap-2">
+          {healthCounts.RED > 0 && (
+            <Badge color="red" size="sm" className="px-2 py-0.5">
+              🔴 {healthCounts.RED}
+            </Badge>
+          )}
+          {healthCounts.YELLOW > 0 && (
+            <Badge color="amber" size="sm" className="px-2 py-0.5">
+              🟡 {healthCounts.YELLOW}
+            </Badge>
+          )}
+          {healthCounts.GREEN > 0 && (
+            <Badge color="emerald" size="sm" className="px-2 py-0.5">
+              🟢 {healthCounts.GREEN}
+            </Badge>
+          )}
+          <span className="text-gray-300">|</span>
           {Object.entries(actionCounts)
             .filter(([action]) => action !== 'On Track')
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 4)
+            .slice(0, 3)
             .map(([action, count]) => (
               <Badge key={action} color="gray" size="sm" className="px-2 py-0.5">
                 {action}: {count}
@@ -403,21 +516,16 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
                   </div>
                 </div>
 
-                {/* Footer: Owner & Threading */}
+                {/* Contact Health & Threading Row */}
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                  <Text className="text-xs text-gray-500">{deal.owner_name}</Text>
-                  <Flex justifyContent="end" className="space-x-1">
-                    <UserGroupIcon className="h-3 w-3 text-gray-400" />
-                    <Text className="text-xs">{deal.contact_count}</Text>
-                    {getThreadingBadge(deal.threading_level, deal.is_enterprise)}
-                  </Flex>
+                  {getContactHealthBadge(deal)}
+                  {getThreadingDisplay(deal)}
                 </div>
 
-                {/* 14-Day Journey Timeline (Mobile) */}
-                <DealVelocityTimeline
-                  movements={dealVelocity[deal.deal_id] || []}
-                  variant="mobile"
-                />
+                {/* Footer: Owner */}
+                <div className="flex items-center justify-between mt-2">
+                  <Text className="text-xs text-gray-500">{deal.owner_name}</Text>
+                </div>
               </motion.div>
             );
           })}
@@ -433,10 +541,10 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
               <TableHeaderCell className="text-right">ARR</TableHeaderCell>
               <TableHeaderCell>Stage</TableHeaderCell>
               <TableHeaderCell>Owner</TableHeaderCell>
-              <TableHeaderCell>Risk Status</TableHeaderCell>
-              <TableHeaderCell>14-Day Journey</TableHeaderCell>
-              <TableHeaderCell>Recommended Action</TableHeaderCell>
+              <TableHeaderCell>Contact Health</TableHeaderCell>
               <TableHeaderCell>Threading</TableHeaderCell>
+              <TableHeaderCell>Risk Status</TableHeaderCell>
+              <TableHeaderCell>Recommended Action</TableHeaderCell>
               <TableHeaderCell></TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -499,15 +607,18 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
                       <Text>{deal.owner_name}</Text>
                     </TableCell>
 
-                    <TableCell>{getRiskBadge(deal)}</TableCell>
-
-                    {/* 14-Day Journey Column */}
+                    {/* Contact Health Column (R/Y/G) */}
                     <TableCell>
-                      <DealVelocityTimeline
-                        movements={dealVelocity[deal.deal_id] || []}
-                        variant="desktop"
-                      />
+                      {getContactHealthBadge(deal)}
                     </TableCell>
+
+                    {/* Threading Level Column */}
+                    <TableCell>
+                      {getThreadingDisplay(deal)}
+                    </TableCell>
+
+                    {/* Risk Status Column */}
+                    <TableCell>{getRiskBadge(deal)}</TableCell>
 
                     {/* Recommended Action Column */}
                     <TableCell>
@@ -522,14 +633,6 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
                           </Text>
                         </div>
                       </div>
-                    </TableCell>
-
-                    <TableCell>
-                      <Flex justifyContent="start" className="space-x-1">
-                        <UserGroupIcon className="h-4 w-4 text-gray-400" />
-                        <Text className="text-sm">{deal.contact_count}</Text>
-                        {getThreadingBadge(deal.threading_level, deal.is_enterprise)}
-                      </Flex>
                     </TableCell>
 
                     <TableCell>
