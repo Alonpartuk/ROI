@@ -567,20 +567,20 @@ function App({ onAdminClick }) {
                 </Text>
               </Flex>
 
-              {/* Refresh Data Button - Prominent with sync icon */}
+              {/* Sync Data Button - Ghost style, fixed width for stability */}
               <button
                 onClick={() => {
-                  // Clear any local state cache
-                  setDashboardData(null);
-                  // Force full reload from API
-                  loadData(false);
+                  // Prevent double-clicks - only proceed if not already syncing
+                  if (refreshing || loading) return;
+                  // Force full reload from API (don't clear dashboardData to prevent AI re-trigger)
+                  loadData(true);
                 }}
                 disabled={refreshing || loading}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-[#00CBC0] text-white hover:bg-[#00b3a8] rounded-lg transition-colors disabled:opacity-50 shadow-sm"
-                title="Clear cache and refresh all data"
+                className="flex items-center justify-center gap-1.5 w-[100px] sm:w-[110px] h-8 text-sm font-medium border border-[#00CBC0] text-[#00CBC0] hover:bg-[#00CBC0]/10 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                title="Refresh all data from BigQuery"
               >
-                <ArrowPathIcon className={`h-4 w-4 ${(refreshing || loading) ? 'animate-spin' : ''}`} />
-                <span className="hidden sm:inline">{(refreshing || loading) ? 'Syncing...' : 'Sync Data'}</span>
+                <ArrowPathIcon className={`h-4 w-4 flex-shrink-0 ${(refreshing || loading) ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline whitespace-nowrap">{(refreshing || loading) ? 'Syncing...' : 'Sync Data'}</span>
               </button>
 
               {/* Admin Button - Only visible to admin */}
