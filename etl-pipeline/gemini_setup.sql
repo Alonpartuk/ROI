@@ -198,6 +198,17 @@ pending_rebook_deals AS (
   ) AS pending_rebook_list
   FROM `octup-testing.hubspot_data.v_deals_at_risk`
   WHERE is_pending_rebook = TRUE
+),
+-- NEW: Marketing ROI (Google Ads)
+marketing_roi AS (
+  SELECT
+    SUM(total_spend) AS marketing_total_spend,
+    SUM(attributed_deals) AS marketing_attributed_deals,
+    SUM(won_deals) AS marketing_won_deals,
+    SUM(arr_generated) AS marketing_arr_generated,
+    SUM(pipeline_value) AS marketing_pipeline_value,
+    SAFE_DIVIDE(SUM(arr_generated), SUM(total_spend)) AS marketing_roas
+  FROM `octup-testing.hubspot_data.v_marketing_roi_unified`
 )
 SELECT
   (SELECT max_date FROM latest_snapshot) AS report_date,
@@ -247,8 +258,15 @@ SELECT
   (SELECT top_risk_deals_list FROM top_at_risk_deals) AS top_at_risk_deals,
   (SELECT upcoming_meetings_list FROM deals_with_meetings) AS upcoming_meetings,
   (SELECT recent_activity_list FROM recent_activity_deals) AS deals_saved_by_activity,
-  (SELECT pending_rebook_list FROM pending_rebook_deals) AS pending_rebook_deals
-FROM current_data c, previous_data p, risk_analysis r;
+  (SELECT pending_rebook_list FROM pending_rebook_deals) AS pending_rebook_deals,
+  -- Marketing ROI data
+  m.marketing_total_spend,
+  m.marketing_attributed_deals,
+  m.marketing_won_deals,
+  m.marketing_arr_generated,
+  m.marketing_pipeline_value,
+  m.marketing_roas
+FROM current_data c, previous_data p, risk_analysis r, marketing_roi m;
 
 -- ============================================================================
 -- STEP 4: Function to Generate CEO Executive Summary (ENHANCED with Full Context)
@@ -328,6 +346,26 @@ AS (
         '• TOP AT-RISK DEALS: ', COALESCE(top_at_risk_deals, 'None'), '\n\n',
 
         '═══════════════════════════════════════════════════════════════════════\n',
+        'MARKETING EFFICIENCY (Google Ads)\n',
+        '═══════════════════════════════════════════════════════════════════════\n',
+        '• Total Ad Spend: $', FORMAT('%,.2f', COALESCE(marketing_total_spend, 0)), '\n',
+        '• Marketing-Sourced Pipeline: $', FORMAT('%,.0f', COALESCE(marketing_pipeline_value, 0)), '\n',
+        '• Attributed Deals: ', CAST(COALESCE(marketing_attributed_deals, 0) AS STRING), '\n',
+        '• Won Deals from Ads: ', CAST(COALESCE(marketing_won_deals, 0) AS STRING), '\n',
+        '• ARR Generated: $', FORMAT('%,.0f', COALESCE(marketing_arr_generated, 0)), '\n',
+        '• ROAS (Return on Ad Spend): ', CAST(COALESCE(ROUND(marketing_roas, 2), 0) AS STRING), 'x\n',
+        CASE
+          WHEN marketing_total_spend > 0 AND marketing_arr_generated = 0 THEN
+            '• STATUS: Campaigns are active. Monitoring for initial lead attribution from HubSpot.\n\n'
+          WHEN marketing_roas > 1 THEN
+            '• STATUS: Positive ROI! Campaigns are generating revenue.\n\n'
+          WHEN marketing_attributed_deals > 0 THEN
+            '• STATUS: Leads in pipeline. Waiting for conversions.\n\n'
+          ELSE
+            '• STATUS: No marketing spend data available.\n\n'
+        END,
+
+        '═══════════════════════════════════════════════════════════════════════\n',
         'WEEK-OVER-WEEK CHANGES\n',
         '═══════════════════════════════════════════════════════════════════════\n',
         '• Pipeline Change: $', FORMAT('%,.0f', pipeline_change), ' (', CAST(pipeline_change_pct AS STRING), '%)\n',
@@ -356,7 +394,11 @@ AS (
         '   - If Chanan has deals, note how many and total ARR\n',
         '   - Goal is for Chanan to have 0 deals (all rebooked with AEs)\n',
         '   - Flag any deals that have been pending rebook for too long\n',
-        '5. RECOMMENDED ACTIONS (3-4 specific, actionable items)\n',
+        '5. MARKETING PERFORMANCE\n',
+        '   - If spend exists but ARR is $0: Note that campaigns are active and monitoring for attribution\n',
+        '   - If ROAS > 0: Highlight marketing ROI and suggest scaling\n',
+        '   - If attributed deals exist: Note pipeline from marketing channels\n',
+        '6. RECOMMENDED ACTIONS (3-4 specific, actionable items)\n',
         '   - Prioritize ownership risk (reassignments from Kurt/Hanan/Deactivated)\n',
         '   - Help Chanan rebook high-value deals with AEs\n',
         '   - Suggest outreach for ghosted deals\n',

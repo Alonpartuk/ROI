@@ -145,6 +145,23 @@ Key columns:
 - owner_name
 - net_pipeline_added, stage_movements_count
 - engagement_score, won_value
+
+### 9. v_marketing_roi_unified
+Purpose: Google Ads ROI - combines ad spend with HubSpot deal revenue
+Key columns:
+- campaign_id, campaign_name, campaign_status
+- total_spend: Total ad spend per campaign
+- total_clicks, total_impressions, ctr_pct, cpc
+- attributed_deals: Deals from PAID_SEARCH or Google UTM
+- won_deals: Closed-won deals from ads
+- arr_generated: ARR from won deals
+- pipeline_value: Total pipeline from attributed deals
+- roas: Return on Ad Spend (ARR / Spend)
+- cost_per_acquisition: Spend / Won Deals
+- cost_per_lead: Spend / Attributed Deals
+- campaign_roi_status: GENERATING_REVENUE, LEADS_IN_PIPELINE, SPENDING_NO_ATTRIBUTION, NO_SPEND
+
+IMPORTANT: When analyzing marketing data, if spend exists but ARR is 0, mention that campaigns are active and monitoring for attribution.
 `;
 
 // ============================================================================
@@ -193,12 +210,14 @@ Available views:
 - v_stage_slippage_analysis: Stage slippage metrics
 - v_rep_focus_view: Per-rep at-risk summary
 - v_leaderboard_time_travel: Time-period leaderboards (WHERE period = '7d' or '30d' or 'qtd')
+- v_marketing_roi_unified: Google Ads ROI (spend, ARR, ROAS per campaign)
 
 Example queries:
 - SELECT * FROM v_pace_to_goal
 - SELECT * FROM v_deal_focus_score WHERE is_at_risk = TRUE ORDER BY arr_value DESC LIMIT 10
 - SELECT * FROM v_zombie_deals ORDER BY arr_value DESC
-- SELECT * FROM v_pipeline_quality_trend ORDER BY snapshot_date DESC LIMIT 7`,
+- SELECT * FROM v_pipeline_quality_trend ORDER BY snapshot_date DESC LIMIT 7
+- SELECT SUM(total_spend) as spend, SUM(arr_generated) as arr FROM v_marketing_roi_unified`,
     parameters: {
       type: 'object',
       properties: {

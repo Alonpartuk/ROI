@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Flex, Title, Text, Badge, Callout, Grid } from '@tremor/react';
 import {
   ChartPieIcon,
@@ -26,6 +26,7 @@ import RiskCommandCenter from './components/RiskCommandCenter';
 // import RepRampChart from './components/RepRampChart';
 import PendingRebook from './components/PendingRebook';
 import Q1MissionControl from './components/Q1MissionControl';
+import MarketingEfficiency from './components/MarketingEfficiency';
 import StageLeakage from './components/StageLeakage';
 import CloseDateSlippage from './components/CloseDateSlippage';
 import SalesVelocity from './components/SalesVelocity';
@@ -119,6 +120,11 @@ function App({ onAdminClick }) {
   const [loading, setLoading] = useState(true);
   const [secondaryLoading, setSecondaryLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  // DEBUG: Log state changes
+  useEffect(() => {
+    console.log('[App STATE] loading:', loading, 'refreshing:', refreshing);
+  }, [loading, refreshing]);
   const [lastRefresh, setLastRefresh] = useState(null);
   const [error, setError] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('connecting');
@@ -146,8 +152,28 @@ function App({ onAdminClick }) {
   // Auth context
   const { user, logout, isAdmin } = useAuth();
 
+  // Ref to prevent concurrent loadData calls
+  const isLoadingRef = useRef(false);
+
   // Two-phase data loading: Critical (Pace) first, then Secondary
+  // Note: No dependencies on dashboardData to prevent infinite re-render loops
   const loadData = useCallback(async (isRefresh = false) => {
+    // Prevent concurrent calls - atomic check and set
+    if (isLoadingRef.current) {
+      console.log('[App] loadData already in progress, skipping...');
+      return;
+    }
+    isLoadingRef.current = true;
+    console.log('[App] loadData started, isRefresh:', isRefresh);
+
+    // Failsafe timeout to reset loading state if something hangs
+    const failsafeTimeout = setTimeout(() => {
+      console.warn('[App] Failsafe: resetting loading state after 30s timeout');
+      setLoading(false);
+      setRefreshing(false);
+      isLoadingRef.current = false;
+    }, 30000);
+
     try {
       if (isRefresh) {
         setRefreshing(true);
@@ -157,7 +183,7 @@ function App({ onAdminClick }) {
       setError(null);
 
       // PHASE 1: Load critical data first (KPIs, Pace, AI Summary)
-      // This allows the user to see something immediately
+      console.log('[App] Phase 1: Loading critical data...');
       let criticalData;
       if (DATA_SOURCE === 'mock') {
         const mockModule = await import('./data/mockData');
@@ -165,6 +191,7 @@ function App({ onAdminClick }) {
       } else {
         criticalData = await fetchCriticalData();
       }
+      console.log('[App] Phase 1 complete');
 
       // Show critical data immediately - user sees Pace layer
       setDashboardData(prev => ({
@@ -172,29 +199,35 @@ function App({ onAdminClick }) {
         ...criticalData,
       }));
       setConnectionStatus('connected');
-      setLoading(false); // Stop main loading spinner - UI is usable!
+      setLoading(false);
       setRefreshing(false);
 
-      // PHASE 2: Load secondary data in background
+      // PHASE 2: Load secondary data in background (don't block UI)
       if (DATA_SOURCE !== 'mock') {
         setSecondaryLoading(true);
+        console.log('[App] Phase 2: Loading secondary data...');
         try {
           const secondaryData = await fetchSecondaryData();
           setDashboardData(prev => ({
             ...prev,
             ...secondaryData,
           }));
+          console.log('[App] Phase 2 complete');
         } catch (secondaryErr) {
           console.error('Secondary data load failed:', secondaryErr);
-          // Don't show error - critical data is already displayed
         } finally {
           setSecondaryLoading(false);
         }
       }
 
       setLastRefresh(new Date());
+      clearTimeout(failsafeTimeout);
+      isLoadingRef.current = false;
+      console.log('[App] loadData complete');
     } catch (err) {
       console.error('Failed to load dashboard data:', err);
+      clearTimeout(failsafeTimeout);
+      isLoadingRef.current = false;
 
       if (err instanceof APIError) {
         if (err.status === 0) {
@@ -225,13 +258,17 @@ function App({ onAdminClick }) {
         });
       }
 
-      if (!dashboardData) {
-        setConnectionStatus('error');
-      }
+      // Use functional update to check dashboardData without adding it as dependency
+      setDashboardData(prev => {
+        if (!prev) {
+          setConnectionStatus('error');
+        }
+        return prev;
+      });
       setLoading(false);
       setRefreshing(false);
     }
-  }, [dashboardData]);
+  }, []); // Empty dependency array - loadData is stable
 
   // Handle AI natural language query
   const handleAIQuery = useCallback(async (query) => {
@@ -332,16 +369,18 @@ function App({ onAdminClick }) {
     };
   }, [dashboardData, selectedOwner, dealSizeFilter]);
 
-  // Initial load
+  // Initial load - only runs once on mount
   useEffect(() => {
+    // Reset ref on mount to handle React Strict Mode double-mounting
+    isLoadingRef.current = false;
     loadData();
-  }, [loadData]);
+  }, []); // Empty array - only run on mount
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
     const interval = setInterval(() => loadData(true), 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, [loadData]);
+  }, []); // Empty array - interval set once on mount
 
   // Connection status indicator
   const ConnectionStatus = () => {
@@ -566,9 +605,7 @@ function App({ onAdminClick }) {
               {/* Sync Data Button - Ghost style, fixed width for stability */}
               <button
                 onClick={() => {
-                  // Prevent double-clicks - only proceed if not already syncing
                   if (refreshing || loading) return;
-                  // Force full reload from API (don't clear dashboardData to prevent AI re-trigger)
                   loadData(true);
                 }}
                 disabled={refreshing || loading}
@@ -659,6 +696,11 @@ function App({ onAdminClick }) {
               paceData={dashboardData?.paceToGoal}
               forecastData={dashboardData?.forecastAnalysis}
             />
+          </div>
+
+          {/* Marketing Efficiency - Google Ads ROI */}
+          <div className="mb-6 lg:mb-8">
+            <MarketingEfficiency data={dashboardData?.marketingEfficiency} />
           </div>
 
           {/* Pipeline Quality Chart */}

@@ -2171,6 +2171,120 @@ async function fetchLeaderboardTimeTravel(period = '7d', sortBy = 'net_pipeline'
 }
 
 /**
+ * Fetch Marketing Efficiency Data (Google Ads ROI)
+ * Source: v_marketing_roi_unified
+ * Combines Google Ads spend with HubSpot deal revenue
+ */
+async function fetchMarketingEfficiency() {
+  const sql = `
+    SELECT
+      campaign_id,
+      campaign_name,
+      campaign_status,
+      total_spend,
+      total_clicks,
+      total_impressions,
+      total_conversions,
+      ctr_pct,
+      cpc,
+      spend_start_date,
+      spend_end_date,
+      attributed_deals,
+      won_deals,
+      arr_generated,
+      pipeline_value,
+      roas,
+      cost_per_acquisition,
+      cost_per_lead,
+      campaign_roi_status
+    FROM \`${PROJECT}.${DATASET}.v_marketing_roi_unified\`
+    ORDER BY total_spend DESC
+  `;
+
+  try {
+    const rows = await executeQuery(sql);
+
+    // Aggregate totals
+    let totalSpend = 0;
+    let totalPipelineValue = 0;
+    let totalARR = 0;
+    let totalDeals = 0;
+    let totalWonDeals = 0;
+
+    const campaigns = rows.map(row => {
+      totalSpend += Number(row.total_spend) || 0;
+      totalPipelineValue += Number(row.pipeline_value) || 0;
+      totalARR += Number(row.arr_generated) || 0;
+      totalDeals += Number(row.attributed_deals) || 0;
+      totalWonDeals += Number(row.won_deals) || 0;
+
+      return {
+        campaign_id: row.campaign_id,
+        campaign_name: row.campaign_name || 'Unknown Campaign',
+        campaign_status: row.campaign_status,
+        total_spend: Number(row.total_spend) || 0,
+        total_clicks: Number(row.total_clicks) || 0,
+        total_impressions: Number(row.total_impressions) || 0,
+        total_conversions: Number(row.total_conversions) || 0,
+        ctr_pct: Number(row.ctr_pct) || 0,
+        cpc: Number(row.cpc) || 0,
+        spend_start_date: row.spend_start_date,
+        spend_end_date: row.spend_end_date,
+        attributed_deals: Number(row.attributed_deals) || 0,
+        won_deals: Number(row.won_deals) || 0,
+        arr_generated: Number(row.arr_generated) || 0,
+        pipeline_value: Number(row.pipeline_value) || 0,
+        roas: Number(row.roas) || 0,
+        cost_per_acquisition: Number(row.cost_per_acquisition) || 0,
+        cost_per_lead: Number(row.cost_per_lead) || 0,
+        campaign_roi_status: row.campaign_roi_status,
+      };
+    });
+
+    // Calculate overall CPA
+    const overallCPA = totalWonDeals > 0 ? totalSpend / totalWonDeals : null;
+    const overallCPL = totalDeals > 0 ? totalSpend / totalDeals : null;
+    const overallROAS = totalSpend > 0 ? totalARR / totalSpend : 0;
+
+    return {
+      summary: {
+        total_spend: totalSpend,
+        total_pipeline_value: totalPipelineValue,
+        total_arr_generated: totalARR,
+        total_attributed_deals: totalDeals,
+        total_won_deals: totalWonDeals,
+        overall_cpa: overallCPA,
+        overall_cpl: overallCPL,
+        overall_roas: overallROAS,
+        campaign_count: campaigns.length,
+        has_spend: totalSpend > 0,
+        has_attribution: totalDeals > 0,
+      },
+      campaigns,
+    };
+  } catch (err) {
+    console.error('Error fetching marketing efficiency:', err.message);
+    // Return empty structure with has_data false
+    return {
+      summary: {
+        total_spend: 0,
+        total_pipeline_value: 0,
+        total_arr_generated: 0,
+        total_attributed_deals: 0,
+        total_won_deals: 0,
+        overall_cpa: null,
+        overall_cpl: null,
+        overall_roas: 0,
+        campaign_count: 0,
+        has_spend: false,
+        has_attribution: false,
+      },
+      campaigns: [],
+    };
+  }
+}
+
+/**
  * Fetch all dashboard data in batched parallel groups
  * Batches queries in groups of 5 to prevent overwhelming BigQuery
  * and provide better error isolation
@@ -2223,6 +2337,12 @@ async function fetchAllDashboardData() {
     // Batch 5: Additional data
     { name: 'pipelineTrend', fn: fetchPipelineTrend, fallback: [] },
     { name: 'owners', fn: fetchOwners, fallback: [] },
+
+    // Batch 6: Marketing Efficiency (Google Ads ROI)
+    { name: 'marketingEfficiency', fn: fetchMarketingEfficiency, fallback: {
+      summary: { total_spend: 0, total_pipeline_value: 0, has_spend: false, has_attribution: false },
+      campaigns: [],
+    }},
   ];
 
   const results = {};
@@ -2405,4 +2525,5 @@ module.exports = {
   fetchDealFocusScores,
   fetchRepFocusView,
   fetchLeaderboardTimeTravel,
+  fetchMarketingEfficiency,
 };

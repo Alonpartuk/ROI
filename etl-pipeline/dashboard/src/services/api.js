@@ -135,6 +135,11 @@ export async function fetchDashboardData() {
     // RevOps Layer 1 data
     paceToGoal: data.paceToGoal || null,
     pipelineQualityTrend: data.pipelineQualityTrend || [],
+    // Marketing Efficiency (Google Ads ROI)
+    marketingEfficiency: data.marketingEfficiency || {
+      summary: { total_spend: 0, total_pipeline_value: 0, has_spend: false, has_attribution: false },
+      campaigns: [],
+    },
   };
 }
 

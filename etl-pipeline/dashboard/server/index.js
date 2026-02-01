@@ -447,6 +447,23 @@ app.get('/api/recent-closed-deals', async (req, res) => {
 });
 
 /**
+ * Fetch Marketing Efficiency (Google Ads ROI)
+ * Source: v_marketing_roi_unified
+ */
+app.get('/api/marketing-efficiency', async (req, res) => {
+  try {
+    const data = await bigQueryService.fetchMarketingEfficiency();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching marketing efficiency:', error);
+    res.status(500).json({
+      error: 'Failed to fetch marketing efficiency data',
+      message: error.message,
+    });
+  }
+});
+
+/**
  * Fetch unique owner names for dropdown
  */
 app.get('/api/owners', async (req, res) => {
