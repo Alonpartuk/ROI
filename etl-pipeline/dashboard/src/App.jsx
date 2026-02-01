@@ -556,8 +556,8 @@ function App({ onAdminClick }) {
             </Flex>
 
             <Flex justifyContent="end" alignItems="center" className="gap-4">
+              {/* Last Updated Status */}
               <Flex justifyContent="end" alignItems="center" className="gap-2 text-gray-500">
-                <ArrowPathIcon className={`h-4 w-4 ${(refreshing || secondaryLoading) ? 'animate-spin' : ''}`} />
                 <Text className="text-xs hidden sm:inline">
                   {secondaryLoading
                     ? 'Loading details...'
@@ -567,12 +567,20 @@ function App({ onAdminClick }) {
                 </Text>
               </Flex>
 
+              {/* Refresh Data Button - Prominent with sync icon */}
               <button
-                onClick={() => loadData(true)}
-                disabled={refreshing}
-                className="px-3 py-1.5 text-sm font-medium text-[#00CBC0] hover:bg-[#00CBC0]/10 rounded-lg transition-colors disabled:opacity-50"
+                onClick={() => {
+                  // Clear any local state cache
+                  setDashboardData(null);
+                  // Force full reload from API
+                  loadData(false);
+                }}
+                disabled={refreshing || loading}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-[#00CBC0] text-white hover:bg-[#00b3a8] rounded-lg transition-colors disabled:opacity-50 shadow-sm"
+                title="Clear cache and refresh all data"
               >
-                {refreshing ? '...' : 'Refresh'}
+                <ArrowPathIcon className={`h-4 w-4 ${(refreshing || loading) ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline">{(refreshing || loading) ? 'Syncing...' : 'Sync Data'}</span>
               </button>
 
               {/* Admin Button - Only visible to admin */}

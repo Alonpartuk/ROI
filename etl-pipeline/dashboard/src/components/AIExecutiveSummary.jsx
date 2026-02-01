@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Title, Text, Flex, Badge, TextInput, Button } from '@tremor/react';
-import { SparklesIcon, ClockIcon, ChatBubbleLeftRightIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, ClockIcon, ChatBubbleLeftRightIcon, ArrowPathIcon, ShareIcon } from '@heroicons/react/24/outline';
+import { MessageCircle } from 'lucide-react';
 
 /**
  * AIExecutiveSummary Component
@@ -99,6 +100,39 @@ const AIExecutiveSummary = ({ data, onQuery, queryResult, queryLoading }) => {
     });
   };
 
+  // Share to WhatsApp - formats AI insight for strategic sharing
+  const handleWhatsAppShare = () => {
+    const insight = summaryData?.executive_insight || '';
+
+    // Extract key information from the AI insight
+    const lines = insight.split('\n').filter(line => line.trim());
+
+    // Build a concise summary (first 2-3 meaningful lines)
+    const summaryLines = lines.slice(0, 3).join('\n');
+
+    // Extract any recommendations (lines starting with - or numbers)
+    const recommendations = lines
+      .filter(line => line.trim().startsWith('-') || /^\d+\./.test(line.trim()))
+      .slice(0, 2)
+      .map(line => line.replace(/^[-\d.]+\s*/, '• ').replace(/\*\*/g, ''))
+      .join('\n');
+
+    // Format the WhatsApp message
+    const message = `🚀 *Octup Sales Flash Report* 🚀
+--------------------------
+📊 *Status:*
+${summaryLines.replace(/\*\*/g, '')}
+
+${recommendations ? `⚠️ *Action Required:*\n${recommendations}\n` : ''}
+--------------------------
+_Sent from Octup Intelligence_
+📅 ${formatTime(summaryData?.generated_at)}`;
+
+    // Encode and open WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+  };
+
   // Provide fallback data if none provided
   const summaryData = data || {
     executive_insight: 'AI summary is loading... Ask questions about your pipeline below.',
@@ -128,9 +162,20 @@ const AIExecutiveSummary = ({ data, onQuery, queryResult, queryLoading }) => {
             </Flex>
           </div>
         </Flex>
-        <Flex justifyContent="end" className="space-x-1 text-gray-500">
-          <ClockIcon className="h-4 w-4" />
-          <Text className="text-xs">{formatTime(summaryData.generated_at)}</Text>
+        <Flex justifyContent="end" className="space-x-3 items-center">
+          {/* WhatsApp Share Button */}
+          <button
+            onClick={handleWhatsAppShare}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-lg text-sm font-medium transition-colors shadow-sm"
+            title="Share to WhatsApp"
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+          <Flex justifyContent="end" className="space-x-1 text-gray-500">
+            <ClockIcon className="h-4 w-4" />
+            <Text className="text-xs">{formatTime(summaryData.generated_at)}</Text>
+          </Flex>
         </Flex>
       </Flex>
 
