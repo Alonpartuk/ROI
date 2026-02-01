@@ -2455,6 +2455,7 @@ async function fetchSecondaryData() {
     { name: 'nextStepCoverage', fn: fetchNextStepCoverage, fallback: [] },
     { name: 'pipelineTrend', fn: fetchPipelineTrend, fallback: [] },
     { name: 'owners', fn: fetchOwners, fallback: [] },
+    { name: 'marketingEfficiency', fn: fetchMarketingEfficiency, fallback: { summary: { has_spend: false }, campaigns: [] } },
   ];
 
   const results = {};

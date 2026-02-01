@@ -182,6 +182,11 @@ export async function fetchSecondaryData() {
     dailyDealMovements: data.dailyDealMovements || [],
     dealVelocity: data.dealVelocity || {},
     periodWonDeals: data.periodWonDeals || [],
+    // Marketing Efficiency (Google Ads ROI) - now loaded in secondary phase
+    marketingEfficiency: data.marketingEfficiency || {
+      summary: { total_spend: 0, total_pipeline_value: 0, has_spend: false, has_attribution: false },
+      campaigns: [],
+    },
   };
 }
 

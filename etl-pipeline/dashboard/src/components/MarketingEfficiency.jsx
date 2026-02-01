@@ -16,9 +16,33 @@ import MetricInfo from './MetricInfo';
  * Shows: Total Spend, Marketing-Sourced Pipeline, CPA
  */
 const MarketingEfficiency = ({ data }) => {
-  // If no data or no spend, show minimal state
+  // DEBUG: Always show component with border for visibility testing
+  const DEBUG_BORDER = true; // Set to false after debugging
+
+  // If no data, show loading placeholder
   if (!data || !data.summary) {
-    return null;
+    return (
+      <Card
+        className="bg-blue-50/80 backdrop-blur-2xl rounded-3xl border border-blue-200 shadow-xl overflow-hidden"
+        style={DEBUG_BORDER ? { border: '3px solid red' } : {}}
+      >
+        <Flex justifyContent="between" alignItems="center" className="mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-white/70 rounded-xl shadow-sm">
+              <MegaphoneIcon className="h-6 w-6 text-[#FF3489]" />
+            </div>
+            <div>
+              <Text className="text-xl font-bold text-gray-900">Marketing Efficiency</Text>
+              <Text className="text-sm text-gray-500">Loading Google Ads data...</Text>
+            </div>
+          </div>
+          <Badge color="gray" size="lg">Loading</Badge>
+        </Flex>
+        <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
+          <Text className="text-sm text-gray-500">Fetching marketing performance data from BigQuery...</Text>
+        </div>
+      </Card>
+    );
   }
 
   const { summary, campaigns = [] } = data;
@@ -35,9 +59,35 @@ const MarketingEfficiency = ({ data }) => {
     has_attribution = false,
   } = summary;
 
-  // Don't render if no spend data
+  // Show "No Data" state instead of hiding (for debugging)
   if (!has_spend) {
-    return null;
+    return (
+      <Card
+        className="bg-gray-50/80 backdrop-blur-2xl rounded-3xl border border-gray-200 shadow-xl overflow-hidden"
+        style={DEBUG_BORDER ? { border: '3px solid orange' } : {}}
+      >
+        <Flex justifyContent="between" alignItems="center" className="mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-white/70 rounded-xl shadow-sm">
+              <MegaphoneIcon className="h-6 w-6 text-gray-400" />
+            </div>
+            <div>
+              <Text className="text-xl font-bold text-gray-900">Marketing Efficiency</Text>
+              <Text className="text-sm text-gray-500">Google Ads Performance</Text>
+            </div>
+          </div>
+          <Badge color="gray" size="lg">No Active Campaigns</Badge>
+        </Flex>
+        <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
+          <Text className="text-sm text-gray-500">
+            No Google Ads spend detected. Start a campaign to see ROI metrics here.
+          </Text>
+          <Text className="text-xs text-gray-400 mt-2">
+            Debug: has_spend={String(has_spend)}, total_spend={total_spend}
+          </Text>
+        </div>
+      </Card>
+    );
   }
 
   // Format currency
@@ -71,7 +121,10 @@ const MarketingEfficiency = ({ data }) => {
   const activeCampaigns = campaigns.filter(c => c.total_spend > 0);
 
   return (
-    <Card className={`${status.bg} backdrop-blur-2xl rounded-3xl border ${status.border} shadow-xl overflow-hidden`}>
+    <Card
+      className={`${status.bg} backdrop-blur-2xl rounded-3xl border ${status.border} shadow-xl overflow-hidden`}
+      style={DEBUG_BORDER ? { border: '3px solid lime' } : {}}
+    >
       {/* Header */}
       <Flex justifyContent="between" alignItems="center" className="mb-6">
         <div className="flex items-center gap-3">
