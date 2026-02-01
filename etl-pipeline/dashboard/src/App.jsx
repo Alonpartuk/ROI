@@ -22,7 +22,8 @@ import FloatingNav from './components/FloatingNav';
 import KPICards from './components/KPICards';
 import AIExecutiveSummary from './components/AIExecutiveSummary';
 import RiskCommandCenter from './components/RiskCommandCenter';
-import RepRampChart from './components/RepRampChart';
+// RepRampChart moved to Analytics route
+// import RepRampChart from './components/RepRampChart';
 import PendingRebook from './components/PendingRebook';
 import Q1MissionControl from './components/Q1MissionControl';
 import StageLeakage from './components/StageLeakage';
@@ -33,7 +34,8 @@ import NextStepCoverage from './components/NextStepCoverage';
 import MultiThreadingChart from './components/MultiThreadingChart';
 import SDRLeaderboard from './components/SDRLeaderboard';
 import PipelineTrendChart from './components/PipelineTrendChart';
-import DailyDealMovements from './components/DailyDealMovements';
+// DailyDealMovements moved to History modal (accessed via deal slide-over)
+// import DailyDealMovements from './components/DailyDealMovements';
 import OwnerLeaderboard from './components/OwnerLeaderboard';
 import GlobalFilters from './components/GlobalFilters';
 import StageTransitionMatrix from './components/StageTransitionMatrix';
@@ -54,7 +56,8 @@ import PipelineQualityChart from './components/PipelineQualityChart';
 import StageSlippageTable from './components/StageSlippageTable';
 import LeaderboardTimeTravel from './components/LeaderboardTimeTravel';
 import ContactHealthShield from './components/ContactHealthShield';
-import ZombieDealsTab from './components/ZombieDealsTab';
+// ZombieDealsTab accessible via AI query or Admin settings only
+// import ZombieDealsTab from './components/ZombieDealsTab';
 import DealFocusScoreCard from './components/DealFocusScoreCard';
 
 // API Service (connects to BigQuery via backend)
@@ -664,14 +667,6 @@ function App({ onAdminClick }) {
             <KPICards data={dashboardData?.kpis} onCardClick={handleKPIClick} />
           </div>
 
-          {/* Daily Deal Movements */}
-          <div className="mb-6 lg:mb-8">
-            <DailyDealMovements
-              data={dashboardData?.dailyDealMovements}
-              onDealClick={handleDealClick}
-            />
-          </div>
-
           {/* AI Executive Summary */}
           <div className="mb-6 lg:mb-8">
             <AIExecutiveSummary
@@ -739,11 +734,6 @@ function App({ onAdminClick }) {
             <WinRateAnalysis data={dashboardData?.winRateAnalysis} />
           </Grid>
 
-          {/* Rep Ramp Chart */}
-          <div className="mb-6 lg:mb-8">
-            <RepRampChart data={dashboardData?.repRamp} />
-          </div>
-
           {/* Deal Focus Scores */}
           <div className="mb-6 lg:mb-8">
             <DealFocusScoreCard />
@@ -768,11 +758,6 @@ function App({ onAdminClick }) {
               onDealClick={handleDealClick}
               dealVelocity={dashboardData?.dealVelocity || {}}
             />
-          </div>
-
-          {/* Zombie Deals */}
-          <div className="mb-6 lg:mb-8">
-            <ZombieDealsTab />
           </div>
 
           {/* Multi-Threading & Next Step Coverage */}

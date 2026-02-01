@@ -33,6 +33,9 @@ import MetricInfo from './MetricInfo';
  * Source: v_sales_velocity
  */
 const SalesVelocity = ({ data, selectedOwner }) => {
+  // Simulator toggle - hidden by default to reduce clutter
+  const [showSimulator, setShowSimulator] = useState(false);
+
   // What-if analysis state
   const [cycleDaysReduction, setCycleDaysReduction] = useState(5);
   const [winRateIncrease, setWinRateIncrease] = useState(3);
@@ -167,28 +170,43 @@ const SalesVelocity = ({ data, selectedOwner }) => {
               Pipeline throughput efficiency • Real-time analysis
             </Text>
           </div>
-          <div className="relative group">
-            <Badge className="bg-white/20 text-white border-white/30 cursor-help">
-              <Calculator className="h-3 w-3 mr-1" />
-              V = (n × L × W) / T
-            </Badge>
-            {/* Tooltip */}
-            <div className="absolute right-0 top-full mt-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
-              <p className="font-semibold mb-2">Velocity Formula Explained:</p>
-              <ul className="space-y-1">
-                <li><strong>n</strong> = Number of Opportunities</li>
-                <li><strong>L</strong> = Average Deal Value (Lead Value)</li>
-                <li><strong>W</strong> = Win Rate (%)</li>
-                <li><strong>T</strong> = Average Sales Cycle (Days)</li>
-              </ul>
-              <p className="mt-2 text-gray-300">Higher velocity = faster revenue generation</p>
+          <Flex className="gap-2">
+            {/* Simulate Toggle Button */}
+            <button
+              onClick={() => setShowSimulator(!showSimulator)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                showSimulator
+                  ? 'bg-white text-purple-600 shadow-md'
+                  : 'bg-white/20 text-white hover:bg-white/30 border border-white/30'
+              }`}
+            >
+              <Sliders className="h-3.5 w-3.5" />
+              {showSimulator ? 'Hide Simulator' : 'Simulate'}
+            </button>
+
+            <div className="relative group">
+              <Badge className="bg-white/20 text-white border-white/30 cursor-help">
+                <Calculator className="h-3 w-3 mr-1" />
+                V = (n × L × W) / T
+              </Badge>
+              {/* Tooltip */}
+              <div className="absolute right-0 top-full mt-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <p className="font-semibold mb-2">Velocity Formula Explained:</p>
+                <ul className="space-y-1">
+                  <li><strong>n</strong> = Number of Opportunities</li>
+                  <li><strong>L</strong> = Average Deal Value (Lead Value)</li>
+                  <li><strong>W</strong> = Win Rate (%)</li>
+                  <li><strong>T</strong> = Average Sales Cycle (Days)</li>
+                </ul>
+                <p className="mt-2 text-gray-300">Higher velocity = faster revenue generation</p>
+              </div>
             </div>
-          </div>
+          </Flex>
         </Flex>
       </Card>
 
-      {/* Main Grid */}
-      <Grid numItemsSm={1} numItemsLg={3} className="gap-6">
+      {/* Main Grid - 2 cols when simulator hidden, 3 cols when visible */}
+      <Grid numItemsSm={1} numItemsLg={showSimulator ? 3 : 2} className="gap-6">
 
         {/* Velocity Gauge */}
         <Card className="col-span-1">
@@ -277,116 +295,118 @@ const SalesVelocity = ({ data, selectedOwner }) => {
           </div>
         </Card>
 
-        {/* What-If Calculator */}
-        <Card className="col-span-1">
-          <Flex alignItems="center" className="gap-2 mb-4">
-            <Sliders className="h-5 w-5 text-purple-500" />
-            <Title className="text-base">What-If Analysis</Title>
-          </Flex>
-          <Text className="text-gray-500 text-sm mb-4">
-            Adjust levers to see revenue impact
-          </Text>
-
-          {/* Lever 1: Reduce Cycle Days */}
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <Flex justifyContent="between" alignItems="center" className="mb-2">
-              <Flex alignItems="center" className="gap-2">
-                <Clock className="h-4 w-4 text-blue-600" />
-                <Text className="font-medium text-blue-900">Reduce Sales Cycle</Text>
-              </Flex>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCycleDaysReduction(Math.max(1, cycleDaysReduction - 1))}
-                  className="w-6 h-6 rounded bg-blue-200 text-blue-700 hover:bg-blue-300 flex items-center justify-center text-sm font-bold"
-                >
-                  -
-                </button>
-                <span className="w-12 text-center font-bold text-blue-700">
-                  {cycleDaysReduction} days
-                </span>
-                <button
-                  onClick={() => setCycleDaysReduction(Math.min(30, cycleDaysReduction + 1))}
-                  className="w-6 h-6 rounded bg-blue-200 text-blue-700 hover:bg-blue-300 flex items-center justify-center text-sm font-bold"
-                >
-                  +
-                </button>
-              </div>
+        {/* What-If Calculator - Hidden by default, shown via Simulate toggle */}
+        {showSimulator && (
+          <Card className="col-span-1">
+            <Flex alignItems="center" className="gap-2 mb-4">
+              <Sliders className="h-5 w-5 text-purple-500" />
+              <Title className="text-base">What-If Analysis</Title>
             </Flex>
-            <div className="mt-3 p-2 bg-white rounded">
-              <Flex justifyContent="between" alignItems="center">
-                <Text className="text-sm text-gray-600">Monthly Revenue Gain:</Text>
-                <Text className={`font-bold ${(whatIfAnalysis?.cycleGain || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                  {(whatIfAnalysis?.cycleGain || 0) >= 0 ? '+' : ''}{formatCurrency(whatIfAnalysis?.cycleGain || 0)}
-                </Text>
-              </Flex>
-              <Text className="text-xs text-gray-400 mt-1">
-                ({Math.abs(whatIfAnalysis?.cycleGainPercent || 0).toFixed(1)}% {(whatIfAnalysis?.cycleGainPercent || 0) >= 0 ? 'increase' : 'decrease'})
-              </Text>
-            </div>
-          </div>
-
-          {/* Lever 2: Increase Win Rate */}
-          <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-            <Flex justifyContent="between" alignItems="center" className="mb-2">
-              <Flex alignItems="center" className="gap-2">
-                <Target className="h-4 w-4 text-emerald-600" />
-                <Text className="font-medium text-emerald-900">Increase Win Rate</Text>
-              </Flex>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setWinRateIncrease(Math.max(1, winRateIncrease - 1))}
-                  className="w-6 h-6 rounded bg-emerald-200 text-emerald-700 hover:bg-emerald-300 flex items-center justify-center text-sm font-bold"
-                >
-                  -
-                </button>
-                <span className="w-12 text-center font-bold text-emerald-700">
-                  {winRateIncrease}%
-                </span>
-                <button
-                  onClick={() => setWinRateIncrease(Math.min(20, winRateIncrease + 1))}
-                  className="w-6 h-6 rounded bg-emerald-200 text-emerald-700 hover:bg-emerald-300 flex items-center justify-center text-sm font-bold"
-                >
-                  +
-                </button>
-              </div>
-            </Flex>
-            <div className="mt-3 p-2 bg-white rounded">
-              <Flex justifyContent="between" alignItems="center">
-                <Text className="text-sm text-gray-600">Monthly Revenue Gain:</Text>
-                <Text className={`font-bold ${(whatIfAnalysis?.winRateGain || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                  {(whatIfAnalysis?.winRateGain || 0) >= 0 ? '+' : ''}{formatCurrency(whatIfAnalysis?.winRateGain || 0)}
-                </Text>
-              </Flex>
-              <Text className="text-xs text-gray-400 mt-1">
-                ({Math.abs(whatIfAnalysis?.winRateGainPercent || 0).toFixed(1)}% {(whatIfAnalysis?.winRateGainPercent || 0) >= 0 ? 'increase' : 'decrease'})
-              </Text>
-            </div>
-          </div>
-
-          {/* Combined Impact */}
-          <div className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
-            <Flex alignItems="center" className="gap-2 mb-2">
-              {(whatIfAnalysis?.combinedGain || 0) >= 0 ? (
-                <TrendingUp className="h-5 w-5 text-purple-600" />
-              ) : (
-                <TrendingDown className="h-5 w-5 text-red-600" />
-              )}
-              <Text className="font-semibold text-purple-900">Combined Impact</Text>
-            </Flex>
-            <Metric className={(whatIfAnalysis?.combinedGain || 0) >= 0 ? 'text-purple-600' : 'text-red-600'}>
-              {(whatIfAnalysis?.combinedGain || 0) >= 0 ? '+' : ''}{formatCurrency(whatIfAnalysis?.combinedGain || 0)}
-            </Metric>
-            <Text className="text-sm text-gray-600 mt-1">
-              New Monthly Velocity: <span className="font-bold">{formatCurrency(whatIfAnalysis?.newMonthlyVelocity || 0)}</span>
+            <Text className="text-gray-500 text-sm mb-4">
+              Adjust levers to see revenue impact
             </Text>
-            <div className="mt-2 h-1 bg-purple-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-purple-500 rounded-full transition-all"
-                style={{ width: `${Math.min(100, Math.abs(whatIfAnalysis?.combinedGainPercent || 0))}%` }}
-              />
+
+            {/* Lever 1: Reduce Cycle Days */}
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+              <Flex justifyContent="between" alignItems="center" className="mb-2">
+                <Flex alignItems="center" className="gap-2">
+                  <Clock className="h-4 w-4 text-blue-600" />
+                  <Text className="font-medium text-blue-900">Reduce Sales Cycle</Text>
+                </Flex>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCycleDaysReduction(Math.max(1, cycleDaysReduction - 1))}
+                    className="w-6 h-6 rounded bg-blue-200 text-blue-700 hover:bg-blue-300 flex items-center justify-center text-sm font-bold"
+                  >
+                    -
+                  </button>
+                  <span className="w-12 text-center font-bold text-blue-700">
+                    {cycleDaysReduction} days
+                  </span>
+                  <button
+                    onClick={() => setCycleDaysReduction(Math.min(30, cycleDaysReduction + 1))}
+                    className="w-6 h-6 rounded bg-blue-200 text-blue-700 hover:bg-blue-300 flex items-center justify-center text-sm font-bold"
+                  >
+                    +
+                  </button>
+                </div>
+              </Flex>
+              <div className="mt-3 p-2 bg-white rounded">
+                <Flex justifyContent="between" alignItems="center">
+                  <Text className="text-sm text-gray-600">Monthly Revenue Gain:</Text>
+                  <Text className={`font-bold ${(whatIfAnalysis?.cycleGain || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                    {(whatIfAnalysis?.cycleGain || 0) >= 0 ? '+' : ''}{formatCurrency(whatIfAnalysis?.cycleGain || 0)}
+                  </Text>
+                </Flex>
+                <Text className="text-xs text-gray-400 mt-1">
+                  ({Math.abs(whatIfAnalysis?.cycleGainPercent || 0).toFixed(1)}% {(whatIfAnalysis?.cycleGainPercent || 0) >= 0 ? 'increase' : 'decrease'})
+                </Text>
+              </div>
             </div>
-          </div>
-        </Card>
+
+            {/* Lever 2: Increase Win Rate */}
+            <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+              <Flex justifyContent="between" alignItems="center" className="mb-2">
+                <Flex alignItems="center" className="gap-2">
+                  <Target className="h-4 w-4 text-emerald-600" />
+                  <Text className="font-medium text-emerald-900">Increase Win Rate</Text>
+                </Flex>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setWinRateIncrease(Math.max(1, winRateIncrease - 1))}
+                    className="w-6 h-6 rounded bg-emerald-200 text-emerald-700 hover:bg-emerald-300 flex items-center justify-center text-sm font-bold"
+                  >
+                    -
+                  </button>
+                  <span className="w-12 text-center font-bold text-emerald-700">
+                    {winRateIncrease}%
+                  </span>
+                  <button
+                    onClick={() => setWinRateIncrease(Math.min(20, winRateIncrease + 1))}
+                    className="w-6 h-6 rounded bg-emerald-200 text-emerald-700 hover:bg-emerald-300 flex items-center justify-center text-sm font-bold"
+                  >
+                    +
+                  </button>
+                </div>
+              </Flex>
+              <div className="mt-3 p-2 bg-white rounded">
+                <Flex justifyContent="between" alignItems="center">
+                  <Text className="text-sm text-gray-600">Monthly Revenue Gain:</Text>
+                  <Text className={`font-bold ${(whatIfAnalysis?.winRateGain || 0) >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                    {(whatIfAnalysis?.winRateGain || 0) >= 0 ? '+' : ''}{formatCurrency(whatIfAnalysis?.winRateGain || 0)}
+                  </Text>
+                </Flex>
+                <Text className="text-xs text-gray-400 mt-1">
+                  ({Math.abs(whatIfAnalysis?.winRateGainPercent || 0).toFixed(1)}% {(whatIfAnalysis?.winRateGainPercent || 0) >= 0 ? 'increase' : 'decrease'})
+                </Text>
+              </div>
+            </div>
+
+            {/* Combined Impact */}
+            <div className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-200">
+              <Flex alignItems="center" className="gap-2 mb-2">
+                {(whatIfAnalysis?.combinedGain || 0) >= 0 ? (
+                  <TrendingUp className="h-5 w-5 text-purple-600" />
+                ) : (
+                  <TrendingDown className="h-5 w-5 text-red-600" />
+                )}
+                <Text className="font-semibold text-purple-900">Combined Impact</Text>
+              </Flex>
+              <Metric className={(whatIfAnalysis?.combinedGain || 0) >= 0 ? 'text-purple-600' : 'text-red-600'}>
+                {(whatIfAnalysis?.combinedGain || 0) >= 0 ? '+' : ''}{formatCurrency(whatIfAnalysis?.combinedGain || 0)}
+              </Metric>
+              <Text className="text-sm text-gray-600 mt-1">
+                New Monthly Velocity: <span className="font-bold">{formatCurrency(whatIfAnalysis?.newMonthlyVelocity || 0)}</span>
+              </Text>
+              <div className="mt-2 h-1 bg-purple-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-purple-500 rounded-full transition-all"
+                  style={{ width: `${Math.min(100, Math.abs(whatIfAnalysis?.combinedGainPercent || 0))}%` }}
+                />
+              </div>
+            </div>
+          </Card>
+        )}
 
         {/* Velocity by Rep */}
         <Card className="col-span-1">
