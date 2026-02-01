@@ -14,21 +14,16 @@ import MetricInfo from './MetricInfo';
  * MarketingEfficiency Component
  * Displays Google Ads performance metrics from v_marketing_roi_unified
  * Shows: Total Spend, Marketing-Sourced Pipeline, CPA
+ * Styling matches Q1MissionControl for seamless visual integration
  */
 const MarketingEfficiency = ({ data }) => {
-  // DEBUG: Always show component with border for visibility testing
-  const DEBUG_BORDER = true; // Set to false after debugging
-
-  // If no data, show loading placeholder
+  // If no data, show loading placeholder (matches Q1MissionControl loading state)
   if (!data || !data.summary) {
     return (
-      <Card
-        className="bg-blue-50/80 backdrop-blur-2xl rounded-3xl border border-blue-200 shadow-xl overflow-hidden"
-        style={DEBUG_BORDER ? { border: '3px solid red' } : {}}
-      >
+      <Card className="bg-white/80 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-xl">
         <Flex justifyContent="between" alignItems="center" className="mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/70 rounded-xl shadow-sm">
+            <div className="p-2.5 bg-pink-50 rounded-xl shadow-sm">
               <MegaphoneIcon className="h-6 w-6 text-[#FF3489]" />
             </div>
             <div>
@@ -38,8 +33,8 @@ const MarketingEfficiency = ({ data }) => {
           </div>
           <Badge color="gray" size="lg">Loading</Badge>
         </Flex>
-        <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
-          <Text className="text-sm text-gray-500">Fetching marketing performance data from BigQuery...</Text>
+        <div className="bg-gray-50/50 rounded-2xl p-5">
+          <Text className="text-sm text-gray-400">Fetching marketing performance data...</Text>
         </div>
       </Card>
     );
@@ -53,22 +48,18 @@ const MarketingEfficiency = ({ data }) => {
     total_attributed_deals = 0,
     total_won_deals = 0,
     overall_cpa = null,
-    overall_cpl = null,
     overall_roas = 0,
     has_spend = false,
     has_attribution = false,
   } = summary;
 
-  // Show "No Data" state instead of hiding (for debugging)
+  // Show "No Campaigns" state if no spend detected
   if (!has_spend) {
     return (
-      <Card
-        className="bg-gray-50/80 backdrop-blur-2xl rounded-3xl border border-gray-200 shadow-xl overflow-hidden"
-        style={DEBUG_BORDER ? { border: '3px solid orange' } : {}}
-      >
+      <Card className="bg-white/80 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-xl">
         <Flex justifyContent="between" alignItems="center" className="mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/70 rounded-xl shadow-sm">
+            <div className="p-2.5 bg-gray-100 rounded-xl shadow-sm">
               <MegaphoneIcon className="h-6 w-6 text-gray-400" />
             </div>
             <div>
@@ -78,12 +69,9 @@ const MarketingEfficiency = ({ data }) => {
           </div>
           <Badge color="gray" size="lg">No Active Campaigns</Badge>
         </Flex>
-        <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
+        <div className="bg-gray-50/50 rounded-2xl p-5">
           <Text className="text-sm text-gray-500">
             No Google Ads spend detected. Start a campaign to see ROI metrics here.
-          </Text>
-          <Text className="text-xs text-gray-400 mt-2">
-            Debug: has_spend={String(has_spend)}, total_spend={total_spend}
           </Text>
         </div>
       </Card>
@@ -98,21 +86,15 @@ const MarketingEfficiency = ({ data }) => {
     return `$${Math.round(value).toLocaleString()}`;
   };
 
-  // Format number
-  const formatNumber = (value) => {
-    if (value === null || value === undefined) return 'N/A';
-    return value.toLocaleString();
-  };
-
   // Determine status based on attribution
   const getStatus = () => {
     if (total_arr_generated > 0 && total_spend > 0) {
-      return { label: 'Generating Revenue', color: 'emerald', bg: 'bg-emerald-50/80', border: 'border-emerald-200' };
+      return { label: 'Generating Revenue', color: 'emerald', bg: 'bg-emerald-50/80', border: 'border-emerald-200/50' };
     }
     if (total_attributed_deals > 0) {
-      return { label: 'Leads in Pipeline', color: 'amber', bg: 'bg-amber-50/80', border: 'border-amber-200' };
+      return { label: 'Leads in Pipeline', color: 'amber', bg: 'bg-amber-50/80', border: 'border-amber-200/50' };
     }
-    return { label: 'Monitoring', color: 'blue', bg: 'bg-blue-50/80', border: 'border-blue-200' };
+    return { label: 'Monitoring', color: 'blue', bg: 'bg-blue-50/80', border: 'border-blue-200/50' };
   };
 
   const status = getStatus();
@@ -121,10 +103,7 @@ const MarketingEfficiency = ({ data }) => {
   const activeCampaigns = campaigns.filter(c => c.total_spend > 0);
 
   return (
-    <Card
-      className={`${status.bg} backdrop-blur-2xl rounded-3xl border ${status.border} shadow-xl overflow-hidden`}
-      style={DEBUG_BORDER ? { border: '3px solid lime' } : {}}
-    >
+    <Card className={`${status.bg} backdrop-blur-2xl rounded-3xl border ${status.border} shadow-xl`}>
       {/* Header */}
       <Flex justifyContent="between" alignItems="center" className="mb-6">
         <div className="flex items-center gap-3">
