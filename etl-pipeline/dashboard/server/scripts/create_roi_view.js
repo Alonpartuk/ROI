@@ -37,23 +37,30 @@ async function createROIView() {
     -- v_marketing_roi_unified: Google Ads Spend + HubSpot Deal Revenue
     -- Calculates ROAS (Return on Ad Spend) per campaign
     -- Account: 748-999-3974 (SW: Octup)
+    -- FIXED: Deduplicate campaign table before join to avoid 2x multiplication
 
-    WITH google_ads_spend AS (
-      -- Aggregate spend by campaign
+    WITH campaign_info AS (
+      -- Deduplicate campaign table - take first value per campaign
       SELECT
-        s.campaign_id,
-        c.campaign_name,
-        c.campaign_status,
-        SUM(s.metrics_cost_micros) / 1000000 AS total_spend,
-        SUM(s.metrics_clicks) AS total_clicks,
-        SUM(s.metrics_impressions) AS total_impressions,
-        SUM(s.metrics_conversions) AS total_conversions,
-        MIN(s.segments_date) AS first_date,
-        MAX(s.segments_date) AS last_date
-      FROM \`octup-testing.google_ads.ads_CampaignStats_7489993974\` s
-      LEFT JOIN \`octup-testing.google_ads.ads_Campaign_7489993974\` c
-        ON s.campaign_id = c.campaign_id
-      GROUP BY s.campaign_id, c.campaign_name, c.campaign_status
+        campaign_id,
+        ARRAY_AGG(campaign_name ORDER BY campaign_name LIMIT 1)[OFFSET(0)] AS campaign_name,
+        ARRAY_AGG(campaign_status ORDER BY campaign_status LIMIT 1)[OFFSET(0)] AS campaign_status
+      FROM \`octup-testing.google_ads.ads_Campaign_7489993974\`
+      GROUP BY campaign_id
+    ),
+
+    google_ads_spend AS (
+      -- Aggregate spend by campaign (from stats table only)
+      SELECT
+        campaign_id,
+        SUM(metrics_cost_micros) / 1000000 AS total_spend,
+        SUM(metrics_clicks) AS total_clicks,
+        SUM(metrics_impressions) AS total_impressions,
+        SUM(metrics_conversions) AS total_conversions,
+        MIN(segments_date) AS first_date,
+        MAX(segments_date) AS last_date
+      FROM \`octup-testing.google_ads.ads_CampaignStats_7489993974\`
+      GROUP BY campaign_id
     ),
 
     hubspot_revenue AS (
@@ -80,8 +87,8 @@ async function createROIView() {
 
     SELECT
       g.campaign_id,
-      g.campaign_name,
-      g.campaign_status,
+      c.campaign_name,
+      c.campaign_status,
 
       -- Google Ads Metrics
       g.total_spend,
@@ -113,7 +120,8 @@ async function createROIView() {
       END AS campaign_roi_status
 
     FROM google_ads_spend g
-    LEFT JOIN hubspot_revenue h ON LOWER(g.campaign_name) = LOWER(h.campaign_name)
+    LEFT JOIN campaign_info c ON g.campaign_id = c.campaign_id
+    LEFT JOIN hubspot_revenue h ON LOWER(c.campaign_name) = LOWER(h.campaign_name)
     ORDER BY g.total_spend DESC
   `;
 
