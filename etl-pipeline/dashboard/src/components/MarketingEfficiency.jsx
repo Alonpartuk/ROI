@@ -135,10 +135,7 @@ const MarketingEfficiency = ({ data }) => {
                 <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">
                   Total Ad Spend
                 </Text>
-                <MetricInfo
-                  title="Total Ad Spend"
-                  description="Total amount spent on Google Ads campaigns. This is the cost side of your marketing investment."
-                />
+                <MetricInfo id="Total Ad Spend" />
               </Flex>
             </div>
           </Flex>
@@ -161,10 +158,7 @@ const MarketingEfficiency = ({ data }) => {
                 <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">
                   Marketing Pipeline
                 </Text>
-                <MetricInfo
-                  title="Marketing-Sourced Pipeline"
-                  description="Total value of deals currently in the pipeline that came from Google Ads (PAID_SEARCH or Google UTM source)."
-                />
+                <MetricInfo id="Marketing Pipeline" />
               </Flex>
             </div>
           </Flex>
@@ -187,10 +181,7 @@ const MarketingEfficiency = ({ data }) => {
                 <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">
                   Cost Per Acquisition
                 </Text>
-                <MetricInfo
-                  title="CPA (Cost Per Acquisition)"
-                  description="Total ad spend divided by number of won deals. Shows how much it costs to acquire a paying customer through Google Ads."
-                />
+                <MetricInfo id="Cost Per Acquisition" />
               </Flex>
             </div>
           </Flex>
@@ -225,6 +216,7 @@ const MarketingEfficiency = ({ data }) => {
               <Text className="text-sm text-emerald-700">
                 Return on Ad Spend (ROAS)
               </Text>
+              <MetricInfo id="ROAS" />
             </Flex>
             <Text className="text-2xl font-bold text-emerald-700 font-mono">
               {overall_roas.toFixed(2)}x

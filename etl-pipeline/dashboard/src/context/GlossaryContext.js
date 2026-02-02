@@ -264,6 +264,78 @@ export const GLOSSARY_DATA = {
     logic: 'Tracks: Net Pipeline Added, Stage Movements, Engagement Score, Won Value per rep',
     timeFrame: '7 Days / 30 Days / QTD',
   },
+
+  // ============================================
+  // Marketing Efficiency (Google Ads)
+  // ============================================
+  'Total Ad Spend': {
+    definition: 'Total investment in Google Ads campaigns. This is the cost side of your marketing investment pulled from BigQuery Transfer.',
+    logic: 'SUM(metrics_cost_micros / 1,000,000) from Google Ads Campaign Stats',
+    timeFrame: 'Lifetime',
+  },
+  'Marketing Pipeline': {
+    definition: 'Total value of deals in HubSpot attributed to Google Ads campaigns (via PAID_SEARCH or Google UTM source).',
+    logic: 'SUM(deal_value) WHERE hs_analytics_source = PAID_SEARCH OR utm_source LIKE google',
+    timeFrame: 'Current Snapshot',
+  },
+  'Cost Per Acquisition': {
+    definition: 'Total ad spend divided by number of won deals. Shows how much it costs to acquire a paying customer through Google Ads.',
+    logic: 'Total Ad Spend / Won Deals Count',
+    timeFrame: 'Lifetime',
+  },
+  'ROAS': {
+    definition: 'Return on Ad Spend: How many dollars in ARR generated per $1 spent on Google Ads.',
+    logic: 'ARR Generated / Total Ad Spend',
+    timeFrame: 'Lifetime',
+  },
+
+  // ============================================
+  // Q1 Mission Control
+  // ============================================
+  'Q1 Goal Progress': {
+    definition: 'Progress toward the quarterly revenue target based on closed-won ARR.',
+    logic: '(Q-T-D Won ARR / Quarterly Target) × 100',
+    timeFrame: 'Current Quarter',
+  },
+  'Monthly Pace': {
+    definition: 'Compares your current revenue pace to the required pace to hit quarterly target. Current = what you\'re on track to close. Required = what you need to close.',
+    logic: 'Current Pace = QTD Won / Days Elapsed × 30. Required Pace = (Target - QTD Won) / Days Remaining × 30',
+    timeFrame: 'Current Quarter',
+  },
+  'Pace Gap': {
+    definition: 'The difference between your current monthly pace and the required pace to hit target.',
+    logic: 'Current Monthly Pace - Required Monthly Pace',
+    timeFrame: 'Current Quarter',
+  },
+  'AI Forecast': {
+    definition: 'AI-generated revenue projection with Low/Expected/High scenarios based on pipeline health and historical patterns.',
+    logic: 'ML model combining weighted pipeline, win rate trends, stage velocity, and seasonality',
+    timeFrame: 'Current Quarter',
+  },
+  'Pipeline Coverage': {
+    definition: 'Pipeline value relative to remaining revenue gap. Shows if you have enough pipeline to hit target.',
+    logic: 'Total Pipeline Value / (Target - Q-T-D Won)',
+    timeFrame: 'Current Quarter',
+  },
+
+  // ============================================
+  // Deal Rescue Center
+  // ============================================
+  'Deal Rescue Center': {
+    definition: 'The single source of truth for deal-level intervention. Shows Contact Health, Threading Level, Risk Status, and Recommended Actions.',
+    logic: 'Combines: Contact count, days since activity, stage duration, and meeting status',
+    timeFrame: 'Current Snapshot',
+  },
+  'Contact Health': {
+    definition: 'Deal contact engagement health indicator. RED = critical (no contacts or 14+ days inactive), YELLOW = at risk (single contact or 7-14 days inactive), GREEN = healthy (2+ contacts and active within 7 days).',
+    logic: 'RED: contacts=0 OR days_inactive>14 | YELLOW: contacts=1 OR 7≤days_inactive≤14 | GREEN: contacts≥2 AND days_inactive<7',
+    timeFrame: 'Current Snapshot',
+  },
+  'Threading Level': {
+    definition: 'Multi-threading status based on number of contacts engaged. Critical = 0 contacts, Low = 1 contact, Moderate = 2 contacts, Healthy = 3+ contacts.',
+    logic: 'Critical: 0 | Low: 1 | Moderate: 2 | Healthy: 3+',
+    timeFrame: 'Current Snapshot',
+  },
 };
 
 /**

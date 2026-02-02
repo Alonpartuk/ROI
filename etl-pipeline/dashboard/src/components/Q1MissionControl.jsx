@@ -135,7 +135,10 @@ const Q1MissionControl = ({ paceData, forecastData }) => {
 
         {/* Column 1: Goal Progress */}
         <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
-          <Text className="text-xs text-gray-500 uppercase tracking-wide mb-4 font-semibold">Goal Progress</Text>
+          <Flex justifyContent="between" alignItems="start" className="mb-4">
+            <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">Goal Progress</Text>
+            <MetricInfo id="Q1 Goal Progress" />
+          </Flex>
 
           <div className="flex items-center justify-between mb-4">
             <ProgressGauge progress={progress_pct} status={pace_status} />
@@ -170,10 +173,7 @@ const Q1MissionControl = ({ paceData, forecastData }) => {
         <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
           <Flex justifyContent="between" alignItems="start" className="mb-4">
             <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">Monthly Pace</Text>
-            <MetricInfo
-              title="Pace Metrics"
-              description="Current = QTD Won / Days × 30. Required = Remaining / Days Left × 30."
-            />
+            <MetricInfo id="Monthly Pace" />
           </Flex>
 
           <div className="space-y-3">
@@ -221,7 +221,10 @@ const Q1MissionControl = ({ paceData, forecastData }) => {
         {/* Column 3: AI Forecast */}
         <div className="bg-white/70 rounded-2xl p-5 shadow-sm">
           <Flex justifyContent="between" alignItems="start" className="mb-4">
-            <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">AI Forecast</Text>
+            <Flex alignItems="center" className="gap-1">
+              <Text className="text-xs text-gray-500 uppercase tracking-wide font-semibold">AI Forecast</Text>
+              <MetricInfo id="AI Forecast" />
+            </Flex>
             {confidence_score > 0 && (
               <Badge color="gray" size="sm">{confidence_score}% conf</Badge>
             )}

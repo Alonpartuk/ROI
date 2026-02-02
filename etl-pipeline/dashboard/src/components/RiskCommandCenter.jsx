@@ -541,8 +541,18 @@ const RiskCommandCenter = ({ data, onDealClick, dealVelocity = {} }) => {
               <TableHeaderCell className="text-right">ARR</TableHeaderCell>
               <TableHeaderCell>Stage</TableHeaderCell>
               <TableHeaderCell>Owner</TableHeaderCell>
-              <TableHeaderCell>Contact Health</TableHeaderCell>
-              <TableHeaderCell>Threading</TableHeaderCell>
+              <TableHeaderCell>
+                <div className="flex items-center gap-1">
+                  Contact Health
+                  <MetricInfo id="Contact Health" />
+                </div>
+              </TableHeaderCell>
+              <TableHeaderCell>
+                <div className="flex items-center gap-1">
+                  Threading
+                  <MetricInfo id="Threading Level" />
+                </div>
+              </TableHeaderCell>
               <TableHeaderCell>Risk Status</TableHeaderCell>
               <TableHeaderCell>Recommended Action</TableHeaderCell>
               <TableHeaderCell></TableHeaderCell>
