@@ -35,8 +35,7 @@ import NextStepCoverage from './components/NextStepCoverage';
 import MultiThreadingChart from './components/MultiThreadingChart';
 import SDRLeaderboard from './components/SDRLeaderboard';
 import PipelineTrendChart from './components/PipelineTrendChart';
-// DailyDealMovements moved to History modal (accessed via deal slide-over)
-// import DailyDealMovements from './components/DailyDealMovements';
+import DailyDealMovements from './components/DailyDealMovements';
 import OwnerLeaderboard from './components/OwnerLeaderboard';
 import GlobalFilters from './components/GlobalFilters';
 import StageTransitionMatrix from './components/StageTransitionMatrix';
@@ -759,6 +758,14 @@ function App({ onAdminClick }) {
           <div className="mb-6 lg:mb-8">
             <StageTransitionMatrix
               data={dashboardData?.dailyDealMovements}
+              onDealClick={handleDealClick}
+            />
+          </div>
+
+          {/* Daily Deal Movements List */}
+          <div className="mb-6 lg:mb-8">
+            <DailyDealMovements
+              movements={dashboardData?.dailyDealMovements || []}
               onDealClick={handleDealClick}
             />
           </div>
