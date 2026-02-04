@@ -20,6 +20,32 @@ const vertexAI = new VertexAI({ project: PROJECT_ID, location: LOCATION });
 const bigquery = new BigQuery({ projectId: PROJECT_ID });
 
 // ============================================================================
+// RETRY HELPER - Exponential backoff for 429 rate limit errors
+// ============================================================================
+async function retryWithBackoff(fn, maxRetries = 3, initialDelayMs = 2000) {
+  let lastError;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      // Check for 429 rate limit error
+      const is429 = error.message?.includes('429') ||
+                    error.message?.includes('RESOURCE_EXHAUSTED') ||
+                    error.code === 429;
+      if (is429 && attempt < maxRetries - 1) {
+        const delay = initialDelayMs * Math.pow(2, attempt); // 2s, 4s, 8s
+        console.log(`[AI Service] Rate limited (429), retrying in ${delay}ms... (attempt ${attempt + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } else {
+        throw error;
+      }
+    }
+  }
+  throw lastError;
+}
+
+// ============================================================================
 // REVOPS GLOSSARY - Injected into every prompt
 // ============================================================================
 const REVOPS_GLOSSARY = `
@@ -352,8 +378,8 @@ async function askPipeline(userQuery, conversationHistory = []) {
     // Start chat session
     const chat = generativeModel.startChat({ history: contents.slice(0, -1) });
 
-    // Send message and handle function calls
-    let response = await chat.sendMessage(userQuery);
+    // Send message and handle function calls (with retry for 429 errors)
+    let response = await retryWithBackoff(() => chat.sendMessage(userQuery));
     let responseText = '';
     let functionCallsCount = 0;
     const maxFunctionCalls = 5; // Prevent infinite loops
@@ -388,8 +414,8 @@ async function askPipeline(userQuery, conversationHistory = []) {
           });
         }
 
-        // Send ALL function responses together in one message
-        response = await chat.sendMessage(functionResponses);
+        // Send ALL function responses together in one message (with retry for 429 errors)
+        response = await retryWithBackoff(() => chat.sendMessage(functionResponses));
       } else {
         // No more function calls, extract text response
         const textPart = content.parts.find(part => part.text);
