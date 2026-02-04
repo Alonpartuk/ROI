@@ -263,31 +263,46 @@ def parse_timestamp_to_datetime(timestamp_str: Optional[str]) -> Optional[dateti
 
 
 def fetch_all_deal_properties(hubspot_client: HubSpot) -> List[str]:
-    """Fetch ALL available deal properties from HubSpot."""
-    logger.info("Fetching all available deal properties...")
-    properties = []
+    """
+    Fetch essential deal properties from HubSpot.
 
-    try:
-        response = hubspot_client.crm.properties.core_api.get_all(object_type='deals')
-        for prop in response.results:
-            properties.append(prop.name)
-        logger.info(f"Found {len(properties)} deal properties")
-        return properties
-    except Exception as e:
-        logger.warning(f"Could not fetch deal properties: {e}")
-        # Return default properties if fetch fails
-        return [
-            'hs_object_id', 'dealname', 'dealtype', 'amount', 'deal_currency_code',
-            'hs_tcv', 'hs_acv', 'hs_arr', 'hs_mrr', 'dealstage', 'pipeline',
-            'hs_deal_stage_probability', 'closedate', 'createdate', 'hs_lastmodifieddate',
-            'notes_last_updated', 'notes_last_contacted', 'hs_date_entered_closedwon',
-            'hs_date_entered_closedlost', 'hubspot_owner_id', 'hs_forecast_category',
-            'hs_forecast_probability', 'hs_manual_forecast_category', 'hs_priority',
-            'hs_next_step', 'num_associated_contacts', 'num_contacted_notes', 'num_notes',
-            'engagements_last_meeting_booked', 'hs_latest_meeting_activity',
-            'hs_sales_email_last_replied', 'closed_lost_reason', 'closed_won_reason',
-            'description'
-        ]
+    NOTE: We use a curated list instead of ALL properties (426+) to avoid
+    HubSpot's 414 URI Too Large error. The API URL has a length limit.
+    """
+    # Essential properties needed for the dashboard and analytics
+    # This curated list avoids the 414 URI Too Large error
+    essential_properties = [
+        # Core identifiers
+        'hs_object_id', 'dealname', 'dealtype', 'amount', 'deal_currency_code',
+        # Revenue metrics
+        'hs_tcv', 'hs_acv', 'hs_arr', 'hs_mrr',
+        # Pipeline & stage
+        'dealstage', 'pipeline', 'hs_deal_stage_probability',
+        # Dates
+        'closedate', 'createdate', 'hs_lastmodifieddate',
+        'notes_last_updated', 'notes_last_contacted',
+        'hs_date_entered_closedwon', 'hs_date_entered_closedlost',
+        # Ownership
+        'hubspot_owner_id',
+        # Forecasting
+        'hs_forecast_category', 'hs_forecast_probability',
+        'hs_manual_forecast_category', 'hs_priority',
+        # Activity
+        'hs_next_step', 'num_associated_contacts', 'num_contacted_notes', 'num_notes',
+        'engagements_last_meeting_booked', 'hs_latest_meeting_activity',
+        'hs_sales_email_last_replied',
+        # Closed reasons
+        'closed_lost_reason', 'closed_won_reason',
+        # Additional context
+        'description',
+        # Analytics source (for marketing attribution)
+        'hs_analytics_source', 'hs_analytics_source_data_1', 'hs_analytics_source_data_2',
+        # Lead source
+        'lead_source', 'utm_source', 'utm_medium', 'utm_campaign',
+    ]
+
+    logger.info(f"Using {len(essential_properties)} essential deal properties (avoiding 414 URI limit)")
+    return essential_properties
 
 
 def fetch_pipelines(hubspot_client: HubSpot) -> Tuple[Dict, Dict, Optional[str]]:
