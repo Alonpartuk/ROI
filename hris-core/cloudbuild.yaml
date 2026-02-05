@@ -1,0 +1,458 @@
+# =============================================================================
+# Octup HRIS - Production CI/CD Pipeline
+# =============================================================================
+# Triggered by: Push to main branch in GitHub
+#
+# Pipeline Overview:
+# 1. Build Docker images (API + Web) in parallel
+# 2. Push images to Artifact Registry
+# 3. Run database migrations via Cloud SQL Auth Proxy
+# 4. Deploy to Cloud Run (API first, then Web)
+# 5. Run smoke tests to verify deployment
+# 6. Output deployment URLs
+#
+# Required Secrets in Secret Manager:
+# - hris-db-password: Database password
+# - hris-database-url: Full connection string
+# =============================================================================
+
+substitutions:
+  # Project Configuration (auto-populated by Cloud Build)
+  _PROJECT_ID: ${PROJECT_ID}
+  _REGION: me-west1
+
+  # Artifact Registry
+  _ARTIFACT_REGISTRY: ${_REGION}-docker.pkg.dev/${_PROJECT_ID}/hris
+
+  # Cloud SQL
+  _CLOUD_SQL_INSTANCE: ${_PROJECT_ID}:${_REGION}:hris-postgres
+  _DB_NAME: hris
+  _DB_USER: hris_app
+
+  # Cloud Run Services
+  _API_SERVICE_NAME: hris-api
+  _WEB_SERVICE_NAME: hris-web
+
+  # Build Configuration
+  _API_MEMORY: 512Mi
+  _API_CPU: '1'
+  _API_MAX_INSTANCES: '10'
+  _WEB_MEMORY: 256Mi
+  _WEB_CPU: '1'
+  _WEB_MAX_INSTANCES: '5'
+
+  # Git info defaults (overridden by triggers, needed for manual builds)
+  _SHORT_SHA: manual
+  _BRANCH_NAME: main
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+  dynamic_substitutions: true
+  substitution_option: 'ALLOW_LOOSE'
+
+# =============================================================================
+# BUILD STEPS
+# =============================================================================
+
+steps:
+  # ===========================================================================
+  # PHASE 1: INITIALIZATION
+  # ===========================================================================
+
+  - id: 'init-build'
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo ""
+        echo "╔══════════════════════════════════════════════════════════════╗"
+        echo "║           OCTUP HRIS - PRODUCTION DEPLOYMENT                 ║"
+        echo "╠══════════════════════════════════════════════════════════════╣"
+        echo "║  Project:    ${_PROJECT_ID}"
+        echo "║  Region:     ${_REGION}"
+        echo "║  Commit:     ${_SHORT_SHA}"
+        echo "║  Branch:     ${_BRANCH_NAME}"
+        echo "║  Build ID:   ${BUILD_ID}"
+        echo "║  Trigger:    ${TRIGGER_NAME:-manual}"
+        echo "╚══════════════════════════════════════════════════════════════╝"
+        echo ""
+        echo "Starting build at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        echo ""
+
+  # ===========================================================================
+  # PHASE 2: BUILD DOCKER IMAGES (Parallel)
+  # ===========================================================================
+
+  - id: 'build-api'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🔨 Building API Docker image..."
+        docker build \
+          -t ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_SHORT_SHA} \
+          -t ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_BRANCH_NAME} \
+          -t ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:latest \
+          -f deploy/Dockerfile.api \
+          --cache-from ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:latest \
+          --build-arg BUILDKIT_INLINE_CACHE=1 \
+          --label "git.commit=${_SHORT_SHA}" \
+          --label "git.branch=${_BRANCH_NAME}" \
+          --label "build.id=${BUILD_ID}" \
+          .
+        echo "✅ API image built successfully"
+    waitFor: ['init-build']
+
+  - id: 'build-web'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🔨 Building Web Docker image..."
+
+        # Determine API URL based on environment
+        API_URL="https://${_API_SERVICE_NAME}-${_PROJECT_ID}.${_REGION}.run.app"
+
+        docker build \
+          -t ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_SHORT_SHA} \
+          -t ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_BRANCH_NAME} \
+          -t ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:latest \
+          -f deploy/Dockerfile.web \
+          --cache-from ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:latest \
+          --build-arg BUILDKIT_INLINE_CACHE=1 \
+          --build-arg NEXT_PUBLIC_API_URL=$${API_URL} \
+          --build-arg NEXT_PUBLIC_APP_ENV=production \
+          --label "git.commit=${_SHORT_SHA}" \
+          --label "git.branch=${_BRANCH_NAME}" \
+          --label "build.id=${BUILD_ID}" \
+          .
+        echo "✅ Web image built successfully"
+    waitFor: ['init-build']
+
+  # ===========================================================================
+  # PHASE 3: PUSH IMAGES TO ARTIFACT REGISTRY (Parallel)
+  # ===========================================================================
+
+  - id: 'push-api'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "📤 Pushing API image to Artifact Registry..."
+        docker push ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_SHORT_SHA}
+        docker push ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_BRANCH_NAME}
+        docker push ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:latest
+        echo "✅ API image pushed successfully"
+    waitFor: ['build-api']
+
+  - id: 'push-web'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "📤 Pushing Web image to Artifact Registry..."
+        docker push ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_SHORT_SHA}
+        docker push ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_BRANCH_NAME}
+        docker push ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:latest
+        echo "✅ Web image pushed successfully"
+    waitFor: ['build-web']
+
+  # ===========================================================================
+  # PHASE 4: DATABASE MIGRATIONS
+  # ===========================================================================
+
+  - id: 'run-migrations'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🗄️ Starting database migrations..."
+        echo ""
+
+        # Install PostgreSQL client
+        apt-get update -qq && apt-get install -y -qq postgresql-client > /dev/null 2>&1
+
+        # Fetch database password from Secret Manager
+        echo "Fetching database credentials..."
+        DB_PASSWORD=$$(gcloud secrets versions access latest --secret=hris-db-password)
+
+        # Download and setup Cloud SQL Proxy
+        echo "Setting up Cloud SQL Proxy..."
+        curl -o /tmp/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
+        chmod +x /tmp/cloud-sql-proxy
+
+        # Start Cloud SQL Proxy in background
+        /tmp/cloud-sql-proxy --port=5432 ${_CLOUD_SQL_INSTANCE} &
+        PROXY_PID=$$!
+
+        # Wait for proxy to be ready
+        echo "Waiting for Cloud SQL Proxy to start..."
+        sleep 5
+
+        # Test connection
+        for i in 1 2 3 4 5 6 7 8 9 10; do
+          if pg_isready -h localhost -p 5432 -U ${_DB_USER} > /dev/null 2>&1; then
+            echo "✅ Database connection established"
+            break
+          fi
+          echo "Waiting for database... (attempt $$i/10)"
+          sleep 2
+        done
+
+        # Set DATABASE_URL for migration script (use PGPASSWORD for authentication)
+        export PGPASSWORD="$${DB_PASSWORD}"
+        export DATABASE_URL="postgresql://${_DB_USER}@localhost:5432/${_DB_NAME}"
+        export MIGRATIONS_DIR="/workspace/schema"
+
+        # Debug: print password length (not the password)
+        echo "Password length: $${#DB_PASSWORD}"
+
+        # Run migrations
+        echo ""
+        echo "Running migrations from $${MIGRATIONS_DIR}..."
+        chmod +x /workspace/deploy/db-migrate.sh
+        /workspace/deploy/db-migrate.sh migrate
+
+        MIGRATE_EXIT_CODE=$$?
+
+        # Stop proxy
+        kill $$PROXY_PID 2>/dev/null || true
+
+        if [ $$MIGRATE_EXIT_CODE -ne 0 ]; then
+          echo "❌ Migration failed with exit code $$MIGRATE_EXIT_CODE"
+          exit $$MIGRATE_EXIT_CODE
+        fi
+
+        echo ""
+        echo "✅ Database migrations completed successfully"
+    waitFor: ['push-api']
+
+  # ===========================================================================
+  # PHASE 5: DEPLOY TO CLOUD RUN
+  # ===========================================================================
+
+  - id: 'deploy-api'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🚀 Deploying API to Cloud Run..."
+
+        gcloud run deploy ${_API_SERVICE_NAME} \
+          --image ${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_SHORT_SHA} \
+          --region ${_REGION} \
+          --platform managed \
+          --allow-unauthenticated \
+          --port 8080 \
+          --cpu ${_API_CPU} \
+          --memory ${_API_MEMORY} \
+          --min-instances 0 \
+          --max-instances ${_API_MAX_INSTANCES} \
+          --concurrency 80 \
+          --timeout 300 \
+          --add-cloudsql-instances ${_CLOUD_SQL_INSTANCE} \
+          --set-env-vars "NODE_ENV=production" \
+          --set-env-vars "DATABASE_HOST=/cloudsql/${_CLOUD_SQL_INSTANCE}" \
+          --set-env-vars "DB_NAME=${_DB_NAME}" \
+          --set-env-vars "DB_USER=${_DB_USER}" \
+          --update-secrets "DB_PASSWORD=hris-db-password:latest" \
+          --update-secrets "DATABASE_URL=hris-database-url:latest" \
+          --service-account hris-api@${_PROJECT_ID}.iam.gserviceaccount.com \
+          --labels "app=hris,component=api,commit=${_SHORT_SHA},env=production" \
+          --revision-suffix "sha-${_SHORT_SHA}" \
+          --quiet
+
+        echo "✅ API deployed successfully"
+
+        # Get API URL
+        API_URL=$(gcloud run services describe ${_API_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+        echo "API_URL=$${API_URL}" > /workspace/api_url.txt
+        echo "API URL: $${API_URL}"
+    waitFor: ['run-migrations']
+
+  - id: 'deploy-web'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🚀 Deploying Web to Cloud Run..."
+
+        # Get API URL from previous step
+        API_URL=$(gcloud run services describe ${_API_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+
+        gcloud run deploy ${_WEB_SERVICE_NAME} \
+          --image ${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_SHORT_SHA} \
+          --region ${_REGION} \
+          --platform managed \
+          --allow-unauthenticated \
+          --port 8080 \
+          --cpu ${_WEB_CPU} \
+          --memory ${_WEB_MEMORY} \
+          --min-instances 0 \
+          --max-instances ${_WEB_MAX_INSTANCES} \
+          --concurrency 100 \
+          --timeout 60 \
+          --set-env-vars "NODE_ENV=production" \
+          --set-env-vars "NEXT_PUBLIC_API_URL=$${API_URL}" \
+          --service-account hris-web@${_PROJECT_ID}.iam.gserviceaccount.com \
+          --labels "app=hris,component=web,commit=${_SHORT_SHA},env=production" \
+          --revision-suffix "sha-${_SHORT_SHA}" \
+          --quiet
+
+        echo "✅ Web deployed successfully"
+
+        # Get Web URL
+        WEB_URL=$(gcloud run services describe ${_WEB_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+        echo "WEB_URL=$${WEB_URL}" > /workspace/web_url.txt
+        echo "Web URL: $${WEB_URL}"
+    waitFor: ['push-web', 'deploy-api']
+
+  # ===========================================================================
+  # PHASE 6: POST-DEPLOYMENT VERIFICATION
+  # ===========================================================================
+
+  - id: 'smoke-test'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🔍 Running smoke tests..."
+        echo ""
+
+        # Get service URLs
+        API_URL=$(gcloud run services describe ${_API_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+        WEB_URL=$(gcloud run services describe ${_WEB_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+
+        # Install curl if not present
+        which curl > /dev/null || apt-get install -y -qq curl > /dev/null 2>&1
+
+        TESTS_PASSED=0
+        TESTS_FAILED=0
+
+        # Test 1: API Health Check
+        echo "Testing API health endpoint..."
+        API_HEALTH_RESPONSE=$$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$${API_URL}/health")
+        if [ "$$API_HEALTH_RESPONSE" = "200" ]; then
+          echo "  ✅ API /health returned 200"
+          TESTS_PASSED=$$((TESTS_PASSED + 1))
+        else
+          echo "  ❌ API /health returned $$API_HEALTH_RESPONSE (expected 200)"
+          TESTS_FAILED=$$((TESTS_FAILED + 1))
+        fi
+
+        # Test 2: API Ready Check (includes DB)
+        echo "Testing API readiness endpoint..."
+        API_READY_RESPONSE=$$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$${API_URL}/health/ready")
+        if [ "$$API_READY_RESPONSE" = "200" ]; then
+          echo "  ✅ API /health/ready returned 200"
+          TESTS_PASSED=$$((TESTS_PASSED + 1))
+        else
+          echo "  ❌ API /health/ready returned $$API_READY_RESPONSE (expected 200)"
+          TESTS_FAILED=$$((TESTS_FAILED + 1))
+        fi
+
+        # Test 3: API Version Endpoint
+        echo "Testing API version endpoint..."
+        API_VERSION_RESPONSE=$$(curl -s --max-time 30 "$${API_URL}/api")
+        if echo "$$API_VERSION_RESPONSE" | grep -q "HRIS"; then
+          echo "  ✅ API /api returned valid response"
+          TESTS_PASSED=$$((TESTS_PASSED + 1))
+        else
+          echo "  ❌ API /api returned unexpected response"
+          TESTS_FAILED=$$((TESTS_FAILED + 1))
+        fi
+
+        # Test 4: Web Frontend
+        echo "Testing Web frontend..."
+        WEB_RESPONSE=$$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$${WEB_URL}")
+        if [ "$$WEB_RESPONSE" = "200" ]; then
+          echo "  ✅ Web frontend returned 200"
+          TESTS_PASSED=$$((TESTS_PASSED + 1))
+        else
+          echo "  ❌ Web frontend returned $$WEB_RESPONSE (expected 200)"
+          TESTS_FAILED=$$((TESTS_FAILED + 1))
+        fi
+
+        echo ""
+        echo "Smoke test results: $$TESTS_PASSED passed, $$TESTS_FAILED failed"
+
+        if [ $$TESTS_FAILED -gt 0 ]; then
+          echo ""
+          echo "⚠️  Some smoke tests failed. Please investigate."
+          # Note: Not failing the build here, but logging for visibility
+        fi
+
+        echo ""
+        echo "✅ Smoke tests completed"
+    waitFor: ['deploy-api', 'deploy-web']
+
+  # ===========================================================================
+  # PHASE 7: DEPLOYMENT SUMMARY
+  # ===========================================================================
+
+  - id: 'deployment-summary'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Get service URLs
+        API_URL=$(gcloud run services describe ${_API_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+        WEB_URL=$(gcloud run services describe ${_WEB_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+
+        echo ""
+        echo "╔══════════════════════════════════════════════════════════════╗"
+        echo "║              DEPLOYMENT COMPLETED SUCCESSFULLY               ║"
+        echo "╠══════════════════════════════════════════════════════════════╣"
+        echo "║                                                              ║"
+        echo "║  🌐 WEB:  $${WEB_URL}"
+        echo "║  🔌 API:  $${API_URL}"
+        echo "║                                                              ║"
+        echo "╠══════════════════════════════════════════════════════════════╣"
+        echo "║  📦 Commit:     ${_SHORT_SHA}                                 ║"
+        echo "║  🏷️  Branch:     ${_BRANCH_NAME}                              ║"
+        echo "║  🕐 Time:       $(date -u '+%Y-%m-%d %H:%M:%S UTC')          ║"
+        echo "║  🔧 Build ID:   ${BUILD_ID}                                  ║"
+        echo "╚══════════════════════════════════════════════════════════════╝"
+        echo ""
+        echo "Quick Links:"
+        echo "  • Health Check: $${API_URL}/health"
+        echo "  • API Docs:     $${API_URL}/api"
+        echo "  • Cloud Run:    https://console.cloud.google.com/run?project=${_PROJECT_ID}"
+        echo ""
+    waitFor: ['smoke-test']
+
+# =============================================================================
+# ARTIFACTS
+# =============================================================================
+
+images:
+  - '${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_SHORT_SHA}'
+  - '${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:${_BRANCH_NAME}'
+  - '${_ARTIFACT_REGISTRY}/${_API_SERVICE_NAME}:latest'
+  - '${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_SHORT_SHA}'
+  - '${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:${_BRANCH_NAME}'
+  - '${_ARTIFACT_REGISTRY}/${_WEB_SERVICE_NAME}:latest'
+
+# =============================================================================
+# BUILD CONFIGURATION
+# =============================================================================
+
+# Total build timeout: 20 minutes
+timeout: '1200s'
+
+# Build tags for filtering in Cloud Build UI
+tags:
+  - 'hris'
+  - 'production'
+  - 'deploy'

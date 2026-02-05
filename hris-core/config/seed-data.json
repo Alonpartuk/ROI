@@ -1,0 +1,1268 @@
+{
+  "_comment": "HRIS Seed Data - Initial employees and configuration for 30-employee startup",
+  "_generated": "2024-01-15",
+
+  "locations": [
+    {
+      "id": "loc_001_tlv",
+      "code": "TLV",
+      "name": "Tel Aviv Office",
+      "countryCode": "IL",
+      "timezone": "Asia/Jerusalem",
+      "defaultCurrency": "ILS",
+      "legalEntityName": "TechStartup Israel Ltd."
+    },
+    {
+      "id": "loc_002_tor",
+      "code": "TOR",
+      "name": "Toronto Office",
+      "countryCode": "CA",
+      "timezone": "America/Toronto",
+      "defaultCurrency": "CAD",
+      "legalEntityName": "TechStartup Canada Inc."
+    },
+    {
+      "id": "loc_003_us",
+      "code": "US",
+      "name": "US Remote",
+      "countryCode": "US",
+      "timezone": "America/New_York",
+      "defaultCurrency": "USD",
+      "legalEntityName": "TechStartup US Inc."
+    }
+  ],
+
+  "departments": [
+    {
+      "id": "dept_001_eng",
+      "code": "ENG",
+      "name": "Engineering",
+      "costCenter": "CC-100"
+    },
+    {
+      "id": "dept_002_prod",
+      "code": "PROD",
+      "name": "Product",
+      "costCenter": "CC-200"
+    },
+    {
+      "id": "dept_003_design",
+      "code": "DESIGN",
+      "name": "Design",
+      "costCenter": "CC-300"
+    },
+    {
+      "id": "dept_004_sales",
+      "code": "SALES",
+      "name": "Sales",
+      "costCenter": "CC-400"
+    },
+    {
+      "id": "dept_005_marketing",
+      "code": "MKT",
+      "name": "Marketing",
+      "costCenter": "CC-500"
+    },
+    {
+      "id": "dept_006_ops",
+      "code": "OPS",
+      "name": "Operations",
+      "costCenter": "CC-600"
+    },
+    {
+      "id": "dept_007_finance",
+      "code": "FIN",
+      "name": "Finance",
+      "costCenter": "CC-700"
+    },
+    {
+      "id": "dept_008_hr",
+      "code": "HR",
+      "name": "People & Culture",
+      "costCenter": "CC-800"
+    }
+  ],
+
+  "jobLevels": [
+    { "id": "lvl_ic1", "code": "IC1", "name": "Junior", "track": "individual_contributor", "rank": 1 },
+    { "id": "lvl_ic2", "code": "IC2", "name": "Mid-Level", "track": "individual_contributor", "rank": 2 },
+    { "id": "lvl_ic3", "code": "IC3", "name": "Senior", "track": "individual_contributor", "rank": 3 },
+    { "id": "lvl_ic4", "code": "IC4", "name": "Staff", "track": "individual_contributor", "rank": 4 },
+    { "id": "lvl_ic5", "code": "IC5", "name": "Principal", "track": "individual_contributor", "rank": 5 },
+    { "id": "lvl_m1", "code": "M1", "name": "Team Lead", "track": "management", "rank": 3 },
+    { "id": "lvl_m2", "code": "M2", "name": "Manager", "track": "management", "rank": 4 },
+    { "id": "lvl_m3", "code": "M3", "name": "Director", "track": "management", "rank": 5 },
+    { "id": "lvl_m4", "code": "M4", "name": "VP", "track": "management", "rank": 6 },
+    { "id": "lvl_exec", "code": "EXEC", "name": "Executive", "track": "management", "rank": 7 }
+  ],
+
+  "jobTitles": [
+    { "id": "title_swe", "code": "SWE", "name": "Software Engineer", "departmentId": "dept_001_eng" },
+    { "id": "title_sre", "code": "SRE", "name": "Site Reliability Engineer", "departmentId": "dept_001_eng" },
+    { "id": "title_fe", "code": "FE", "name": "Frontend Engineer", "departmentId": "dept_001_eng" },
+    { "id": "title_be", "code": "BE", "name": "Backend Engineer", "departmentId": "dept_001_eng" },
+    { "id": "title_em", "code": "EM", "name": "Engineering Manager", "departmentId": "dept_001_eng" },
+    { "id": "title_pm", "code": "PM", "name": "Product Manager", "departmentId": "dept_002_prod" },
+    { "id": "title_pd", "code": "PD", "name": "Product Designer", "departmentId": "dept_003_design" },
+    { "id": "title_ae", "code": "AE", "name": "Account Executive", "departmentId": "dept_004_sales" },
+    { "id": "title_sdr", "code": "SDR", "name": "Sales Development Rep", "departmentId": "dept_004_sales" },
+    { "id": "title_mkt", "code": "MKT", "name": "Marketing Manager", "departmentId": "dept_005_marketing" },
+    { "id": "title_ops", "code": "OPS", "name": "Operations Manager", "departmentId": "dept_006_ops" },
+    { "id": "title_fin", "code": "FIN", "name": "Finance Manager", "departmentId": "dept_007_finance" },
+    { "id": "title_hr", "code": "HR", "name": "HR Manager", "departmentId": "dept_008_hr" },
+    { "id": "title_ceo", "code": "CEO", "name": "Chief Executive Officer", "departmentId": null },
+    { "id": "title_cto", "code": "CTO", "name": "Chief Technology Officer", "departmentId": "dept_001_eng" },
+    { "id": "title_cpo", "code": "CPO", "name": "Chief Product Officer", "departmentId": "dept_002_prod" },
+    { "id": "title_vpe", "code": "VPE", "name": "VP of Engineering", "departmentId": "dept_001_eng" }
+  ],
+
+  "equityPlans": [
+    {
+      "id": "plan_001_iso",
+      "name": "2024 Employee Incentive Stock Option Plan",
+      "planType": "iso",
+      "totalPoolShares": 10000000,
+      "defaultVestingType": "cliff_then_linear",
+      "defaultCliffMonths": 12,
+      "defaultVestingMonths": 48,
+      "effectiveDate": "2024-01-01"
+    }
+  ],
+
+  "employees": [
+    {
+      "_comment": "CEO - Founder",
+      "id": "emp_001",
+      "employeeNumber": "EMP001",
+      "legalFirstName": "David",
+      "legalLastName": "Chen",
+      "preferredFirstName": "Dave",
+      "workEmail": "david.chen@techstartup.com",
+      "personalEmail": "davidchen@gmail.com",
+      "phone": "+1-416-555-0101",
+      "dateOfBirth": "1985-03-15",
+      "originalHireDate": "2022-01-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_ceo",
+        "jobLevelId": "lvl_exec",
+        "departmentId": "dept_006_ops",
+        "locationId": "loc_002_tor",
+        "managerId": null,
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 250000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 2000000,
+        "vestingType": "linear",
+        "vestingStartDate": "2022-01-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": null,
+        "exercisePrice": 0.01
+      },
+      "roles": ["hr_admin", "executive"]
+    },
+    {
+      "_comment": "CTO - Co-Founder",
+      "id": "emp_002",
+      "employeeNumber": "EMP002",
+      "legalFirstName": "Yael",
+      "legalLastName": "Levi",
+      "workEmail": "yael.levi@techstartup.com",
+      "personalEmail": "yaellevi@gmail.com",
+      "phone": "+972-54-555-0102",
+      "dateOfBirth": "1987-07-22",
+      "originalHireDate": "2022-01-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_cto",
+        "jobLevelId": "lvl_exec",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 65000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 1500000,
+        "vestingType": "linear",
+        "vestingStartDate": "2022-01-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": null,
+        "exercisePrice": 0.01
+      },
+      "roles": ["hr_admin", "executive", "manager"]
+    },
+    {
+      "_comment": "VP Engineering - TLV",
+      "id": "emp_003",
+      "employeeNumber": "EMP003",
+      "legalFirstName": "Omer",
+      "legalLastName": "Katz",
+      "workEmail": "omer.katz@techstartup.com",
+      "phone": "+972-52-555-0103",
+      "dateOfBirth": "1989-11-08",
+      "originalHireDate": "2022-06-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_vpe",
+        "jobLevelId": "lvl_m4",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_002",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 55000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 200000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-06-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.10
+      },
+      "roles": ["manager"]
+    },
+    {
+      "_comment": "Engineering Manager - TLV",
+      "id": "emp_004",
+      "employeeNumber": "EMP004",
+      "legalFirstName": "Noa",
+      "legalLastName": "Cohen",
+      "workEmail": "noa.cohen@techstartup.com",
+      "phone": "+972-54-555-0104",
+      "dateOfBirth": "1991-04-20",
+      "originalHireDate": "2022-09-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_em",
+        "jobLevelId": "lvl_m2",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_003",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 42000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 80000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-09-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.15
+      },
+      "roles": ["manager"]
+    },
+    {
+      "_comment": "Senior Backend Engineer - TLV",
+      "id": "emp_005",
+      "employeeNumber": "EMP005",
+      "legalFirstName": "Amit",
+      "legalLastName": "Goldberg",
+      "workEmail": "amit.goldberg@techstartup.com",
+      "phone": "+972-52-555-0105",
+      "dateOfBirth": "1992-08-12",
+      "originalHireDate": "2022-10-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_be",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_004",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 38000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 50000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-10-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.15
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Senior Frontend Engineer - TLV",
+      "id": "emp_006",
+      "employeeNumber": "EMP006",
+      "legalFirstName": "Maya",
+      "legalLastName": "Shapiro",
+      "workEmail": "maya.shapiro@techstartup.com",
+      "phone": "+972-54-555-0106",
+      "dateOfBirth": "1993-02-28",
+      "originalHireDate": "2022-11-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_fe",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_004",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 36000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 50000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-11-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.15
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Mid-Level Backend Engineer - TLV",
+      "id": "emp_007",
+      "employeeNumber": "EMP007",
+      "legalFirstName": "Daniel",
+      "legalLastName": "Mizrahi",
+      "workEmail": "daniel.mizrahi@techstartup.com",
+      "phone": "+972-52-555-0107",
+      "dateOfBirth": "1995-06-15",
+      "originalHireDate": "2023-02-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_be",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_004",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 28000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 30000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-02-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.25
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Junior Frontend Engineer - TLV",
+      "id": "emp_008",
+      "employeeNumber": "EMP008",
+      "legalFirstName": "Shira",
+      "legalLastName": "Ben-David",
+      "workEmail": "shira.bendavid@techstartup.com",
+      "phone": "+972-54-555-0108",
+      "dateOfBirth": "1998-10-03",
+      "originalHireDate": "2023-06-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "onsite",
+        "status": "active",
+        "jobTitleId": "title_fe",
+        "jobLevelId": "lvl_ic1",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_004",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 22000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 20000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-06-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "SRE - TLV",
+      "id": "emp_009",
+      "employeeNumber": "EMP009",
+      "legalFirstName": "Eitan",
+      "legalLastName": "Avraham",
+      "workEmail": "eitan.avraham@techstartup.com",
+      "phone": "+972-52-555-0109",
+      "dateOfBirth": "1990-12-25",
+      "originalHireDate": "2023-03-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_sre",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_003",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 40000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 45000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-03-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.25
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Senior Engineer - Toronto",
+      "id": "emp_010",
+      "employeeNumber": "EMP010",
+      "legalFirstName": "Sarah",
+      "legalLastName": "Thompson",
+      "workEmail": "sarah.thompson@techstartup.com",
+      "phone": "+1-416-555-0110",
+      "dateOfBirth": "1988-05-20",
+      "originalHireDate": "2022-08-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_swe",
+        "jobLevelId": "lvl_ic4",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_002",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 165000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 75000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-08-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.10
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Engineering Manager - Toronto",
+      "id": "emp_011",
+      "employeeNumber": "EMP011",
+      "legalFirstName": "Michael",
+      "legalLastName": "Wong",
+      "workEmail": "michael.wong@techstartup.com",
+      "phone": "+1-416-555-0111",
+      "dateOfBirth": "1986-09-14",
+      "originalHireDate": "2023-01-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_em",
+        "jobLevelId": "lvl_m2",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_002",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 180000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 70000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-01-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.25
+      },
+      "roles": ["manager"]
+    },
+    {
+      "_comment": "Mid-Level Engineer - Toronto",
+      "id": "emp_012",
+      "employeeNumber": "EMP012",
+      "legalFirstName": "Emily",
+      "legalLastName": "Patel",
+      "workEmail": "emily.patel@techstartup.com",
+      "phone": "+1-416-555-0112",
+      "dateOfBirth": "1994-01-30",
+      "originalHireDate": "2023-04-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_swe",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_011",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 115000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 30000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-04-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Senior Engineer - US Remote",
+      "id": "emp_013",
+      "employeeNumber": "EMP013",
+      "legalFirstName": "James",
+      "legalLastName": "Rodriguez",
+      "workEmail": "james.rodriguez@techstartup.com",
+      "phone": "+1-555-555-0113",
+      "dateOfBirth": "1989-07-04",
+      "originalHireDate": "2023-05-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_be",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_003_us",
+        "managerId": "emp_011",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 175000,
+        "currency": "USD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 50000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-05-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Contractor - US",
+      "id": "emp_014",
+      "employeeNumber": "EMP014",
+      "legalFirstName": "Alex",
+      "legalLastName": "Kim",
+      "workEmail": "alex.kim@techstartup.com",
+      "phone": "+1-555-555-0114",
+      "dateOfBirth": "1991-11-11",
+      "originalHireDate": "2023-07-01",
+      "employment": {
+        "employmentType": "contractor",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_fe",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_003_us",
+        "managerId": "emp_011",
+        "ftePercentage": 100,
+        "weeklyHours": 40
+      },
+      "salary": {
+        "amount": 85,
+        "currency": "USD",
+        "frequency": "hourly",
+        "reason": "hire"
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "CPO - Toronto",
+      "id": "emp_015",
+      "employeeNumber": "EMP015",
+      "legalFirstName": "Jennifer",
+      "legalLastName": "Lee",
+      "workEmail": "jennifer.lee@techstartup.com",
+      "phone": "+1-416-555-0115",
+      "dateOfBirth": "1984-03-08",
+      "originalHireDate": "2022-04-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_cpo",
+        "jobLevelId": "lvl_exec",
+        "departmentId": "dept_002_prod",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 220000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 300000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-04-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.05
+      },
+      "roles": ["executive", "manager"]
+    },
+    {
+      "_comment": "Senior PM - TLV",
+      "id": "emp_016",
+      "employeeNumber": "EMP016",
+      "legalFirstName": "Tal",
+      "legalLastName": "Mor",
+      "workEmail": "tal.mor@techstartup.com",
+      "phone": "+972-54-555-0116",
+      "dateOfBirth": "1990-06-22",
+      "originalHireDate": "2022-12-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_pm",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_002_prod",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_015",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 35000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 40000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2022-12-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.15
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Product Designer - TLV",
+      "id": "emp_017",
+      "employeeNumber": "EMP017",
+      "legalFirstName": "Roni",
+      "legalLastName": "Stern",
+      "workEmail": "roni.stern@techstartup.com",
+      "phone": "+972-52-555-0117",
+      "dateOfBirth": "1993-09-18",
+      "originalHireDate": "2023-01-15",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_pd",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_003_design",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_015",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 26000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 25000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-01-15",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.25
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "HR Manager - TLV",
+      "id": "emp_018",
+      "employeeNumber": "EMP018",
+      "legalFirstName": "Michal",
+      "legalLastName": "Levy",
+      "workEmail": "michal.levy@techstartup.com",
+      "phone": "+972-54-555-0118",
+      "dateOfBirth": "1988-12-05",
+      "originalHireDate": "2023-02-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_hr",
+        "jobLevelId": "lvl_m1",
+        "departmentId": "dept_008_hr",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 32000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 30000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-02-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.25
+      },
+      "roles": ["hr_admin", "manager"]
+    },
+    {
+      "_comment": "Finance Manager - Toronto",
+      "id": "emp_019",
+      "employeeNumber": "EMP019",
+      "legalFirstName": "Robert",
+      "legalLastName": "Martinez",
+      "workEmail": "robert.martinez@techstartup.com",
+      "phone": "+1-416-555-0119",
+      "dateOfBirth": "1985-08-30",
+      "originalHireDate": "2023-03-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_fin",
+        "jobLevelId": "lvl_m2",
+        "departmentId": "dept_007_finance",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 145000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 35000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-03-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.25
+      },
+      "roles": ["finance", "manager"]
+    },
+    {
+      "_comment": "Account Executive - US",
+      "id": "emp_020",
+      "employeeNumber": "EMP020",
+      "legalFirstName": "Ashley",
+      "legalLastName": "Johnson",
+      "workEmail": "ashley.johnson@techstartup.com",
+      "phone": "+1-555-555-0120",
+      "dateOfBirth": "1992-04-12",
+      "originalHireDate": "2023-06-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_ae",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_004_sales",
+        "locationId": "loc_003_us",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 90000,
+        "currency": "USD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 20000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-06-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Marketing Manager - Toronto",
+      "id": "emp_021",
+      "employeeNumber": "EMP021",
+      "legalFirstName": "Christina",
+      "legalLastName": "Nguyen",
+      "workEmail": "christina.nguyen@techstartup.com",
+      "phone": "+1-416-555-0121",
+      "dateOfBirth": "1990-10-25",
+      "originalHireDate": "2023-04-15",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_mkt",
+        "jobLevelId": "lvl_m1",
+        "departmentId": "dept_005_marketing",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 125000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 30000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-04-15",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["manager"]
+    },
+    {
+      "_comment": "Operations Manager - TLV",
+      "id": "emp_022",
+      "employeeNumber": "EMP022",
+      "legalFirstName": "Yonatan",
+      "legalLastName": "Rubin",
+      "workEmail": "yonatan.rubin@techstartup.com",
+      "phone": "+972-52-555-0122",
+      "dateOfBirth": "1987-02-14",
+      "originalHireDate": "2023-05-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "onsite",
+        "status": "active",
+        "jobTitleId": "title_ops",
+        "jobLevelId": "lvl_m1",
+        "departmentId": "dept_006_ops",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_001",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 30000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 25000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-05-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["manager"]
+    },
+    {
+      "_comment": "NEW HIRE - Backend Engineer with cliff in 60 days",
+      "id": "emp_023",
+      "employeeNumber": "EMP023",
+      "legalFirstName": "Liora",
+      "legalLastName": "Fischer",
+      "workEmail": "liora.fischer@techstartup.com",
+      "phone": "+972-54-555-0123",
+      "dateOfBirth": "1996-07-19",
+      "originalHireDate": "2023-10-15",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_be",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_004",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 27000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 30000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-10-15",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.35
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "NEW HIRE - Frontend Engineer with cliff in 45 days",
+      "id": "emp_024",
+      "employeeNumber": "EMP024",
+      "legalFirstName": "Kevin",
+      "legalLastName": "O'Brien",
+      "workEmail": "kevin.obrien@techstartup.com",
+      "phone": "+1-416-555-0124",
+      "dateOfBirth": "1994-11-02",
+      "originalHireDate": "2023-11-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_fe",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_011",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 110000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 30000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-11-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.35
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "SDR - US",
+      "id": "emp_025",
+      "employeeNumber": "EMP025",
+      "legalFirstName": "Marcus",
+      "legalLastName": "Williams",
+      "workEmail": "marcus.williams@techstartup.com",
+      "phone": "+1-555-555-0125",
+      "dateOfBirth": "1997-03-28",
+      "originalHireDate": "2023-09-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_sdr",
+        "jobLevelId": "lvl_ic1",
+        "departmentId": "dept_004_sales",
+        "locationId": "loc_003_us",
+        "managerId": "emp_020",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 55000,
+        "currency": "USD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 15000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-09-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.35
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Part-time Designer - TLV",
+      "id": "emp_026",
+      "employeeNumber": "EMP026",
+      "legalFirstName": "Gal",
+      "legalLastName": "Azulay",
+      "workEmail": "gal.azulay@techstartup.com",
+      "phone": "+972-52-555-0126",
+      "dateOfBirth": "1995-05-10",
+      "originalHireDate": "2023-08-01",
+      "employment": {
+        "employmentType": "part_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_pd",
+        "jobLevelId": "lvl_ic1",
+        "departmentId": "dept_003_design",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_017",
+        "ftePercentage": 50,
+        "weeklyHours": 20
+      },
+      "salary": {
+        "amount": 10000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 10000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-08-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.35
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Staff Engineer - TLV",
+      "id": "emp_027",
+      "employeeNumber": "EMP027",
+      "legalFirstName": "Uri",
+      "legalLastName": "Baruch",
+      "workEmail": "uri.baruch@techstartup.com",
+      "phone": "+972-54-555-0127",
+      "dateOfBirth": "1986-08-15",
+      "originalHireDate": "2023-07-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "active",
+        "jobTitleId": "title_swe",
+        "jobLevelId": "lvl_ic4",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_001_tlv",
+        "managerId": "emp_003",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 52000,
+        "currency": "ILS",
+        "frequency": "monthly",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 60000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-07-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.30
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "PENDING START - New PM joining next month",
+      "id": "emp_028",
+      "employeeNumber": "EMP028",
+      "legalFirstName": "Rachel",
+      "legalLastName": "Green",
+      "workEmail": "rachel.green@techstartup.com",
+      "phone": "+1-416-555-0128",
+      "dateOfBirth": "1993-12-01",
+      "originalHireDate": "2024-02-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "hybrid",
+        "status": "pending_start",
+        "jobTitleId": "title_pm",
+        "jobLevelId": "lvl_ic2",
+        "departmentId": "dept_002_prod",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_015",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 130000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 35000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2024-02-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.40
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Senior Backend - Toronto",
+      "id": "emp_029",
+      "employeeNumber": "EMP029",
+      "legalFirstName": "Daniel",
+      "legalLastName": "Park",
+      "workEmail": "daniel.park@techstartup.com",
+      "phone": "+1-416-555-0129",
+      "dateOfBirth": "1991-06-30",
+      "originalHireDate": "2023-08-15",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_be",
+        "jobLevelId": "lvl_ic3",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_002_tor",
+        "managerId": "emp_011",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 150000,
+        "currency": "CAD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 45000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-08-15",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.35
+      },
+      "roles": ["employee"]
+    },
+    {
+      "_comment": "Junior SRE - US",
+      "id": "emp_030",
+      "employeeNumber": "EMP030",
+      "legalFirstName": "Jordan",
+      "legalLastName": "Smith",
+      "workEmail": "jordan.smith@techstartup.com",
+      "phone": "+1-555-555-0130",
+      "dateOfBirth": "1998-04-22",
+      "originalHireDate": "2023-12-01",
+      "employment": {
+        "employmentType": "full_time",
+        "workModel": "remote",
+        "status": "active",
+        "jobTitleId": "title_sre",
+        "jobLevelId": "lvl_ic1",
+        "departmentId": "dept_001_eng",
+        "locationId": "loc_003_us",
+        "managerId": "emp_009",
+        "ftePercentage": 100
+      },
+      "salary": {
+        "amount": 95000,
+        "currency": "USD",
+        "frequency": "annual",
+        "reason": "hire"
+      },
+      "equity": {
+        "sharesGranted": 20000,
+        "vestingType": "cliff_then_linear",
+        "vestingStartDate": "2023-12-01",
+        "totalVestingMonths": 48,
+        "cliffMonths": 12,
+        "exercisePrice": 0.40
+      },
+      "roles": ["employee"]
+    }
+  ],
+
+  "_summary": {
+    "totalEmployees": 30,
+    "byLocation": {
+      "TLV": 14,
+      "TOR": 9,
+      "US": 7
+    },
+    "byDepartment": {
+      "Engineering": 20,
+      "Product": 3,
+      "Design": 2,
+      "Sales": 2,
+      "Marketing": 1,
+      "Finance": 1,
+      "HR": 1,
+      "Operations": 1
+    },
+    "byEmploymentType": {
+      "full_time": 28,
+      "contractor": 1,
+      "part_time": 1
+    },
+    "executiveTeam": ["emp_001", "emp_002", "emp_015"],
+    "upcomingCliffs": ["emp_023", "emp_024"],
+    "pendingStarts": ["emp_028"]
+  }
+}

@@ -1,0 +1,73 @@
+# =============================================================================
+# Octup HRIS - Database Migration Only Pipeline
+# =============================================================================
+# Use this pipeline to run migrations independently of deployment
+# Useful for:
+# - Running migrations before a major deployment
+# - Applying hotfix migrations
+# - Database maintenance
+#
+# Usage:
+#   gcloud builds submit --config=deploy/cloudbuild-migrate-only.yaml
+# =============================================================================
+
+substitutions:
+  _PROJECT_ID: ${PROJECT_ID}
+  _REGION: me-west1
+  _CLOUD_SQL_INSTANCE: ${_PROJECT_ID}:${_REGION}:hris-postgres
+  _DB_NAME: hris
+  _DB_USER: hris_app
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+
+steps:
+  # ---------------------------------------------------------------------------
+  # Step 1: Start Cloud SQL Proxy
+  # ---------------------------------------------------------------------------
+  - id: 'start-proxy'
+    name: 'gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.0'
+    args:
+      - '--port=5432'
+      - '--address=0.0.0.0'
+      - '${_CLOUD_SQL_INSTANCE}'
+
+  # ---------------------------------------------------------------------------
+  # Step 2: Run Migrations
+  # ---------------------------------------------------------------------------
+  - id: 'run-migrations'
+    name: 'postgres:15-alpine'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "=============================================="
+        echo "  Running Database Migrations"
+        echo "=============================================="
+
+        # Wait for proxy to be ready
+        sleep 5
+
+        # Set up database URL
+        export DATABASE_URL="postgresql://${_DB_USER}:$$DB_PASSWORD@localhost:5432/${_DB_NAME}"
+        export MIGRATIONS_DIR="/workspace/schema"
+
+        # Make script executable and run
+        chmod +x /workspace/deploy/db-migrate.sh
+        /workspace/deploy/db-migrate.sh migrate
+
+        echo ""
+        echo "=============================================="
+        echo "  Migration Status"
+        echo "=============================================="
+        /workspace/deploy/db-migrate.sh status
+    secretEnv: ['DB_PASSWORD']
+    waitFor: ['start-proxy']
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/${_PROJECT_ID}/secrets/hris-db-password/versions/latest
+      env: 'DB_PASSWORD'
+
+timeout: '300s'

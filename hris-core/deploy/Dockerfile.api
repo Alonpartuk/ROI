@@ -1,0 +1,95 @@
+# =============================================================================
+# Octup HRIS API - Production Dockerfile
+# =============================================================================
+# Multi-stage build optimized for Node.js API with raw SQL migrations
+# Connects to Cloud SQL via Unix socket (Cloud SQL Auth Proxy)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Stage 1: Dependencies
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS deps
+
+WORKDIR /app
+
+# Install build dependencies for native modules
+RUN apk add --no-cache libc6-compat python3 make g++
+
+# Copy package files
+COPY api/package*.json ./
+
+# Install production dependencies only (use npm install since no package-lock.json)
+RUN npm install --omit=dev && npm cache clean --force
+
+# -----------------------------------------------------------------------------
+# Stage 2: Builder
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files and install all dependencies (including dev)
+COPY api/package*.json ./
+RUN npm install
+
+# Copy source code
+COPY api/ ./
+COPY shared/ ../shared/
+COPY types/ ../types/
+
+# Build TypeScript
+RUN npm run build
+
+# -----------------------------------------------------------------------------
+# Stage 3: Production Runner
+# -----------------------------------------------------------------------------
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Install PostgreSQL client for migrations
+RUN apk add --no-cache postgresql-client ca-certificates
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 hris
+
+# Copy production dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy built application from builder stage
+# Note: With rootDir="..", TypeScript outputs to dist/app/ and dist/types/
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./
+
+# Copy SQL migrations
+COPY schema/*.sql ./migrations/
+
+# Copy migration script
+COPY deploy/db-migrate.sh ./
+RUN chmod +x db-migrate.sh
+
+# Set ownership
+RUN chown -R hris:nodejs /app
+
+# Switch to non-root user
+USER hris
+
+# Environment variables (overridden at runtime)
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Cloud SQL connection (via Unix socket)
+# DATABASE_URL format: postgresql://user:pass@localhost/dbname?host=/cloudsql/PROJECT:REGION:INSTANCE
+ENV DATABASE_HOST=/cloudsql/PROJECT_ID:REGION:INSTANCE_NAME
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/health || exit 1
+
+# Expose port
+EXPOSE 8080
+
+# Start command - migrations run via Cloud Build, not here
+# Note: With rootDir="..", server.js is compiled to dist/app/server.js
+CMD ["node", "dist/app/server.js"]

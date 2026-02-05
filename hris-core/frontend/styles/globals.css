@@ -1,0 +1,768 @@
+/* =============================================================================
+ * OCTUP HRIS - Global Styles
+ * Consistent with Reports Dashboard Design System
+ * ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================================================
+ * BASE STYLES
+ * ============================================================================= */
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-body text-slate-800 bg-octup-light;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Headings with brand letter-spacing */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tighter-brand text-slate-900;
+  }
+
+  h1 { @apply text-display; }
+  h2 { @apply text-heading-lg; }
+  h3 { @apply text-heading; }
+  h4 { @apply text-heading-sm; }
+
+  /* Links */
+  a {
+    @apply text-octup-primary hover:text-octup-primary-dark transition-colors duration-150;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-octup-primary ring-offset-2;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-octup-secondary/20 text-slate-900;
+  }
+}
+
+/* =============================================================================
+ * SCROLLBAR STYLING
+ * ============================================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 rounded;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* Hide scrollbar on mobile tables */
+@media (max-width: 767px) {
+  .table-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  .table-scroll-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* =============================================================================
+ * PREMIUM CARD COMPONENTS
+ * ============================================================================= */
+
+@layer components {
+  /* Premium Card */
+  .card-octup {
+    @apply bg-white rounded-3xl shadow-card border border-slate-100/50 transition-all duration-200;
+  }
+
+  .card-octup:hover {
+    @apply shadow-card-hover;
+  }
+
+  .card-octup-compact {
+    @apply bg-white rounded-2xl shadow-soft border border-slate-100/50;
+  }
+
+  /* Glass Card */
+  .card-glass {
+    @apply backdrop-blur-xl bg-white/80 rounded-3xl border border-white/50 shadow-soft-lg;
+  }
+
+  /* Metric/KPI Card */
+  .card-metric {
+    @apply card-octup p-6 relative overflow-hidden;
+  }
+
+  .card-metric::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-1 bg-octup-gradient;
+  }
+
+  .card-metric-value {
+    @apply text-display font-bold text-slate-900 tabular-nums;
+  }
+
+  .card-metric-label {
+    @apply text-body-sm text-slate-500 font-medium mt-1;
+  }
+
+  .card-metric-trend {
+    @apply text-caption font-semibold flex items-center gap-1 mt-2;
+  }
+
+  .card-metric-trend.positive {
+    @apply text-octup-secondary;
+  }
+
+  .card-metric-trend.negative {
+    @apply text-octup-accent;
+  }
+
+  /* Section Card */
+  .section-card {
+    @apply card-octup p-0 overflow-hidden;
+  }
+
+  .section-card-header {
+    @apply px-6 py-4 border-b border-slate-100 flex items-center justify-between;
+  }
+
+  .section-card-title {
+    @apply text-heading-sm text-slate-900;
+  }
+
+  .section-card-body {
+    @apply p-6;
+  }
+}
+
+/* =============================================================================
+ * TABLE STYLES (Octup Design)
+ * ============================================================================= */
+
+@layer components {
+  .table-octup {
+    @apply w-full text-body-sm;
+  }
+
+  .table-octup thead {
+    @apply bg-slate-50/80 sticky top-0 z-10;
+  }
+
+  .table-octup th {
+    @apply px-4 py-3 text-left text-caption font-semibold text-slate-500 uppercase tracking-wide;
+  }
+
+  .table-octup th:first-child {
+    @apply rounded-tl-xl;
+  }
+
+  .table-octup th:last-child {
+    @apply rounded-tr-xl;
+  }
+
+  .table-octup tbody tr {
+    @apply border-b border-slate-100 transition-all duration-150;
+  }
+
+  .table-octup tbody tr:hover {
+    @apply bg-slate-50/50 shadow-table-row;
+  }
+
+  .table-octup tbody tr:last-child {
+    @apply border-b-0;
+  }
+
+  .table-octup td {
+    @apply px-4 py-4 text-slate-700;
+  }
+
+  .table-octup td.number {
+    @apply text-right font-mono tabular-nums;
+  }
+
+  /* Row States */
+  .table-octup tbody tr.row-warning {
+    @apply bg-amber-50/50;
+  }
+
+  .table-octup tbody tr.row-warning:hover {
+    @apply bg-amber-50;
+  }
+
+  .table-octup tbody tr.row-critical {
+    @apply bg-rose-50/50;
+  }
+
+  .table-octup tbody tr.row-success {
+    @apply bg-emerald-50/50;
+  }
+
+  /* Compact Table */
+  .table-octup-compact th,
+  .table-octup-compact td {
+    @apply px-3 py-2.5;
+  }
+}
+
+/* =============================================================================
+ * BUTTON STYLES
+ * ============================================================================= */
+
+@layer components {
+  .btn-octup {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-semibold text-body-sm
+           transition-all duration-150 touch-target;
+  }
+
+  .btn-octup:active {
+    @apply scale-[0.98];
+  }
+
+  .btn-octup:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Primary Button */
+  .btn-primary {
+    @apply btn-octup bg-octup-primary text-white shadow-octup;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    @apply bg-octup-primary-dark scale-[1.02];
+  }
+
+  /* Secondary Button */
+  .btn-secondary {
+    @apply btn-octup bg-octup-secondary text-white shadow-soft;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    @apply bg-octup-secondary-dark scale-[1.02];
+  }
+
+  /* Accent Button */
+  .btn-accent {
+    @apply btn-octup bg-octup-accent text-white shadow-octup-accent;
+  }
+
+  .btn-accent:hover:not(:disabled) {
+    @apply bg-octup-accent-dark scale-[1.02];
+  }
+
+  /* Ghost Button */
+  .btn-ghost {
+    @apply btn-octup bg-transparent text-slate-600 border border-slate-200;
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    @apply bg-slate-50 border-slate-300 text-slate-800;
+  }
+
+  /* Icon Button */
+  .btn-icon {
+    @apply p-2.5 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-700
+           transition-all duration-150 touch-target;
+  }
+
+  /* Compact Buttons */
+  .btn-compact {
+    @apply px-4 py-2 text-caption rounded-xl;
+  }
+}
+
+/* =============================================================================
+ * INPUT STYLES
+ * ============================================================================= */
+
+@layer components {
+  .input-octup {
+    @apply w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50/50
+           text-body text-slate-800 placeholder:text-slate-400
+           transition-all duration-150
+           focus:bg-white focus:border-octup-primary focus:ring-2 focus:ring-octup-primary/20;
+  }
+
+  .input-octup-compact {
+    @apply input-octup h-10 text-body-sm;
+  }
+
+  /* Search Input */
+  .input-search {
+    @apply input-octup pl-11;
+  }
+
+  /* Select */
+  .select-octup {
+    @apply input-octup appearance-none bg-no-repeat pr-10 cursor-pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-size: 1.25rem;
+  }
+
+  .select-octup-compact {
+    @apply select-octup h-10 text-body-sm;
+  }
+}
+
+/* =============================================================================
+ * BADGE STYLES
+ * ============================================================================= */
+
+@layer components {
+  .badge-octup {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-lg text-caption font-medium;
+  }
+
+  .badge-octup-pill {
+    @apply badge-octup rounded-full;
+  }
+
+  /* Variants */
+  .badge-primary {
+    @apply bg-octup-primary/10 text-octup-primary;
+  }
+
+  .badge-secondary {
+    @apply bg-octup-secondary/10 text-octup-secondary-dark;
+  }
+
+  .badge-success {
+    @apply bg-emerald-100 text-emerald-700;
+  }
+
+  .badge-warning {
+    @apply bg-amber-100 text-amber-700;
+  }
+
+  .badge-error {
+    @apply bg-rose-100 text-rose-700;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-700;
+  }
+
+  .badge-neutral {
+    @apply bg-slate-100 text-slate-600;
+  }
+
+  /* Status Badges */
+  .badge-status-active {
+    @apply badge-octup-pill bg-octup-secondary/15 text-octup-secondary-dark;
+  }
+
+  .badge-status-inactive {
+    @apply badge-octup-pill bg-slate-100 text-slate-500;
+  }
+
+  .badge-status-pending {
+    @apply badge-octup-pill bg-amber-100 text-amber-700;
+  }
+
+  .badge-status-critical {
+    @apply badge-octup-pill bg-rose-100 text-rose-700 animate-pulse-risk;
+  }
+}
+
+/* =============================================================================
+ * AVATAR STYLES
+ * ============================================================================= */
+
+@layer components {
+  .avatar-octup {
+    @apply relative inline-flex items-center justify-center rounded-full bg-octup-primary font-semibold text-white overflow-hidden;
+  }
+
+  .avatar-octup-sm {
+    @apply w-8 h-8 text-caption;
+  }
+
+  .avatar-octup-md {
+    @apply w-10 h-10 text-body-sm;
+  }
+
+  .avatar-octup-lg {
+    @apply w-12 h-12 text-body;
+  }
+
+  .avatar-octup-xl {
+    @apply w-16 h-16 text-heading-sm;
+  }
+
+  .avatar-octup img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Avatar with status indicator */
+  .avatar-with-status::after {
+    content: '';
+    @apply absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white;
+  }
+
+  .avatar-with-status.online::after {
+    @apply bg-octup-secondary;
+  }
+
+  .avatar-with-status.offline::after {
+    @apply bg-slate-400;
+  }
+
+  .avatar-with-status.busy::after {
+    @apply bg-octup-accent;
+  }
+}
+
+/* =============================================================================
+ * PROGRESS BAR
+ * ============================================================================= */
+
+@layer components {
+  .progress-octup {
+    @apply w-full h-2 bg-slate-100 rounded-full overflow-hidden;
+  }
+
+  .progress-octup-bar {
+    @apply h-full rounded-full transition-all duration-500 ease-out;
+  }
+
+  .progress-octup-bar.primary {
+    @apply bg-octup-gradient;
+  }
+
+  .progress-octup-bar.success {
+    @apply bg-octup-gradient-success;
+  }
+
+  .progress-octup-bar.warning {
+    @apply bg-octup-warning;
+  }
+
+  .progress-octup-bar.error {
+    @apply bg-octup-gradient-accent;
+  }
+}
+
+/* =============================================================================
+ * TABS
+ * ============================================================================= */
+
+@layer components {
+  .tabs-octup {
+    @apply flex gap-1 p-1 bg-slate-100 rounded-xl;
+  }
+
+  .tab-octup {
+    @apply px-4 py-2 rounded-lg text-body-sm font-medium text-slate-600
+           transition-all duration-150;
+  }
+
+  .tab-octup:hover:not(.active) {
+    @apply text-slate-800 bg-slate-200/50;
+  }
+
+  .tab-octup.active {
+    @apply bg-white text-octup-primary shadow-soft;
+  }
+
+  /* Underline Tabs */
+  .tabs-underline {
+    @apply flex gap-6 border-b border-slate-200;
+  }
+
+  .tab-underline {
+    @apply pb-3 text-body-sm font-medium text-slate-500 border-b-2 border-transparent
+           -mb-px transition-all duration-150;
+  }
+
+  .tab-underline:hover:not(.active) {
+    @apply text-slate-700 border-slate-300;
+  }
+
+  .tab-underline.active {
+    @apply text-octup-primary border-octup-primary;
+  }
+}
+
+/* =============================================================================
+ * MODAL/DIALOG
+ * ============================================================================= */
+
+@layer components {
+  .modal-overlay {
+    @apply fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-modal;
+  }
+
+  .modal-octup {
+    @apply bg-white rounded-3xl shadow-modal w-full max-w-lg mx-auto overflow-hidden;
+  }
+
+  .modal-header {
+    @apply px-6 py-4 border-b border-slate-100 flex items-center justify-between;
+  }
+
+  .modal-body {
+    @apply p-6;
+  }
+
+  .modal-footer {
+    @apply px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-3;
+  }
+}
+
+/* =============================================================================
+ * SLIDE-OVER PANEL
+ * ============================================================================= */
+
+@layer components {
+  .slideover-octup {
+    @apply fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-soft-xl z-modal
+           transform transition-transform duration-300 ease-out;
+  }
+
+  .slideover-header {
+    @apply px-6 py-4 border-b border-slate-100 flex items-center justify-between;
+  }
+
+  .slideover-body {
+    @apply p-6 overflow-y-auto;
+    height: calc(100vh - 130px);
+  }
+
+  .slideover-footer {
+    @apply absolute bottom-0 left-0 right-0 px-6 py-4 border-t border-slate-100 bg-white;
+  }
+}
+
+/* =============================================================================
+ * TOOLTIP
+ * ============================================================================= */
+
+@layer components {
+  .tooltip-octup {
+    @apply absolute z-tooltip px-3 py-2 bg-slate-800 text-white text-caption rounded-lg
+           shadow-lg pointer-events-none animate-fade-in;
+  }
+
+  .tooltip-octup::after {
+    content: '';
+    @apply absolute w-2 h-2 bg-slate-800 transform rotate-45;
+  }
+
+  .tooltip-octup.top::after {
+    @apply -bottom-1 left-1/2 -translate-x-1/2;
+  }
+
+  .tooltip-octup.bottom::after {
+    @apply -top-1 left-1/2 -translate-x-1/2;
+  }
+}
+
+/* =============================================================================
+ * NAVIGATION
+ * ============================================================================= */
+
+@layer components {
+  /* Top Bar */
+  .topbar-octup {
+    @apply fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-xl border-b border-slate-100 z-40;
+  }
+
+  .topbar-octup::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-1 bg-octup-gradient;
+  }
+
+  /* Sidebar */
+  .sidebar-octup {
+    @apply fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-slate-100 z-30
+           overflow-y-auto;
+  }
+
+  .sidebar-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 mx-2 rounded-xl text-body-sm font-medium text-slate-600
+           transition-all duration-150;
+  }
+
+  .sidebar-nav-item:hover:not(.active) {
+    @apply bg-slate-50 text-slate-800;
+  }
+
+  .sidebar-nav-item.active {
+    @apply bg-octup-primary/10 text-octup-primary;
+  }
+
+  .sidebar-nav-item .icon {
+    @apply w-5 h-5 flex-shrink-0;
+  }
+
+  /* Mobile Bottom Nav */
+  .bottom-nav-octup {
+    @apply fixed bottom-0 left-0 right-0 h-20 bg-white/95 backdrop-blur-xl border-t border-slate-100
+           safe-area-pb z-40 md:hidden;
+  }
+
+  .bottom-nav-item {
+    @apply flex flex-col items-center justify-center gap-1 py-2 text-caption text-slate-500
+           transition-all duration-150;
+  }
+
+  .bottom-nav-item.active {
+    @apply text-octup-primary;
+  }
+
+  .bottom-nav-item .icon {
+    @apply w-6 h-6;
+  }
+}
+
+/* =============================================================================
+ * EMPTY STATES
+ * ============================================================================= */
+
+@layer components {
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-16 text-center;
+  }
+
+  .empty-state-icon {
+    @apply w-16 h-16 text-slate-300 mb-4;
+  }
+
+  .empty-state-title {
+    @apply text-heading-sm text-slate-700 mb-2;
+  }
+
+  .empty-state-description {
+    @apply text-body-sm text-slate-500 max-w-sm;
+  }
+}
+
+/* =============================================================================
+ * LOADING STATES
+ * ============================================================================= */
+
+@layer components {
+  .skeleton {
+    @apply bg-slate-200 rounded animate-pulse;
+  }
+
+  .skeleton-text {
+    @apply skeleton h-4 w-full;
+  }
+
+  .skeleton-heading {
+    @apply skeleton h-6 w-3/4;
+  }
+
+  .skeleton-avatar {
+    @apply skeleton rounded-full;
+  }
+
+  /* Spinner */
+  .spinner-octup {
+    @apply w-6 h-6 border-2 border-octup-primary/30 border-t-octup-primary rounded-full animate-spin;
+  }
+}
+
+/* =============================================================================
+ * LAYOUT UTILITIES
+ * ============================================================================= */
+
+@layer utilities {
+  /* Premium Section Padding */
+  .section-premium {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Premium Grid Gap */
+  .gap-premium {
+    @apply gap-4 md:gap-6 lg:gap-8;
+  }
+
+  /* Content Max Width */
+  .content-container {
+    @apply max-w-dashboard mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Scroll Offset for Fixed Nav */
+  .scroll-mt-nav {
+    scroll-margin-top: 80px;
+  }
+
+  @media (min-width: 1024px) {
+    .scroll-mt-nav {
+      scroll-margin-top: 100px;
+    }
+  }
+}
+
+/* =============================================================================
+ * RESPONSIVE UTILITIES
+ * ============================================================================= */
+
+@layer utilities {
+  /* Hide on mobile */
+  .hide-mobile {
+    @apply hidden sm:block;
+  }
+
+  /* Show only on mobile */
+  .show-mobile {
+    @apply block sm:hidden;
+  }
+
+  /* Truncate text */
+  .truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* =============================================================================
+ * PRINT STYLES
+ * ============================================================================= */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .card-octup {
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  .topbar-octup,
+  .sidebar-octup,
+  .bottom-nav-octup {
+    display: none !important;
+  }
+}
