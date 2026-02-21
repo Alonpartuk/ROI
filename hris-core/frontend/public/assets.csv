@@ -1,0 +1,31 @@
+id,assetTag,category,manufacturer,model,serialNumber,purchaseDate,purchasePrice,currency,status,assignedToId,assignedToName,assignedDate,locationCode,notes,warrantyExpiry
+asset_001,LAP-TLV-001,laptop,Lenovo,ThinkPad P14s Gen 2,PF-3YECVP,2022-03-01,1599,USD,assigned,emp_002,Yarden Mantzur,2022-03-01,TLV,"Includes: Headphones, Docking station, One screen, Keyboard, Mouse",2025-03-01
+asset_002,LAP-TLV-002,laptop,Apple,"MacBook Pro 16"" M3 Pro",M9512VJHFW,2023-10-08,2999,USD,assigned,emp_004,Sabina Basina,2023-10-08,TLV,"Includes: Belkin dock, Mouse, Keyboard, 3 Screens (One at home)",2026-10-08
+asset_003,LAP-TLV-003,laptop,Lenovo,ThinkPad P14s Gen 2,PF-3EQGAK,2024-07-01,1599,USD,assigned,emp_005,Shachar Shmueli,2024-07-01,TLV,"Includes: 4 screens (One at home), Docking station, Keyboard, Mouse",2027-07-01
+asset_004,LAP-TLV-004,laptop,Apple,"MacBook Pro 16"" M3 Pro",KR6HNJLQQ4,2024-05-01,2999,USD,assigned,emp_006,Hod Caspi,2024-05-01,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2027-05-01
+asset_005,LAP-TLV-005,laptop,Apple,"MacBook Pro 16"" M3 Pro",JWTK9N19T4,2024-08-04,2999,USD,assigned,emp_007,Amos Avni,2024-08-04,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2027-08-04
+asset_006,LAP-TLV-006,laptop,Lenovo,ThinkPad P14s Gen 2,PF-3GB3CY,2024-08-05,1599,USD,assigned,emp_020,Jordan Maoz,2024-08-05,TLV,"Includes: Headphones, Three screens (One at home), Keyboard, Mouse",2027-08-05
+asset_007,LAP-TLV-007,laptop,Apple,"MacBook Pro 16"" M3 Pro",J6623H4TF5,2024-08-18,2999,USD,assigned,emp_008,Chen Baygel,2024-08-18,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2027-08-18
+asset_008,LAP-TLV-008,laptop,Apple,"MacBook Pro 16"" M4 Pro",G7HKGM04HV,2025-03-02,3499,USD,assigned,emp_009,Alexander Pletsis,2025-03-02,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2028-03-02
+asset_009,LAP-TLV-009,laptop,Apple,"MacBook Pro 16"" M4 Pro",HCXN2TKW99,2025-03-09,3499,USD,assigned,emp_010,Maxim Marmer,2025-03-09,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2028-03-09
+asset_010,LAP-TLV-010,laptop,Apple,MacBook Pro M4 Pro,H999LGPP94,2025-04-01,3499,USD,assigned,emp_019,Nissan Hazzan,2025-04-01,TLV,"Includes: Docking station, One screen, Keyboard, Mouse",2028-04-01
+asset_011,LAP-TLV-011,laptop,Apple,"MacBook Pro 16"" M3 Pro",FR2093HXR2,2025-05-18,2999,USD,assigned,emp_011,Alon Bahir,2025-05-18,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2028-05-18
+asset_012,LAP-TLV-012,laptop,Apple,"MacBook Pro 16"" M3 Pro",D437R6GGV7,2025-05-18,2999,USD,assigned,emp_012,Yehuda Neumann,2025-05-18,TLV,"Includes: Belkin dock, Mouse, Keyboard, 2 screens",2028-05-18
+asset_013,LAP-TOR-001,laptop,Apple,MacBook Air 2022,C9YKX7KXG9,2023-09-18,1299,USD,assigned,emp_028,Michael Woolfson,2023-09-18,TOR,"Includes: LG Screen. Also has 2 additional PCs: #F-3YAHQS, #PF-3YEA9N",2026-09-18
+asset_014,LAP-TOR-002,laptop,Apple,MacBook Air 2022,HWLGQQ3CK4,2025-03-24,1299,USD,assigned,emp_029,Salome Valderrama,2025-03-24,TOR,"Includes: LG Screen, Adaptor, Charger",2028-03-24
+asset_015,LAP-US-001,laptop,Apple,MacBook Air,J990VV97FH,2025-06-16,1299,USD,assigned,emp_022,Jay Mazur,2025-06-16,US,,2028-06-16
+asset_016,LAP-TLV-013,laptop,Apple,"MacBook Pro 16"" M3 Pro",KH6Q1GW4GQ,2025-06-24,2999,USD,assigned,emp_013,Or Abitbol,2025-06-24,TLV,"Includes: Belkin dock, Mouse, Keyboard",2028-06-24
+asset_017,LAP-TLV-014,laptop,Apple,"MacBook Pro 14"" M3 Pro",KXM2MKFQDX,2025-08-03,2499,USD,assigned,emp_014,Shalev Shoam,2025-08-03,TLV,"Includes: Belkin dock, Mouse, Keyboard",2028-08-03
+asset_018,LAP-TLV-015,laptop,Apple,"MacBook Pro 14"" M3 Pro",KW6W0RRXQM,2026-08-03,2499,USD,assigned,emp_015,Roye Hecht,2026-08-03,TLV,"Includes: Belkin dock, Mouse, Keyboard",2029-08-03
+asset_019,LAP-US-002,laptop,Apple,MacBook Air M4,L41YY0KHX5,2025-08-11,1499,USD,assigned,emp_023,Blake Read,2025-08-11,US,"Includes: Monitor, Keyboard, Mouse",2028-08-11
+asset_020,LAP-US-003,laptop,Apple,MacBook Air M4,CQFMV220XR,2025-08-18,1499,USD,assigned,emp_027,Ava Barnes,2025-08-18,US,"Includes: Monitor, Mouse, Keyboard",2028-08-18
+asset_021,LAP-TLV-016,laptop,Lenovo,ThinkPad,PF-3GBGWH,2025-09-10,1599,USD,assigned,emp_003,Hagai Gold,2025-09-10,TLV,"Includes: Docking station, One screen, Keyboard, Mouse",2028-09-10
+asset_022,LAP-US-004,laptop,Apple,MacBook Air 2025,KVM29GVWLY,2025-09-25,1499,USD,assigned,emp_024,Chanan Burstein,2025-09-25,US,"Includes: Screen, Adaptor, Charger",2028-09-25
+asset_023,LAP-TOR-003,laptop,Lenovo,ThinkPad,PF-3YAHQS,2025-08-11,1599,USD,assigned,emp_030,Ceena Shirafghan,2025-08-11,TOR,"Includes: LG Monitor, Logitech Mouse",2028-08-11
+asset_024,LAP-TLV-017,laptop,Apple,"MacBook Pro 16"" M3 Pro",GYJ4TL00NY,2025-10-08,2999,USD,assigned,emp_016,Matan Bar,2025-10-08,TLV,"Includes: Belkin dock, Mouse, Keyboard",2028-10-08
+asset_025,LAP-TLV-018,laptop,Apple,"MacBook Pro 16"" M3 Pro",C1KPXV02VC,2025-11-02,2999,USD,assigned,emp_017,Schlomo Cohen,2025-11-02,TLV,"Includes: Belkin dock, Mouse, Keyboard",2028-11-02
+asset_026,LAP-TOR-004,laptop,Lenovo,ThinkPad P14s Gen 2,PF-3YEA9N,2025-11-10,1599,USD,assigned,emp_031,Paola Diaz,2025-11-10,TOR,,2028-11-10
+asset_027,LAP-US-005,laptop,Apple,MacBook Air 2025,D4FCQDQC7,2026-01-02,1499,USD,assigned,emp_025,Ishmael Williams,2026-01-02,US,"Includes: Monitor, Mouse, Keyboard",2029-01-02
+asset_028,LAP-TLV-019,laptop,Apple,"MacBook Pro 16"" M3 Pro",JFV7HYYJP9,2026-01-06,2999,USD,assigned,emp_018,Moshe Nimrod Gold,2026-01-06,TLV,,2029-01-06
+asset_029,LAP-US-006,laptop,Apple,MacBook Air M4,CKP9V543NQ,2026-01-22,1499,USD,assigned,emp_026,Matthew Bocker,2026-01-22,US,"Includes: Mouse, Keyboard",2029-01-22
+asset_030,LAP-TLV-020,laptop,Apple,MacBook Air M4,,2026-02-22,1499,USD,assigned,emp_021,Yotam Sina,2026-02-22,TLV,Serial number pending,2029-02-22

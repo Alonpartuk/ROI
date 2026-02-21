@@ -1,0 +1,32 @@
+id,employeeNumber,firstName,lastName,displayName,workEmail,phone,dateOfBirth,originalHireDate,currentStatus,jobTitle,jobLevel,department,location,locationName,managerId,managerName,employmentType,workModel
+emp_001,200335818,Alon,Partuk,Alon Partuk,Alon@octup.com,054-6370481,1988-06-28,2022-03-01,active,CEO,Executive,Executive,TLV,Tel Aviv Office,,,,full_time,hybrid
+emp_002,302774161,Yarden,Mantzur,Yarden Mantzur,yarden@octup.com,054-5412303,1989-02-09,2022-03-01,active,HR & Operations Manager,Manager,HR & Operation,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_003,37678489,Hagai,Gold,Hagai Gold,hagai@octup.com,054-5609212,1975-09-23,2025-09-10,active,Finance Manager,Manager,Finance,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_004,345941686,Sabina,Basina,Sabina Basina,sabina@octup.com,058-4051998,1998-03-05,2023-10-08,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_005,316495035,Shachar,Shmueli,Shachar Shmueli,shachar.shmueli@octup.com,054-6305627,1995-08-17,2024-07-01,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_006,300077153,Hod,Caspi,Hod Caspi,Hod@octup.com,050-9098888,1986-09-19,2024-05-01,active,Senior Software Engineer,Senior,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_007,209040310,Amos,Avni,Amos Avni,amos@octup.com,053-9195212,1997-01-07,2024-08-04,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_008,408682763,Chen,Baygel,Chen Baygel,chenb@octup.com,054-9075837,1990-07-10,2024-08-18,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_009,346885700,Alexander,Pletsis,Alexander Pletsis,alexander@octup.com,053-4763138,1989-05-06,2025-03-02,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_010,334013968,Maxim,Marmer,Maxim Marmer,maxim@octup.com,052-9511178,1992-08-04,2025-03-09,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_011,203766076,Alon,Bahir,Alon Bahir,alonb@octup.com,052-6223240,1992-09-07,2025-05-18,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_012,305539066,Yehuda,Neumann,Yehuda Neumann,Yehuda@octup.com,054-6500907,1991-02-25,2025-05-18,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_013,312614605,Or,Abitbol,Or Abitbol,or@octup.com,050-4222664,1993-12-06,2025-06-24,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_014,212170252,Shalev,Shoam,Shalev Shoam,shalev@octup.com,054-2333028,2001-05-23,2025-08-03,active,Software Engineer,Junior,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_015,336290762,Roye,Hecht,Roye Hecht,roye@octup.com,050-2614189,2001-01-13,2026-08-03,active,Software Engineer,Junior,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_016,204299622,Matan,Bar,Matan Bar,matanb@octup.com,052-6665653,1992-06-04,2025-10-08,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_017,324472109,Schlomo,Cohen,Schlomo Cohen,shlomo@octup.com,054-6216166,1991-04-04,2025-11-02,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_018,208532929,Moshe,Nimrod Gold,Moshe Nimrod Gold,moshe@octup.com,050-838-9155,1996-11-06,2026-01-06,active,Software Engineer,Mid-Level,R&D,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_019,40768301,Nissan,Hazzan,Nissan Hazzan,nissan@octup.com,054-3343359,1981-04-08,2025-04-01,active,Product Manager,Manager,Product,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_020,345634281,Jordan,Maoz,Jordan Maoz,jordan@octup.com,053-9195212,2000-08-22,2024-08-05,active,Customer Success Manager,Mid-Level,CS - Operation,TLV,Tel Aviv Office,emp_002,Yarden Mantzur,full_time,hybrid
+emp_021,310169480,Yotam,Sina,Yotam Sina,yotam@octup.com,052-2675291,1990-01-01,2026-02-22,active,Sales Operations Manager,Manager,Sales,TLV,Tel Aviv Office,emp_001,Alon Partuk,full_time,hybrid
+emp_022,41462392,Jay,Mazur,Jay Mazur,jay@octup.com,+1 (512) 944-7218,1983-05-30,2025-06-16,active,Sales Representative,Mid-Level,Sales,US,United States (Remote),emp_021,Yotam Sina,full_time,remote
+emp_023,R227-551-38-000-0,Blake,Read,Blake Read,Blake@octup.com,+1 (904) 982-7423,1995-03-21,2025-08-11,active,Sales Representative,Mid-Level,Sales,US,United States (Remote),emp_021,Yotam Sina,full_time,remote
+emp_024,866422078,Chanan,Burstein,Chanan Burstein,Chanan@octup.com,053-9655352,1999-10-16,2025-09-25,active,Sales Representative,Junior,Sales,US,United States (Remote),emp_021,Yotam Sina,full_time,remote
+emp_025,C26060328,Ishmael,Williams,Ishmael Williams,ishmael@octup.com,+1 (478) 394-3790,2001-01-21,2026-01-02,active,Sales Representative,Junior,Sales,US,United States (Remote),emp_021,Yotam Sina,full_time,remote
+emp_026,B260-5438-7207,Matthew,Bocker,Matthew Bocker,matthew@octup.com,+1 (630) 207-7623,1987-07-21,2026-01-22,active,Sales Representative,Mid-Level,Sales,US,United States (Remote),emp_021,Yotam Sina,full_time,remote
+emp_027,50509978,Ava,Barnes,Ava Barnes,Ava@octup.com,+1 (770) 714-9490,1984-12-17,2025-08-18,active,Marketing Manager,Manager,Marketing,US,United States (Remote),emp_001,Alon Partuk,full_time,remote
+emp_028,W6491-54489-80624,Michael,Woolfson,Michael Woolfson,Michael@octup.com,+1 (905) 520-6504,1998-06-24,2023-09-18,active,Operations Specialist,Mid-Level,Operation,TOR,Toronto Office,emp_002,Yarden Mantzur,full_time,hybrid
+emp_029,V0255-68509-76030,Salome,Valderrama,Salome Valderrama,Ceena@octup.com,+1 (647) 529-9036,1997-10-30,2025-03-24,active,Operations Specialist,Junior,Operation,TOR,Toronto Office,emp_028,Michael Woolfson,full_time,hybrid
+emp_030,S3501-56079-31201,Ceena,Shirafghan,Ceena Shirafghan,Ceena@octup.com,+1 (306) 251-1809,1993-12-01,2025-08-11,active,Operations Specialist,Mid-Level,Operation,TOR,Toronto Office,emp_028,Michael Woolfson,full_time,hybrid
+emp_031,D4029-61629-46203,Paola,Diaz,Paola Diaz,paola@octup.com,+1 (647) 236-7840,1994-12-03,2025-11-10,active,Operations Specialist,Junior,Operation,TOR,Toronto Office,emp_028,Michael Woolfson,full_time,hybrid

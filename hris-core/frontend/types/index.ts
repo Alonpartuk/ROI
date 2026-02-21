@@ -72,6 +72,7 @@ export type SalaryChangeReason =
 
 export interface EquityGrant {
   id: string;
+  employeeId: string;
   grantNumber: string;
   grantDate: string;
   grantType: 'iso' | 'nso' | 'rsu';
@@ -135,6 +136,7 @@ export type AssetStatus = 'available' | 'assigned' | 'maintenance' | 'retired';
 
 export interface Document {
   id: string;
+  employeeId: string;
   name: string;
   category: DocumentCategory;
   uploadedAt: string;
@@ -180,6 +182,8 @@ export type TimelineEventType =
 // ONBOARDING TYPES
 // ============================================================================
 
+export type OnboardingStage = 'pre_boarding' | 'day_1' | 'week_1' | 'month_1';
+
 export interface OnboardingTask {
   id: string;
   name: string;
@@ -190,6 +194,7 @@ export interface OnboardingTask {
   isOverdue: boolean;
   assigneeType: string;
   checklistProgress: number;
+  stage?: OnboardingStage;
 }
 
 export interface OnboardingProgress {
@@ -251,7 +256,55 @@ export type AlertType =
   | 'cliff'
   | 'onboarding'
   | 'document_pending'
-  | 'equipment_warning';
+  | 'equipment_warning'
+  | 'performance'
+  | 'asset';
+
+// ============================================================================
+// PERFORMANCE & OKR TYPES
+// ============================================================================
+
+export interface PerformanceReview {
+  id: string;
+  employeeId: string;
+  reviewDate: string;
+  reviewPeriod: string;
+  score: number;
+  maxScore: number;
+  reviewerName: string;
+  summary: string;
+  competencies: CompetencyScore[];
+}
+
+export interface CompetencyScore {
+  name: string;
+  score: number;
+  maxScore: number;
+}
+
+export type CompetencyName = 'Technical' | 'Communication' | 'Leadership' | 'Execution' | 'Cultural Fit';
+
+export interface OKR {
+  id: string;
+  employeeId: string;
+  year: number;
+  quarter: string;
+  objective: string;
+  keyResults: KeyResult[];
+  status: OKRStatus;
+  progress: number;
+}
+
+export interface KeyResult {
+  id: string;
+  description: string;
+  targetValue: number;
+  currentValue: number;
+  unit: string;
+  progress: number;
+}
+
+export type OKRStatus = 'on_track' | 'at_risk' | 'behind';
 
 // ============================================================================
 // API RESPONSE TYPES

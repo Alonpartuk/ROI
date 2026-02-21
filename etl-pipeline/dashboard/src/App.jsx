@@ -765,7 +765,7 @@ function App({ onAdminClick }) {
           {/* Daily Deal Movements List */}
           <div className="mb-6 lg:mb-8">
             <DailyDealMovements
-              movements={dashboardData?.dailyDealMovements || []}
+              data={dashboardData?.dailyDealMovements || []}
               onDealClick={handleDealClick}
             />
           </div>

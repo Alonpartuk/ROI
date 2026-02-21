@@ -13,22 +13,36 @@ module.exports = {
       // =======================================================================
       colors: {
         octup: {
-          primary: '#809292',
-          'primary-dark': '#6a7a7a',
-          'primary-light': '#9aabab',
-          secondary: '#00CBC0',
-          'secondary-dark': '#00a89e',
-          'secondary-light': '#33d6cd',
-          accent: '#FF3489',
+          // SaaS Premium Palette
+          bg: '#F3F4F6',           // Soft grey background
+          sidebar: '#1A1C1E',      // Deep slate sidebar
+          card: '#FFFFFF',         // Clean white cards
+          primary: '#00CBC0',      // Octup teal (main brand)
+          secondary: '#809292',    // Muted brand grey
+          accent: '#FF3489',       // Pink accent
+          text: '#111827',         // Near-black text
+          muted: '#6B7280',        // Secondary grey text
+
+          // Extended palette
+          'primary-dark': '#00a89e',
+          'primary-light': '#33d6cd',
+          'secondary-dark': '#6a7a7a',
+          'secondary-light': '#9aabab',
           'accent-dark': '#d92d73',
           'accent-light': '#ff5ca1',
-          warning: '#F9BD63',
+          warning: '#FFCF72',
           'warning-dark': '#e5a84d',
           'warning-light': '#fbd08a',
           dark: '#282831',
           'dark-light': '#3a3a45',
           light: '#F4F4F7',
           'light-dark': '#e8e8ed',
+
+          // Sidebar specific
+          'sidebar-hover': '#25272A',
+          'sidebar-border': '#2D2F33',
+          'sidebar-text': '#8B8D91',
+          'glow': '#00A8A8',
         },
         risk: {
           critical: '#FF3489',
@@ -94,12 +108,19 @@ module.exports = {
         '2xl': '1rem',
         '3xl': '1.5rem',
         '4xl': '2rem',
+        'saas': '24px',    // Premium SaaS rounded corners
       },
 
       // =======================================================================
       // SHADOWS (Soft premium shadows)
       // =======================================================================
       boxShadow: {
+        // SaaS Multi-layered shadows
+        'saas-card': '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 10px 15px -3px rgb(0 0 0 / 0.03)',
+        'saas-hover': '0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.03)',
+        'saas-xl': '0 25px 50px -12px rgb(0 0 0 / 0.08)',
+
+        // Existing premium shadows
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03)',
         'soft-lg': '0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 4px 15px -3px rgba(0, 0, 0, 0.05)',
         'soft-xl': '0 20px 60px -15px rgba(0, 0, 0, 0.15), 0 8px 25px -5px rgba(0, 0, 0, 0.08)',
@@ -110,6 +131,10 @@ module.exports = {
         'octup-accent': '0 4px 14px 0 rgba(255, 52, 137, 0.25)',
         'table-row': '0 2px 8px rgba(0, 0, 0, 0.05)',
         'dropdown': '0 10px 40px -10px rgba(0, 0, 0, 0.15)',
+
+        // Glow effects
+        'glow-teal': '0 0 20px rgba(0, 168, 168, 0.4)',
+        'glow-purple': '0 0 20px rgba(116, 60, 247, 0.4)',
       },
 
       // =======================================================================

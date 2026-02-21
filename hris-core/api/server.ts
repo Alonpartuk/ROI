@@ -222,11 +222,77 @@ app.get('/api', (_req: Request, res: Response) => {
 
 /**
  * GET /api/employees
- * List all employees - uses v_current_employment view for correct schema mapping
+ * List all employees with pagination - uses v_current_employment view for correct schema mapping
+ *
+ * Query params:
+ * - page: Page number (1-indexed, default: 1)
+ * - pageSize: Items per page (default: 50, max: 100)
+ * - search: Search by name, email, or employee number
+ * - location: Filter by location code (e.g., 'TLV', 'TOR', 'US')
+ * - department: Filter by department name
  */
 app.get('/api/employees', async (req: Request, res: Response) => {
   try {
-    // Use the view which correctly joins all tables
+    // Parse pagination parameters
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const pageSize = Math.min(100, Math.max(1, parseInt(req.query.pageSize as string) || 50));
+    const offset = (page - 1) * pageSize;
+
+    // Parse filter parameters
+    const search = (req.query.search as string) || '';
+    const locationFilter = (req.query.location as string) || '';
+    const departmentFilter = (req.query.department as string) || '';
+
+    // Build WHERE clauses
+    const whereClauses = ['NOT e.is_deleted', "e.current_status = 'active'"];
+    const params: any[] = [];
+    let paramIndex = 1;
+
+    if (search) {
+      whereClauses.push(`(
+        COALESCE(e.preferred_first_name, e.legal_first_name) ILIKE $${paramIndex}
+        OR COALESCE(e.preferred_last_name, e.legal_last_name) ILIKE $${paramIndex}
+        OR e.work_email ILIKE $${paramIndex}
+        OR e.employee_number ILIKE $${paramIndex}
+      )`);
+      params.push(`%${search}%`);
+      paramIndex++;
+    }
+
+    if (locationFilter) {
+      whereClauses.push(`l.code = $${paramIndex}`);
+      params.push(locationFilter);
+      paramIndex++;
+    }
+
+    if (departmentFilter) {
+      whereClauses.push(`d.name ILIKE $${paramIndex}`);
+      params.push(`%${departmentFilter}%`);
+      paramIndex++;
+    }
+
+    const whereSQL = whereClauses.join(' AND ');
+
+    // Get total count for pagination
+    const countResult = await queryWithRLS(req, `
+      SELECT COUNT(DISTINCT e.id) AS total
+      FROM employees e
+      LEFT JOIN employment_records er ON e.id = er.employee_id
+        AND er.effective_date <= CURRENT_DATE
+        AND (er.end_date IS NULL OR er.end_date > CURRENT_DATE)
+      LEFT JOIN departments d ON er.department_id = d.id
+      LEFT JOIN locations l ON er.location_id = l.id
+      WHERE ${whereSQL}
+    `, params);
+
+    const totalCount = parseInt(countResult.rows[0]?.total || 0);
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    // Add pagination params
+    params.push(pageSize);
+    params.push(offset);
+
+    // Main query with pagination
     const result = await queryWithRLS(req, `
       SELECT
         e.id,
@@ -266,18 +332,24 @@ app.get('/api/employees', async (req: Request, res: Response) => {
       LEFT JOIN departments d ON er.department_id = d.id
       LEFT JOIN locations l ON er.location_id = l.id
       LEFT JOIN employees mgr ON er.manager_id = mgr.id
-      WHERE NOT e.is_deleted
-        AND e.current_status = 'active'
+      WHERE ${whereSQL}
       ORDER BY
         COALESCE(e.preferred_last_name, e.legal_last_name),
         COALESCE(e.preferred_first_name, e.legal_first_name)
-    `);
+      LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
+    `, params);
 
     res.json({
       success: true,
       data: result.rows,
       meta: {
         count: result.rows.length,
+        totalCount,
+        page,
+        pageSize,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
         timestamp: new Date().toISOString(),
       },
     });

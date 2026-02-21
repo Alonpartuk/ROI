@@ -3,11 +3,61 @@
  * Consistent with Reports Dashboard Design System
  * ============================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* Poppins - Official Octup Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@275;300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global box-sizing to prevent input overflow */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Ensure all form elements inherit box-sizing */
+input, select, textarea, button {
+  box-sizing: border-box;
+}
+
+/* =============================================================================
+ * OCTUP DESIGN SYSTEM - CSS CUSTOM PROPERTIES
+ * ============================================================================= */
+
+:root {
+  /* Brand Colors */
+  --octup-purple: #743CF7;
+  --octup-teal: #00A8A8;
+  --octup-violet: #7737FF;
+  --octup-violet-light: #8850FF;
+  --octup-pink: #FF3489;
+  --octup-yellow: #FFCF72;
+  --octup-dark: #282831;
+  --octup-middle: #504B5A;
+  --octup-light-bg: #F8F7FB;
+  --octup-white: #FFFFFF;
+  --octup-text-dark: #343434;
+
+  /* Grey Scale */
+  --octup-grey-72: #7F7B87;
+  --octup-grey-50: #A4A0AA;
+  --octup-grey-16: #DDDBE1;
+  --octup-grey-8: #EBEAEE;
+  --octup-grey-4: #F1F0F5;
+
+  /* Status Colors */
+  --octup-red-light: #DB2059;
+  --octup-red-dark: #FC4F6D;
+  --octup-green-dark: #04CE72;
+
+  /* Neumorphism Shadows */
+  --shadow-neu-normal: -2px -2px 8px #FFFFFF, 2px 2px 4px rgba(80, 75, 90, 0.16);
+  --shadow-neu-pressed: inset -2px -2px 4px #FFFFFF, inset 2px 2px 8px rgba(80, 75, 90, 0.32);
+  --shadow-popup: 8px 8px 24px rgba(80, 75, 90, 0.08);
+
+  /* Typography */
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
 /* =============================================================================
  * BASE STYLES
@@ -21,7 +71,9 @@
   }
 
   body {
-    @apply font-sans text-body text-slate-800 bg-octup-light;
+    font-family: var(--font-family);
+    color: var(--octup-middle);
+    background-color: var(--octup-light-bg);
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
@@ -49,6 +101,99 @@
   ::selection {
     @apply bg-octup-secondary/20 text-slate-900;
   }
+}
+
+/* =============================================================================
+ * SAAS PREMIUM COMPONENTS (Glassmorphism & Effects)
+ * ============================================================================= */
+
+@layer components {
+  /* Glassmorphism panels */
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    background: rgba(26, 28, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Sidebar active state with glow */
+  .sidebar-item-active {
+    @apply bg-octup-primary/10 text-octup-primary;
+    position: relative;
+  }
+
+  .sidebar-item-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
+    background: #00A8A8;
+    box-shadow: 0 0 12px #00A8A8;
+  }
+
+  /* Premium table row */
+  .saas-table-row {
+    @apply transition-all duration-200 hover:bg-slate-50/80 cursor-pointer border-b border-slate-100/50;
+  }
+
+  .saas-table-row:last-child {
+    @apply border-b-0;
+  }
+
+  /* Premium card */
+  .saas-card {
+    @apply bg-white rounded-saas shadow-saas-card transition-shadow duration-300;
+  }
+
+  .saas-card:hover {
+    @apply shadow-saas-hover;
+  }
+
+  /* Shimmer loading animation */
+  .shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Slide toggle track */
+  .slide-toggle-track {
+    @apply relative bg-slate-100 rounded-full p-1 flex;
+  }
+
+  .slide-toggle-thumb {
+    @apply absolute bg-white rounded-full shadow-md transition-all duration-300 ease-out;
+  }
+
+  /* KPI trend pill */
+  .trend-pill {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .trend-pill-up {
+    @apply bg-emerald-50 text-emerald-700;
+  }
+
+  .trend-pill-down {
+    @apply bg-rose-50 text-rose-700;
+  }
+
+  /* Premium badge */
+  .badge-premium {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 /* =============================================================================
@@ -751,6 +896,12 @@
  * ============================================================================= */
 
 @media print {
+  /* A4 page setup */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm;
+  }
+
   .no-print {
     display: none !important;
   }
@@ -764,5 +915,180 @@
   .sidebar-octup,
   .bottom-nav-octup {
     display: none !important;
+  }
+
+  /* Hide sidebar/nav for print */
+  nav, aside, [data-sidebar], [data-topbar] {
+    display: none !important;
+  }
+
+  /* Full width content — remove all offsets and force A4 width */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    overflow: visible !important;
+  }
+
+  main, [data-main-content] {
+    margin: 0 !important;
+    margin-left: 0 !important;
+    padding: 8px !important;
+    width: 100% !important;
+    max-width: 210mm !important;
+    min-height: auto !important;
+  }
+
+  /* Remove shadows */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Flatten backdrop-filters */
+  [style*="backdrop-filter"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Hide interactive elements (buttons, inputs, selects) — except inside tables */
+  button:not(td button), select:not(td select), input:not(td input), textarea {
+    display: none !important;
+  }
+
+  /* Keep table cells visible */
+  table, thead, tbody, th, td, tr {
+    display: revert !important;
+  }
+
+  /* High-contrast table borders for print */
+  th {
+    background-color: #F3F4F6 !important;
+    color: #111827 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #374151 !important;
+  }
+
+  td {
+    border-bottom: 1px solid #D1D5DB !important;
+    color: #111827 !important;
+  }
+
+  /* Remove background gradients and colors for print */
+  [style*="background: linear-gradient"],
+  [style*="background-color: rgb"] {
+    background: white !important;
+  }
+
+  /* Fit tables within A4 */
+  table {
+    width: 100% !important;
+    font-size: 11px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  th, td {
+    padding: 6px 8px !important;
+  }
+
+  /* Cards and chart containers: prevent splitting across pages */
+  div[style*="borderRadius"] {
+    border-radius: 4px !important;
+    padding: 12px !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* KPI stat cards: prevent splitting */
+  div[style*="gridTemplateColumns"] > div {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* SVG charts: constrain to page width and prevent splitting */
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* SVG chart containers */
+  div:has(> svg) {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Page breaks - keep headings with content */
+  h1, h2 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  h1, h2, h3, p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Grid: 2-column for KPI cards on print */
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Hide overlays and modals */
+  [style*="position: fixed"] {
+    display: none !important;
+  }
+
+  /* Keep main content area visible */
+  div[style*="marginLeft"] {
+    margin-left: 0 !important;
+  }
+
+  /* Reduce font sizes for density */
+  p {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide scrollbars */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Overflow containers: prevent clipping */
+  div[style*="overflow"] {
+    overflow: visible !important;
+  }
+
+  /* Ensure content after sidebar offset fills page */
+  div[style*="width: calc"] {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  /* Force left-alignment for all text in print */
+  p, span, td, th, h1, h2, h3, h4, h5, h6, li, div {
+    text-align: left !important;
+  }
+
+  /* Center only table header cells */
+  th[style*="text-align: center"] {
+    text-align: center !important;
+  }
+
+  /* Print-safe: remove border-radius for cleaner output */
+  div[style*="borderRadius"] {
+    border-radius: 4px !important;
+  }
+
+  /* Badges / pills: flatten for print */
+  span[style*="borderRadius: '20px'"],
+  span[style*="borderRadius: 20px"] {
+    border-radius: 2px !important;
+    border: 1px solid #9CA3AF !important;
   }
 }

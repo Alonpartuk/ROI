@@ -1,190 +1,194 @@
 /**
- * Alert Feed Component
- *
- * Displays a sidebar with important alerts:
- * - Work anniversaries
- * - Upcoming equity cliffs
- * - Pending onboarding tasks
- * - Equipment warnings
+ * Alert Feed - Octup HRIS
+ * Displays important alerts with inline styles for reliability
  */
 
 import React from 'react';
 import { useHRIS } from '../../context/HRISContext';
-import { Card, Badge, Avatar } from '../common';
 import { Alert, AlertType } from '../../types';
 
-// ============================================================================
-// ICONS
-// ============================================================================
+// =============================================================================
+// COLORS
+// =============================================================================
 
-const CakeIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A1.75 1.75 0 013 15.546V16a2 2 0 002 2h14a2 2 0 002-2v-.454zM17 9V7a2 2 0 00-2-2H9a2 2 0 00-2 2v2m10 0H7m10 0a2 2 0 012 2v2H5v-2a2 2 0 012-2m10-6V4a1 1 0 00-1-1h-2a1 1 0 00-1 1v1" />
-  </svg>
-);
+// Official Octup Design System Colors
+const COLORS = {
+  purple: '#743CF7',        // Primary purple
+  teal: '#00A8A8',          // Teal/success
+  violet: '#7737FF',        // Accent violet
+  pink: '#FF3489',          // Pink/critical
+  yellow: '#FFCF72',        // Warning
+  darkSlate: '#282831',     // Dark backgrounds
+  middleGray: '#504B5A',    // Secondary text
+  lightBg: '#F8F7FB',       // Page backgrounds
+  cardBg: '#FFFFFF',        // Cards
+  textDark: '#343434',      // Primary text
+  textMuted: '#504B5A',     // Muted text
+  border: '#F1F5F9',
+};
 
-const ChartIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-  </svg>
-);
+// =============================================================================
+// INLINE SVG ICONS (20x20)
+// =============================================================================
 
-const ClipboardIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-  </svg>
-);
+const Icons = {
+  Bell: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    </svg>
+  ),
+  Cake: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+      <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+      <path d="M2 21h20" /><path d="M7 8v2" /><path d="M12 8v2" /><path d="M17 8v2" />
+      <path d="M7 4h.01" /><path d="M12 4h.01" /><path d="M17 4h.01" />
+    </svg>
+  ),
+  TrendingUp: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" />
+    </svg>
+  ),
+  Clipboard: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+    </svg>
+  ),
+  AlertTriangle: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  ),
+  Check: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  ),
+};
 
-const ExclamationIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-  </svg>
-);
-
-const BellIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-  </svg>
-);
-
-// ============================================================================
+// =============================================================================
 // ALERT TYPE CONFIG
-// ============================================================================
+// =============================================================================
 
-interface AlertTypeConfig {
+interface AlertConfig {
   icon: React.ReactNode;
   bgColor: string;
   iconColor: string;
   borderColor: string;
 }
 
-const ALERT_TYPE_CONFIG: Record<AlertType, AlertTypeConfig> = {
+const ALERT_CONFIG: Record<AlertType, AlertConfig> = {
   anniversary: {
-    icon: <CakeIcon />,
-    bgColor: 'bg-purple-50',
-    iconColor: 'text-purple-600',
-    borderColor: 'border-purple-200',
+    icon: <Icons.Cake />,
+    bgColor: '#F3E8FF',
+    iconColor: '#9333EA',
+    borderColor: '#D8B4FE',
   },
   cliff: {
-    icon: <ChartIcon />,
-    bgColor: 'bg-yellow-50',
-    iconColor: 'text-yellow-600',
-    borderColor: 'border-yellow-200',
+    icon: <Icons.TrendingUp />,
+    bgColor: '#FEF3C7',
+    iconColor: '#D97706',
+    borderColor: '#FCD34D',
   },
   onboarding: {
-    icon: <ClipboardIcon />,
-    bgColor: 'bg-blue-50',
-    iconColor: 'text-blue-600',
-    borderColor: 'border-blue-200',
+    icon: <Icons.Clipboard />,
+    bgColor: '#DBEAFE',
+    iconColor: '#2563EB',
+    borderColor: '#93C5FD',
   },
   document_pending: {
-    icon: <ClipboardIcon />,
-    bgColor: 'bg-gray-50',
-    iconColor: 'text-gray-600',
-    borderColor: 'border-gray-200',
+    icon: <Icons.Clipboard />,
+    bgColor: '#F3F4F6',
+    iconColor: '#6B7280',
+    borderColor: '#D1D5DB',
   },
   equipment_warning: {
-    icon: <ExclamationIcon />,
-    bgColor: 'bg-red-50',
-    iconColor: 'text-red-600',
-    borderColor: 'border-red-200',
+    icon: <Icons.AlertTriangle />,
+    bgColor: '#FEE2E2',
+    iconColor: '#DC2626',
+    borderColor: '#FCA5A5',
+  },
+  performance: {
+    icon: <Icons.TrendingUp />,
+    bgColor: '#FEF3C7',
+    iconColor: '#D97706',
+    borderColor: '#FCD34D',
+  },
+  asset: {
+    icon: <Icons.AlertTriangle />,
+    bgColor: '#FFF7ED',
+    iconColor: '#EA580C',
+    borderColor: '#FDBA74',
   },
 };
 
-const PRIORITY_BADGES: Record<Alert['priority'], { variant: 'error' | 'warning' | 'info'; label: string }> = {
-  high: { variant: 'error', label: 'High' },
-  medium: { variant: 'warning', label: 'Medium' },
-  low: { variant: 'info', label: 'Low' },
+const PRIORITY_CONFIG: Record<Alert['priority'], { bgColor: string; color: string; label: string }> = {
+  high: { bgColor: '#FEE2E2', color: '#DC2626', label: 'High' },
+  medium: { bgColor: '#FEF3C7', color: '#D97706', label: 'Medium' },
+  low: { bgColor: '#DBEAFE', color: '#2563EB', label: 'Low' },
 };
 
-// ============================================================================
-// ALERT FEED COMPONENT
-// ============================================================================
+// =============================================================================
+// SKELETON LOADER
+// =============================================================================
 
-export function AlertFeed() {
-  const { alerts } = useHRIS();
-
-  // Sort alerts by priority
-  const sortedAlerts = [...alerts].sort((a, b) => {
-    const priorityOrder = { high: 0, medium: 1, low: 2 };
-    return priorityOrder[a.priority] - priorityOrder[b.priority];
-  });
-
-  // Count by type
-  const countByType = alerts.reduce((acc, alert) => {
-    acc[alert.type] = (acc[alert.type] || 0) + 1;
-    return acc;
-  }, {} as Record<AlertType, number>);
-
+function AlertSkeleton() {
   return (
-    <Card padding="none" className="h-fit">
+    <div style={{
+      backgroundColor: COLORS.cardBg,
+      borderRadius: '24px',
+      boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.03)',
+      border: `1px solid ${COLORS.border}`,
+      overflow: 'hidden',
+    }}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <BellIcon />
-          <h3 className="text-lg font-semibold text-gray-900">Alert Feed</h3>
-        </div>
-        <Badge variant="info" size="sm">
-          {alerts.length} alerts
-        </Badge>
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: `1px solid ${COLORS.border}`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <div style={{ height: '20px', width: '100px', backgroundColor: '#E5E7EB', borderRadius: '4px' }} />
+        <div style={{ height: '24px', width: '60px', backgroundColor: '#E5E7EB', borderRadius: '6px' }} />
       </div>
 
-      {/* Summary Pills */}
-      <div className="px-4 py-3 border-b border-gray-200 flex flex-wrap gap-2">
-        {countByType.anniversary && (
-          <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">
-            <CakeIcon /> {countByType.anniversary}
-          </span>
-        )}
-        {countByType.cliff && (
-          <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
-            <ChartIcon /> {countByType.cliff}
-          </span>
-        )}
-        {countByType.onboarding && (
-          <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-            <ClipboardIcon /> {countByType.onboarding}
-          </span>
-        )}
-        {countByType.equipment_warning && (
-          <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">
-            <ExclamationIcon /> {countByType.equipment_warning}
-          </span>
-        )}
-      </div>
-
-      {/* Alert List */}
-      <div className="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
-        {sortedAlerts.map(alert => (
-          <AlertItem key={alert.id} alert={alert} />
-        ))}
-
-        {alerts.length === 0 && (
-          <div className="p-8 text-center">
-            <div className="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
-              <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+      {/* Items */}
+      <div>
+        {[1, 2, 3].map(i => (
+          <div key={i} style={{
+            padding: '16px 20px',
+            borderBottom: `1px solid ${COLORS.border}`,
+            display: 'flex',
+            gap: '12px',
+          }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#E5E7EB' }} />
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ height: '14px', width: '80%', backgroundColor: '#E5E7EB', borderRadius: '4px' }} />
+              <div style={{ height: '12px', width: '60%', backgroundColor: '#E5E7EB', borderRadius: '4px' }} />
             </div>
-            <p className="text-sm text-gray-500">All caught up! No alerts at the moment.</p>
           </div>
-        )}
+        ))}
       </div>
-    </Card>
+    </div>
   );
 }
 
-// ============================================================================
+// =============================================================================
 // ALERT ITEM COMPONENT
-// ============================================================================
+// =============================================================================
 
 interface AlertItemProps {
   alert: Alert;
+  onClick?: () => void;
 }
 
-function AlertItem({ alert }: AlertItemProps) {
-  const config = ALERT_TYPE_CONFIG[alert.type];
-  const priorityBadge = PRIORITY_BADGES[alert.priority];
+function AlertItem({ alert, onClick }: AlertItemProps) {
+  const config = ALERT_CONFIG[alert.type];
+  const priorityConfig = PRIORITY_CONFIG[alert.priority];
 
   // Format relative time
   const formatRelativeTime = (dateStr: string) => {
@@ -202,26 +206,285 @@ function AlertItem({ alert }: AlertItemProps) {
   };
 
   return (
-    <div
-      className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors border-l-4 ${config.borderColor}`}
+    <div style={{
+      padding: '16px 20px',
+      borderBottom: `1px solid ${COLORS.border}`,
+      borderLeft: `3px solid ${config.borderColor}`,
+      cursor: 'pointer',
+      transition: 'background-color 0.15s ease',
+    }}
+    onClick={onClick}
+    onMouseEnter={e => (e.currentTarget.style.backgroundColor = COLORS.lightBg)}
+    onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
     >
-      <div className="flex gap-3">
+      <div style={{ display: 'flex', gap: '12px' }}>
         {/* Icon */}
-        <div className={`flex-shrink-0 w-10 h-10 rounded-full ${config.bgColor} ${config.iconColor} flex items-center justify-center`}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          backgroundColor: config.bgColor,
+          color: config.iconColor,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
           {config.icon}
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <p className="text-sm font-medium text-gray-900">{alert.title}</p>
-            <Badge variant={priorityBadge.variant} size="sm">
-              {priorityBadge.label}
-            </Badge>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
+            <p style={{
+              margin: 0,
+              fontSize: '14px',
+              fontWeight: 500,
+              color: COLORS.textDark,
+              lineHeight: 1.4,
+            }}>
+              {alert.title}
+            </p>
+            <span style={{
+              padding: '2px 8px',
+              borderRadius: '4px',
+              fontSize: '11px',
+              fontWeight: 600,
+              backgroundColor: priorityConfig.bgColor,
+              color: priorityConfig.color,
+              flexShrink: 0,
+            }}>
+              {priorityConfig.label}
+            </span>
           </div>
-          <p className="mt-1 text-sm text-gray-600">{alert.description}</p>
-          <p className="mt-2 text-xs text-gray-400">{formatRelativeTime(alert.date)}</p>
+          <p style={{
+            margin: 0,
+            marginTop: '4px',
+            fontSize: '13px',
+            color: COLORS.textMuted,
+            lineHeight: 1.4,
+          }}>
+            {alert.description}
+          </p>
+          <p style={{
+            margin: 0,
+            marginTop: '8px',
+            fontSize: '12px',
+            color: '#9CA3AF',
+          }}>
+            {formatRelativeTime(alert.date)}
+          </p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// =============================================================================
+// MAIN ALERT FEED COMPONENT
+// =============================================================================
+
+interface AlertFeedProps {
+  onNavigate?: (page: string) => void;
+}
+
+export function AlertFeed({ onNavigate }: AlertFeedProps) {
+  const { alerts, isLoading, employees, setSelectedEmployee, setEmployeePanelOpen } = useHRIS();
+
+  // Sort alerts by priority
+  const sortedAlerts = [...alerts].sort((a, b) => {
+    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  });
+
+  // Count by type
+  const countByType = alerts.reduce((acc, alert) => {
+    acc[alert.type] = (acc[alert.type] || 0) + 1;
+    return acc;
+  }, {} as Record<AlertType, number>);
+
+  // Handle alert click - deep linking
+  const handleAlertClick = (alert: Alert) => {
+    // Try to find associated employee from alert title/description
+    const findEmployee = () => {
+      // Look for employee name in alert title
+      return employees.find(e =>
+        alert.title.includes(e.displayName) ||
+        alert.description?.includes(e.displayName)
+      );
+    };
+
+    switch (alert.type) {
+      case 'anniversary':
+      case 'cliff': {
+        const employee = findEmployee();
+        if (employee) {
+          setSelectedEmployee(employee);
+          setEmployeePanelOpen(true);
+        }
+        break;
+      }
+      case 'onboarding':
+        onNavigate?.('onboarding');
+        break;
+      case 'equipment_warning':
+        onNavigate?.('assets');
+        break;
+      case 'document_pending': {
+        const employee = findEmployee();
+        if (employee) {
+          setSelectedEmployee(employee);
+          setEmployeePanelOpen(true);
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
+  if (isLoading) {
+    return <AlertSkeleton />;
+  }
+
+  return (
+    <div style={{
+      backgroundColor: COLORS.cardBg,
+      borderRadius: '24px',
+      boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.03)',
+      border: `1px solid ${COLORS.border}`,
+      overflow: 'hidden',
+    }}>
+      {/* Header */}
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: `1px solid ${COLORS.border}`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ color: COLORS.textMuted }}>
+            <Icons.Bell />
+          </div>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: COLORS.textDark }}>
+            Alert Feed
+          </h3>
+        </div>
+        <span style={{
+          padding: '4px 10px',
+          borderRadius: '6px',
+          fontSize: '12px',
+          fontWeight: 600,
+          backgroundColor: COLORS.lightBg,
+          color: COLORS.textMuted,
+        }}>
+          {alerts.length} alerts
+        </span>
+      </div>
+
+      {/* Summary Pills */}
+      {Object.keys(countByType).length > 0 && (
+        <div style={{
+          padding: '12px 20px',
+          borderBottom: `1px solid ${COLORS.border}`,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '8px',
+        }}>
+          {countByType.anniversary && (
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 10px',
+              borderRadius: '20px',
+              backgroundColor: '#F3E8FF',
+              color: '#9333EA',
+              fontSize: '12px',
+              fontWeight: 500,
+            }}>
+              <Icons.Cake /> {countByType.anniversary}
+            </span>
+          )}
+          {countByType.cliff && (
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 10px',
+              borderRadius: '20px',
+              backgroundColor: '#FEF3C7',
+              color: '#D97706',
+              fontSize: '12px',
+              fontWeight: 500,
+            }}>
+              <Icons.TrendingUp /> {countByType.cliff}
+            </span>
+          )}
+          {countByType.onboarding && (
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 10px',
+              borderRadius: '20px',
+              backgroundColor: '#DBEAFE',
+              color: '#2563EB',
+              fontSize: '12px',
+              fontWeight: 500,
+            }}>
+              <Icons.Clipboard /> {countByType.onboarding}
+            </span>
+          )}
+          {countByType.equipment_warning && (
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 10px',
+              borderRadius: '20px',
+              backgroundColor: '#FEE2E2',
+              color: '#DC2626',
+              fontSize: '12px',
+              fontWeight: 500,
+            }}>
+              <Icons.AlertTriangle /> {countByType.equipment_warning}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Alert List */}
+      <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+        {sortedAlerts.map(alert => (
+          <AlertItem key={alert.id} alert={alert} onClick={() => handleAlertClick(alert)} />
+        ))}
+
+        {/* Empty State */}
+        {alerts.length === 0 && (
+          <div style={{ padding: '48px 20px', textAlign: 'center' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              margin: '0 auto 16px',
+              borderRadius: '50%',
+              backgroundColor: '#D1FAE5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#059669',
+            }}>
+              <Icons.Check />
+            </div>
+            <p style={{ margin: 0, fontSize: '14px', fontWeight: 500, color: COLORS.textDark }}>
+              All caught up!
+            </p>
+            <p style={{ margin: 0, marginTop: '4px', fontSize: '13px', color: COLORS.textMuted }}>
+              No alerts at the moment.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

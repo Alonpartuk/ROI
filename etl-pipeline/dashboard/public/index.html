@@ -6,6 +6,16 @@
     <meta name="theme-color" content="#1e40af" />
     <meta name="description" content="Octup Sales Risk & Performance Dashboard" />
     <title>Octup - Sales Dashboard</title>
+    <script>
+      // Redirect old Cloud Run URLs to the new custom domain
+      (function() {
+        var host = window.location.hostname;
+        var allowedHosts = ['dashboard.octup.com', 'localhost', '127.0.0.1'];
+        if (allowedHosts.indexOf(host) === -1 && host.indexOf('.run.app') !== -1) {
+          window.location.replace('https://dashboard.octup.com' + window.location.pathname + window.location.search);
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

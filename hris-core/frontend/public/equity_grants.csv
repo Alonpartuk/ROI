@@ -1,0 +1,16 @@
+id,employeeId,grantNumber,grantDate,grantType,sharesGranted,exercisePrice,vestingType,vestingStartDate,cliffMonths,totalVestingMonths
+grant_001,emp_001,GRANT-001,2022-03-01,iso,5000000,0.001,cliff_then_linear,2022-03-01,12,48
+grant_015,emp_001,GRANT-015,2024-01-01,rsu,1000000,,linear,2024-01-01,,36
+grant_002,emp_002,GRANT-002,2022-03-01,iso,500000,0.001,cliff_then_linear,2022-03-01,12,48
+grant_003,emp_004,GRANT-003,2023-10-08,iso,300000,0.01,cliff_then_linear,2023-10-08,12,48
+grant_004,emp_006,GRANT-004,2024-05-01,iso,250000,0.01,cliff_then_linear,2024-05-01,12,48
+grant_005,emp_005,GRANT-005,2024-07-01,iso,200000,0.02,cliff_then_linear,2024-07-01,12,48
+grant_006,emp_007,GRANT-006,2024-08-04,iso,200000,0.02,cliff_then_linear,2024-08-04,12,48
+grant_007,emp_008,GRANT-007,2024-08-18,iso,200000,0.02,cliff_then_linear,2024-08-18,12,48
+grant_008,emp_020,GRANT-008,2024-08-05,iso,150000,0.02,cliff_then_linear,2024-08-05,12,48
+grant_009,emp_028,GRANT-009,2023-09-18,iso,250000,0.01,cliff_then_linear,2023-09-18,12,48
+grant_010,emp_019,GRANT-010,2025-04-01,iso,200000,0.05,cliff_then_linear,2025-04-01,12,48
+grant_011,emp_009,GRANT-011,2025-03-02,iso,150000,0.05,cliff_then_linear,2025-03-02,12,48
+grant_012,emp_010,GRANT-012,2025-03-09,iso,150000,0.05,cliff_then_linear,2025-03-09,12,48
+grant_013,emp_027,GRANT-013,2025-08-18,nso,150000,0.05,cliff_then_linear,2025-08-18,12,48
+grant_014,emp_022,GRANT-014,2025-06-16,nso,100000,0.05,cliff_then_linear,2025-06-16,12,48
