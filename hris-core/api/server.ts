@@ -622,7 +622,7 @@ app.get('/api/analytics/burn-rate',
 
       // Calculate totals
       const totals = result.rows.reduce(
-        (acc, row) => ({
+        (acc: any, row: any) => ({
           headcount: acc.headcount + parseInt(row.headcount),
           monthly_salary: acc.monthly_salary + parseFloat(row.monthly_salary || 0),
           monthly_benefits: acc.monthly_benefits + parseFloat(row.monthly_benefits || 0),
@@ -635,7 +635,7 @@ app.get('/api/analytics/burn-rate',
       res.json({
         success: true,
         data: {
-          byLocation: result.rows.map(row => ({
+          byLocation: result.rows.map((row: any) => ({
             locationCode: row.location_code,
             locationName: row.location_name,
             headcount: parseInt(row.headcount),
@@ -714,7 +714,7 @@ app.get('/api/analytics/cliff-alerts',
 
       res.json({
         success: true,
-        data: result.rows.map(row => ({
+        data: result.rows.map((row: any) => ({
           employeeId: row.employee_id,
           employeeName: row.employee_name,
           employeeNumber: row.employee_number,
@@ -768,7 +768,7 @@ app.get('/api/analytics/headcount',
 
       res.json({
         success: true,
-        data: result.rows.map(row => ({
+        data: result.rows.map((row: any) => ({
           departmentId: row.department_id,
           departmentCode: row.department_code,
           departmentName: row.department_name,
