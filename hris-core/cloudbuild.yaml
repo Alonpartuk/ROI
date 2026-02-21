@@ -267,7 +267,6 @@ steps:
           --update-secrets "DATABASE_URL=hris-database-url:latest" \
           --service-account hris-api@${_PROJECT_ID}.iam.gserviceaccount.com \
           --labels "app=hris,component=api,commit=${_SHORT_SHA},env=production" \
-          --revision-suffix "sha-${_SHORT_SHA}" \
           --quiet
 
         echo "✅ API deployed successfully"
@@ -305,7 +304,6 @@ steps:
           --set-env-vars "NEXT_PUBLIC_API_URL=$${API_URL}" \
           --service-account hris-web@${_PROJECT_ID}.iam.gserviceaccount.com \
           --labels "app=hris,component=web,commit=${_SHORT_SHA},env=production" \
-          --revision-suffix "sha-${_SHORT_SHA}" \
           --quiet
 
         echo "✅ Web deployed successfully"
