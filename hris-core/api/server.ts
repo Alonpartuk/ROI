@@ -16,9 +16,12 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import { Pool, PoolClient } from 'pg';
+import { OAuth2Client } from 'google-auth-library';
 import {
   authenticateJWT,
+  generateToken,
   createRLSMiddleware,
   requireRole,
   requirePermission,
@@ -125,17 +128,34 @@ async function queryWithRLS(
 
 const app = express();
 
+// Trust first proxy (Cloud Run load balancer) for correct client IP
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({
-  contentSecurityPolicy: false, // Managed by Cloud Run / Load Balancer
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      imgSrc: ["'self'", "data:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      frameSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+    },
+  },
 }));
 
 // CORS configuration
 app.use(cors({
   origin: NODE_ENV === 'production'
     ? [
-        /\.run\.app$/,  // Cloud Run URLs
-        /octup\.io$/,   // Custom domain
+        /\.run\.app$/,    // Cloud Run URLs
+        /octup\.io$/,     // Custom domain
+        /octup\.com$/,    // Primary domain
       ]
     : '*',
   credentials: true,
@@ -147,6 +167,37 @@ app.use(compression());
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// =============================================================================
+// Rate Limiting
+// =============================================================================
+
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'Too many requests',
+    code: 'RATE_LIMIT_EXCEEDED',
+    message: 'You have exceeded the rate limit. Please wait a few minutes before trying again.',
+  },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'Too many authentication attempts',
+    code: 'AUTH_RATE_LIMIT_EXCEEDED',
+    message: 'Too many login attempts. Please wait 15 minutes before trying again.',
+  },
+});
+
+app.use(generalLimiter);
+app.use('/api/auth', authLimiter);
 
 // Request logging
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -197,7 +248,91 @@ app.get('/health/ready', async (_req: Request, res: Response) => {
 });
 
 // =============================================================================
-// Apply Authentication Middleware (after health checks)
+// Google OAuth Configuration
+// =============================================================================
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const ALLOWED_DOMAIN = 'octup.com';
+const googleClient = GOOGLE_CLIENT_ID ? new OAuth2Client(GOOGLE_CLIENT_ID) : null;
+
+// Email-to-role mapping (override default for specific users)
+const EMAIL_ROLE_MAP: Record<string, string[]> = {
+  'alon@octup.com': ['hr_admin', 'finance'],
+  'admin@octup.com': ['hr_admin', 'finance'],
+  'hr@octup.com': ['hr_admin'],
+  'finance@octup.com': ['finance'],
+};
+
+function getRolesForEmail(email: string): string[] {
+  const normalized = email.toLowerCase();
+  return EMAIL_ROLE_MAP[normalized] || ['employee'];
+}
+
+// =============================================================================
+// Auth Endpoints (before JWT middleware)
+// =============================================================================
+
+app.post('/api/auth/google', async (req: Request, res: Response) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({ error: 'Missing credential', code: 'MISSING_CREDENTIAL' });
+    }
+
+    if (!googleClient || !GOOGLE_CLIENT_ID) {
+      return res.status(503).json({ error: 'Google OAuth not configured', code: 'OAUTH_NOT_CONFIGURED' });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload || !payload.email) {
+      return res.status(401).json({ error: 'Invalid token payload', code: 'INVALID_PAYLOAD' });
+    }
+
+    const { email, name, sub: googleId, hd: hostedDomain } = payload;
+
+    // Enforce @octup.com domain
+    if (!hostedDomain || hostedDomain !== ALLOWED_DOMAIN) {
+      return res.status(403).json({
+        error: `Only @${ALLOWED_DOMAIN} accounts are allowed`,
+        code: 'DOMAIN_NOT_ALLOWED',
+      });
+    }
+
+    const roles = getRolesForEmail(email);
+
+    const token = generateToken({
+      sub: googleId,
+      email: email,
+      name: name || email.split('@')[0],
+      roles: roles,
+    });
+
+    res.json({
+      success: true,
+      data: {
+        token,
+        user: {
+          employeeId: googleId,
+          email,
+          name: name || email.split('@')[0],
+          roles,
+        },
+      },
+    });
+  } catch (error) {
+    console.error('[AUTH] Google OAuth error:', error);
+    res.status(401).json({ error: 'Authentication failed', code: 'GOOGLE_AUTH_FAILED' });
+  }
+});
+
+// =============================================================================
+// Apply Authentication Middleware (after health checks & auth endpoints)
 // =============================================================================
 
 app.use(authenticateJWT);

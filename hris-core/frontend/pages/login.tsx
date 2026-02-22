@@ -2,18 +2,25 @@
  * Login Page - Octup HRIS
  *
  * Features:
- * - Octup branded login form
- * - Demo mode with role selection
- * - OAuth integration ready
+ * - Google OAuth sign-in (production)
+ * - Demo mode with role selection (when GOOGLE_CLIENT_ID not set)
  */
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Lock, Mail, User, Shield, ChevronRight, AlertCircle } from 'lucide-react';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { Shield, User, ChevronRight, AlertCircle } from 'lucide-react';
 import { useHRIS } from '../context/HRISContext';
 
 // =============================================================================
-// DEMO ROLES
+// CONFIGURATION
+// =============================================================================
+
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+const isDemoMode = !GOOGLE_CLIENT_ID;
+
+// =============================================================================
+// DEMO ROLES (only used when Google OAuth is not configured)
 // =============================================================================
 
 const DEMO_ROLES = [
@@ -53,91 +60,39 @@ const DEMO_ROLES = [
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login: contextLogin } = useHRIS();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const { login: contextLogin, loginWithGoogle } = useHRIS();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  // Change password modal state
-  const [showChangePassword, setShowChangePassword] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [changePasswordError, setChangePasswordError] = useState('');
-  const [pendingRole, setPendingRole] = useState<string | null>(null);
 
-  // Step 1 = role selection, Step 2 = credentials
-  const step = selectedRole ? 2 : 1;
-
-  const handleRoleSelect = (roleId: string) => {
-    setSelectedRole(roleId);
-    setError('');
-  };
-
-  const handleBackToRoles = () => {
-    setSelectedRole(null);
-    setEmail('');
-    setPassword('');
-    setError('');
-  };
-
-  const handleChangePassword = () => {
-    setChangePasswordError('');
-    if (currentPassword !== 'octup2024') {
-      setChangePasswordError('Current password is incorrect.');
+  // Google OAuth handler
+  const handleGoogleSuccess = async (response: CredentialResponse) => {
+    if (!response.credential) {
+      setError('Google sign-in failed. No credential received.');
       return;
     }
-    if (newPassword.length < 6) {
-      setChangePasswordError('New password must be at least 6 characters.');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setChangePasswordError('Passwords do not match.');
-      return;
-    }
-    // Save flag and proceed with login
-    localStorage.setItem('hris_password_changed', 'true');
-    setShowChangePassword(false);
-    if (pendingRole) {
-      contextLogin(pendingRole as any);
-      router.push('/');
-    }
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedRole) return;
     setIsLoading(true);
     setError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Validate password
-      if (password !== 'octup2024') {
-        setError('Invalid email or password. Please try again.');
-        setIsLoading(false);
-        return;
-      }
-
-      // Check if first login (password not yet changed)
-      const passwordChanged = typeof window !== 'undefined' && localStorage.getItem('hris_password_changed');
-      if (!passwordChanged) {
-        setPendingRole(selectedRole);
-        setShowChangePassword(true);
-        setIsLoading(false);
-        return;
-      }
-
-      // Set user in context and navigate
-      contextLogin(selectedRole as any);
+      await loginWithGoogle({ credential: response.credential });
       router.push('/');
-    } catch (err) {
-      setError('Login failed. Please try again.');
+    } catch (err: any) {
+      setError(err?.message || 'Google sign-in failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleGoogleError = () => {
+    setError('Google sign-in was cancelled or failed. Please try again.');
+  };
+
+  // Demo mode handler
+  const handleDemoLogin = (roleId: string) => {
+    setIsLoading(true);
+    contextLogin(roleId as any);
+    router.push('/');
   };
 
   return (
@@ -218,7 +173,7 @@ export default function LoginPage() {
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-slate-900">Welcome back</h2>
               <p className="text-slate-500 mt-2">
-                {step === 1 ? 'Select your role to continue' : 'Enter your credentials to sign in'}
+                {isDemoMode ? 'Select your role to continue' : 'Sign in with your Octup account'}
               </p>
             </div>
 
@@ -230,20 +185,30 @@ export default function LoginPage() {
               </div>
             )}
 
-            {step === 1 ? (
+            {/* Loading overlay */}
+            {isLoading && (
+              <div className="mb-6 flex items-center justify-center gap-3 p-4">
+                <div className="w-5 h-5 border-2 border-[#00CBC0] border-t-transparent rounded-full animate-spin" />
+                <span className="text-sm text-slate-500">Signing in...</span>
+              </div>
+            )}
+
+            {isDemoMode ? (
               <>
-                {/* Step 1: Role Selection */}
+                {/* Demo Mode: Role Selection */}
                 <div className="space-y-3">
                   {DEMO_ROLES.map(role => {
                     const Icon = role.icon;
                     return (
                       <button
                         key={role.id}
-                        onClick={() => handleRoleSelect(role.id)}
+                        onClick={() => handleDemoLogin(role.id)}
+                        disabled={isLoading}
                         className={`
                           w-full p-4 rounded-xl border-2 text-left transition-all
                           hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#00CBC0]/50
                           border-slate-200 hover:border-[#00CBC0] hover:bg-[#00CBC0]/5
+                          ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
                         `}
                       >
                         <div className="flex items-center gap-4">
@@ -260,87 +225,35 @@ export default function LoginPage() {
                     );
                   })}
                 </div>
+
+                <div className="mt-6 pt-4 border-t border-slate-100">
+                  <p className="text-xs text-center text-slate-400">
+                    Demo mode — Google OAuth not configured
+                  </p>
+                </div>
               </>
             ) : (
               <>
-                {/* Step 2: Credentials */}
-                {/* Selected role badge */}
-                <div className="mb-6 flex items-center justify-between p-3 rounded-xl bg-[#00CBC0]/5 border border-[#00CBC0]/20">
-                  <div className="flex items-center gap-3">
-                    <Shield size={18} className="text-[#00CBC0]" />
-                    <span className="text-sm font-semibold text-slate-800">
-                      {DEMO_ROLES.find(r => r.id === selectedRole)?.label}
-                    </span>
+                {/* Production Mode: Google OAuth */}
+                <div className="flex flex-col items-center gap-6">
+                  <div className="w-full flex justify-center">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      size="large"
+                      width="360"
+                      text="signin_with"
+                      shape="rectangular"
+                      theme="outline"
+                    />
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleBackToRoles}
-                    className="text-xs text-[#809292] hover:text-[#6a7a7a] font-medium"
-                  >
-                    Change
-                  </button>
+
+                  <div className="w-full pt-4 border-t border-slate-100">
+                    <p className="text-xs text-center text-slate-400">
+                      Only @octup.com accounts are allowed
+                    </p>
+                  </div>
                 </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@company.com"
-                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-slate-200 bg-slate-50/50
-                                 focus:bg-white focus:border-[#809292] focus:ring-2 focus:ring-[#809292]/20 focus:outline-none
-                                 transition-all"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Password
-                    </label>
-                    <div className="relative">
-                      <Lock size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                      <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full h-12 pl-12 pr-4 rounded-xl border border-slate-200 bg-slate-50/50
-                                 focus:bg-white focus:border-[#809292] focus:ring-2 focus:ring-[#809292]/20 focus:outline-none
-                                 transition-all"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className={`
-                      w-full h-12 rounded-xl font-semibold text-white
-                      bg-gradient-to-r from-[#809292] to-[#00CBC0]
-                      hover:opacity-90 transition-opacity
-                      focus:outline-none focus:ring-2 focus:ring-[#00CBC0]/50 focus:ring-offset-2
-                      ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
-                    `}
-                  >
-                    {isLoading ? 'Signing in...' : 'Sign in'}
-                  </button>
-                </form>
-
-                <button
-                  onClick={handleBackToRoles}
-                  className="w-full mt-4 py-3 text-sm text-[#809292] hover:text-[#6a7a7a] font-medium transition-colors"
-                >
-                  Back to role selection
-                </button>
               </>
             )}
           </div>
@@ -354,89 +267,6 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-
-      {/* Change Password Modal (first login) */}
-      {showChangePassword && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-          <div className="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md mx-4 z-10">
-            <div className="text-center mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#809292] to-[#00CBC0] flex items-center justify-center mx-auto mb-4">
-                <Lock size={24} className="text-white" />
-              </div>
-              <h2 className="text-xl font-bold text-slate-900">Change Your Password</h2>
-              <p className="text-sm text-slate-500 mt-2">
-                For security, please set a new password on your first login.
-              </p>
-            </div>
-
-            {changePasswordError && (
-              <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center gap-3 text-rose-700">
-                <AlertCircle size={18} />
-                <span className="text-sm">{changePasswordError}</span>
-              </div>
-            )}
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Current Password</label>
-                <div className="relative">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="password"
-                    value={currentPassword}
-                    onChange={e => setCurrentPassword(e.target.value)}
-                    placeholder="Enter current password"
-                    className="w-full h-11 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50/50
-                             focus:bg-white focus:border-[#809292] focus:ring-2 focus:ring-[#809292]/20 focus:outline-none
-                             transition-all text-sm"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">New Password</label>
-                <div className="relative">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={e => setNewPassword(e.target.value)}
-                    placeholder="At least 6 characters"
-                    className="w-full h-11 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50/50
-                             focus:bg-white focus:border-[#809292] focus:ring-2 focus:ring-[#809292]/20 focus:outline-none
-                             transition-all text-sm"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirm New Password</label>
-                <div className="relative">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    placeholder="Re-enter new password"
-                    className="w-full h-11 pl-11 pr-4 rounded-xl border border-slate-200 bg-slate-50/50
-                             focus:bg-white focus:border-[#809292] focus:ring-2 focus:ring-[#809292]/20 focus:outline-none
-                             transition-all text-sm"
-                  />
-                </div>
-              </div>
-
-              <button
-                onClick={handleChangePassword}
-                className="w-full h-12 rounded-xl font-semibold text-white
-                         bg-gradient-to-r from-[#809292] to-[#00CBC0]
-                         hover:opacity-90 transition-opacity mt-2
-                         focus:outline-none focus:ring-2 focus:ring-[#00CBC0]/50 focus:ring-offset-2"
-              >
-                Set New Password
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

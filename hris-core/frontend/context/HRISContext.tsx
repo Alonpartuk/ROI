@@ -174,6 +174,7 @@ interface UserInfo {
   email: string;
   name: string;
   roles: UserRole[];
+  token?: string;
 }
 
 // Search result types
@@ -190,6 +191,7 @@ interface HRISContextType {
   user: UserInfo | null;
   isAuthenticated: boolean;
   login: (role: UserRole) => void;
+  loginWithGoogle: (googleResponse: { credential: string }) => Promise<void>;
   setUserRole: (role: UserRole) => void;
   logout: () => void;
 
@@ -1848,6 +1850,18 @@ export function HRISProvider({ children }: HRISProviderProps) {
   // Initialize user from localStorage if available (persists across refreshes)
   const getInitialUser = (): UserInfo | null => {
     if (typeof window === 'undefined') return null;
+
+    // Check for JWT-based session first (Google OAuth)
+    const savedToken = localStorage.getItem('hris_jwt_token');
+    const savedUser = localStorage.getItem('hris_user_info');
+    if (savedToken && savedUser) {
+      try {
+        const userInfo = JSON.parse(savedUser);
+        return { ...userInfo, token: savedToken };
+      } catch { /* fall through */ }
+    }
+
+    // Fall back to demo role (offline mode)
     const savedRole = localStorage.getItem('hris_demo_role') as UserRole | null;
     if (savedRole && roleNames[savedRole]) {
       return {
@@ -1857,7 +1871,7 @@ export function HRISProvider({ children }: HRISProviderProps) {
         roles: [savedRole],
       };
     }
-    return null; // No saved role = not logged in
+    return null;
   };
 
   const [user, setUser] = useState<UserInfo | null>(getInitialUser);
@@ -1887,12 +1901,59 @@ export function HRISProvider({ children }: HRISProviderProps) {
     }
   }, []);
 
+  // Google OAuth login
+  const loginWithGoogle = useCallback(async (googleResponse: { credential: string }) => {
+    if (!API_BASE_URL) {
+      // Offline mode fallback
+      setUser({
+        employeeId: 'google-user',
+        email: 'user@octup.com',
+        name: 'Google User',
+        roles: ['hr_admin'],
+      });
+      localStorage.setItem('hris_demo_role', 'hr_admin');
+      return;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: googleResponse.credential }),
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Authentication failed');
+    }
+
+    const { token, user: userData } = result.data;
+
+    setUser({
+      employeeId: userData.employeeId,
+      email: userData.email,
+      name: userData.name,
+      roles: userData.roles as UserRole[],
+      token,
+    });
+
+    localStorage.setItem('hris_jwt_token', token);
+    localStorage.setItem('hris_user_info', JSON.stringify({
+      employeeId: userData.employeeId,
+      email: userData.email,
+      name: userData.name,
+      roles: userData.roles,
+    }));
+  }, []);
+
   // Logout function
   const logout = useCallback(() => {
     setUser(null);
     if (typeof window !== 'undefined') {
       localStorage.removeItem('hris_demo_role');
       localStorage.removeItem('hris_password_changed');
+      localStorage.removeItem('hris_jwt_token');
+      localStorage.removeItem('hris_user_info');
     }
   }, []);
 
@@ -2611,6 +2672,7 @@ export function HRISProvider({ children }: HRISProviderProps) {
     user,
     isAuthenticated: !!user,
     login,
+    loginWithGoogle,
     setUserRole,
     logout,
     employees,
