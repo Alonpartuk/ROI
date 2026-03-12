@@ -27,6 +27,8 @@ import RiskCommandCenter from './components/RiskCommandCenter';
 import PendingRebook from './components/PendingRebook';
 import Q1MissionControl from './components/Q1MissionControl';
 import MarketingEfficiency from './components/MarketingEfficiency';
+import GoogleAdsLeads from './components/GoogleAdsLeads';
+import MarketingLeadsTable from './components/MarketingLeadsTable';
 import StageLeakage from './components/StageLeakage';
 import CloseDateSlippage from './components/CloseDateSlippage';
 import SalesVelocity from './components/SalesVelocity';
@@ -59,9 +61,11 @@ import ContactHealthShield from './components/ContactHealthShield';
 // ZombieDealsTab accessible via AI query or Admin settings only
 // import ZombieDealsTab from './components/ZombieDealsTab';
 import DealFocusScoreCard from './components/DealFocusScoreCard';
+import HistoricalPerformance from './components/HistoricalPerformance';
+import ClosedDealsTable from './components/ClosedDealsTable';
 
 // API Service (connects to BigQuery via backend)
-import { fetchCriticalData, fetchSecondaryData, processAIQuery, APIError } from './services/api';
+import { fetchCriticalData, fetchSecondaryData, forceRefreshData, processAIQuery, APIError } from './services/api';
 
 // Auth Context
 import { useAuth } from './contexts/AuthContext';
@@ -153,6 +157,25 @@ function App({ onAdminClick }) {
 
   // Ref to prevent concurrent loadData calls
   const isLoadingRef = useRef(false);
+
+  // Clock tick for stale detection (updates every minute)
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setTick(t => t + 1), 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Stale data detection (recomputed every minute via tick)
+  const dataAge = useMemo(() => {
+    if (!lastRefresh) return null;
+    const ageMs = Date.now() - lastRefresh.getTime();
+    return {
+      minutes: Math.floor(ageMs / 60000),
+      hours: Math.floor(ageMs / 3600000),
+      isStale: ageMs > 30 * 60 * 1000,
+      isCritical: ageMs > 24 * 60 * 60 * 1000,
+    };
+  }, [lastRefresh, tick]);
 
   // Two-phase data loading: Critical (Pace) first, then Secondary
   // Note: No dependencies on dashboardData to prevent infinite re-render loops
@@ -268,6 +291,47 @@ function App({ onAdminClick }) {
       setRefreshing(false);
     }
   }, []); // Empty dependency array - loadData is stable
+
+  // Force sync - clears ALL caches (browser state + server cache + BigQuery cache bypass)
+  const forceSync = useCallback(async () => {
+    if (isLoadingRef.current) return;
+    isLoadingRef.current = true;
+    console.log('[App] Force sync requested - clearing all caches');
+
+    const failsafeTimeout = setTimeout(() => {
+      console.warn('[App] Failsafe: resetting loading state after 60s timeout');
+      setRefreshing(false);
+      isLoadingRef.current = false;
+    }, 60000);
+
+    try {
+      setRefreshing(true);
+      setError(null);
+
+      const freshData = await forceRefreshData();
+
+      setDashboardData(prev => ({
+        ...prev,
+        ...freshData.critical,
+        ...freshData.secondary,
+      }));
+
+      setLastRefresh(new Date());
+      setConnectionStatus('connected');
+      console.log('[App] Force sync complete at', freshData.refreshedAt);
+    } catch (err) {
+      console.error('Force sync failed:', err);
+      setError({
+        type: err instanceof APIError ? 'api' : 'unknown',
+        message: err.message || 'Force sync failed',
+        details: err instanceof APIError ? `Status: ${err.status}` : null,
+      });
+    } finally {
+      clearTimeout(failsafeTimeout);
+      setRefreshing(false);
+      isLoadingRef.current = false;
+    }
+  }, []);
 
   // Handle AI natural language query
   const handleAIQuery = useCallback(async (query) => {
@@ -594,22 +658,38 @@ function App({ onAdminClick }) {
             </Flex>
 
             <Flex justifyContent="end" alignItems="center" className="gap-4">
-              {/* Last Updated Status - Only show timestamp, no loading flicker */}
+              {/* Last Updated Status with stale detection */}
               {lastRefresh && (
-                <Text className="text-xs text-gray-500 hidden sm:inline">
-                  Updated {lastRefresh.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                </Text>
+                <div className="flex items-center gap-2 hidden sm:flex">
+                  <Text className={`text-xs ${
+                    dataAge?.isCritical ? 'text-red-600 font-semibold' :
+                    dataAge?.isStale ? 'text-amber-600' :
+                    'text-gray-500'
+                  }`}>
+                    Updated {lastRefresh.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                  </Text>
+                  {dataAge?.isCritical && (
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-800" title="Data is more than 24 hours old">
+                      STALE
+                    </span>
+                  )}
+                  {dataAge?.isStale && !dataAge?.isCritical && (
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-800" title={`Data is ${dataAge.minutes} minutes old`}>
+                      {dataAge.minutes}m ago
+                    </span>
+                  )}
+                </div>
               )}
 
-              {/* Sync Data Button - Ghost style, fixed width for stability */}
+              {/* Sync Data Button - Force refresh clears all caches */}
               <button
                 onClick={() => {
                   if (refreshing || loading) return;
-                  loadData(true);
+                  forceSync();
                 }}
                 disabled={refreshing || loading}
                 className="flex items-center justify-center gap-1.5 w-[100px] sm:w-[110px] h-8 text-sm font-medium border border-[#00CBC0] text-[#00CBC0] hover:bg-[#00CBC0]/10 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                title="Refresh all data from BigQuery"
+                title="Force refresh all data (clears all caches)"
               >
                 <ArrowPathIcon className={`h-4 w-4 flex-shrink-0 ${(refreshing || loading) ? 'animate-spin' : ''}`} />
                 <span className="hidden sm:inline whitespace-nowrap">{(refreshing || loading) ? 'Syncing...' : 'Sync Data'}</span>
@@ -702,6 +782,16 @@ function App({ onAdminClick }) {
             <MarketingEfficiency data={dashboardData?.marketingEfficiency} />
           </div>
 
+          {/* Google Ads Lead Tracking - GCLID Contacts */}
+          <div className="mb-6 lg:mb-8">
+            <GoogleAdsLeads data={dashboardData?.googleAdsLeads} />
+          </div>
+
+          {/* Marketing Leads Table - All contacts with status & deal size */}
+          <div className="mb-6 lg:mb-8">
+            <MarketingLeadsTable liveContacts={dashboardData?.googleAdsLeads?.contacts} />
+          </div>
+
           {/* Pipeline Quality Chart */}
           <div className="mb-6 lg:mb-8">
             <PipelineQualityChart data={dashboardData?.pipelineQualityTrend} />
@@ -769,6 +859,16 @@ function App({ onAdminClick }) {
               onDealClick={handleDealClick}
             />
           </div>
+
+          {/* Historical Performance - Combo Chart */}
+          <div className="mb-6 lg:mb-8">
+            <HistoricalPerformance data={dashboardData?.monthlyPerformance} />
+          </div>
+
+          {/* Closed Won Deals Detail Table */}
+          <div className="mb-6 lg:mb-8">
+            <ClosedDealsTable data={dashboardData?.closedDealsHistory} />
+          </div>
         </LayerSection>
 
         {/* ============================================ */}
@@ -835,6 +935,9 @@ function App({ onAdminClick }) {
             <Text className="text-sm text-slate-400">
               Data source: BigQuery (octup-testing.hubspot_data)
               {DATA_SOURCE === 'mock' && ' [DEMO MODE]'}
+            </Text>
+            <Text className="text-sm text-slate-400">
+              System Last Synced: {lastRefresh ? lastRefresh.toLocaleString() : 'Never'}
             </Text>
             <Text className="text-sm text-slate-400">
               Pipeline: 3PL New Business | Enterprise threshold: $100K ARR
