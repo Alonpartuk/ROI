@@ -16,3 +16,7 @@ github-actions-key.json
 *.env
 .env.*
 !.env.example
+
+# Clarity manual exports may contain raw URLs / session detail — do not commit
+clarity_dashboard_exports/
+clarity_dashboard_aggregate.json
