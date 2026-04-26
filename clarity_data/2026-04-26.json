@@ -1,0 +1,1923 @@
+{
+  "pulledAt": "2026-04-26T17:00:03.956Z",
+  "date": "2026-04-26",
+  "queries": {
+    "overall": [
+      {
+        "metricName": "DeadClickCount",
+        "information": [
+          {
+            "sessionsCount": "15",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0"
+          }
+        ]
+      },
+      {
+        "metricName": "ExcessiveScroll",
+        "information": [
+          {
+            "sessionsCount": "15",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0"
+          }
+        ]
+      },
+      {
+        "metricName": "RageClickCount",
+        "information": [
+          {
+            "sessionsCount": "15",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0"
+          }
+        ]
+      },
+      {
+        "metricName": "QuickbackClick",
+        "information": [
+          {
+            "sessionsCount": "15",
+            "sessionsWithMetricPercentage": 6.67,
+            "sessionsWithoutMetricPercentage": 93.33,
+            "pagesViews": "1",
+            "subTotal": "1"
+          }
+        ]
+      },
+      {
+        "metricName": "ScriptErrorCount",
+        "information": [
+          {
+            "sessionsCount": "15",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0"
+          }
+        ]
+      },
+      {
+        "metricName": "ErrorClickCount",
+        "information": [
+          {
+            "sessionsCount": "15",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0"
+          }
+        ]
+      },
+      {
+        "metricName": "ScrollDepth",
+        "information": [
+          {
+            "averageScrollDepth": 34.42
+          }
+        ]
+      },
+      {
+        "metricName": "Traffic",
+        "information": [
+          {
+            "totalSessionCount": "15",
+            "totalBotSessionCount": "13",
+            "distinctUserCount": "28",
+            "pagesPerSessionPercentage": 1.1785714285714286
+          }
+        ]
+      },
+      {
+        "metricName": "EngagementTime",
+        "information": [
+          {
+            "totalTime": "155",
+            "activeTime": "66"
+          }
+        ]
+      },
+      {
+        "metricName": "Browser",
+        "information": [
+          {
+            "name": "Chrome",
+            "sessionsCount": "11"
+          },
+          {
+            "name": "ChromeMobile",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "MobileSafari",
+            "sessionsCount": "2"
+          }
+        ]
+      },
+      {
+        "metricName": "Device",
+        "information": [
+          {
+            "name": "PC",
+            "sessionsCount": "11"
+          },
+          {
+            "name": "Mobile",
+            "sessionsCount": "4"
+          }
+        ]
+      },
+      {
+        "metricName": "OS",
+        "information": [
+          {
+            "name": "Linux",
+            "sessionsCount": "7"
+          },
+          {
+            "name": "MacOSX",
+            "sessionsCount": "3"
+          },
+          {
+            "name": "Android",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "IOS",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "Windows",
+            "sessionsCount": "1"
+          }
+        ]
+      },
+      {
+        "metricName": "Country",
+        "information": [
+          {
+            "name": "United States",
+            "sessionsCount": "5"
+          },
+          {
+            "name": "Norway",
+            "sessionsCount": "3"
+          },
+          {
+            "name": "Israel",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "United Kingdom",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "Canada",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "Germany",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "Sweden",
+            "sessionsCount": "1"
+          }
+        ]
+      },
+      {
+        "metricName": "PageTitle",
+        "information": [
+          {
+            "name": "3PL Analytics & Billing Platform | Octup",
+            "sessionsCount": "5"
+          },
+          {
+            "name": "Get A Demo",
+            "sessionsCount": "3"
+          },
+          {
+            "name": "3PL Software Pricing | Octup Pricing & Plans",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "3PL Analytics Platform | Real-Time Visibility | Octup",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "Logistics AI Copilot | Ask Octup AI | Octup",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "Logistics Software News & Press Releases | Octup",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "Warehouse Operations Efficiency Platform | Octup",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "3PL Billing Automation Software | Octup",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "About Octup | 3PL Analytics, Billing & AI Platform",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "3PL Billing & Analytics Software | Octup",
+            "sessionsCount": "1"
+          }
+        ]
+      },
+      {
+        "metricName": "ReferrerUrl",
+        "information": [
+          {
+            "name": null,
+            "sessionsCount": "10"
+          },
+          {
+            "name": "https://www.google.com/",
+            "sessionsCount": "2"
+          },
+          {
+            "name": "https://www.octup.com/",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "https://www.octup.com/platform",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "https://syndicatedsearch.goog/",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "https://www.octup.com/features/octup-ai",
+            "sessionsCount": "1"
+          },
+          {
+            "name": "https://www.octup.com/pricing?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMInNmr4PaJlAMV7zgIBR0Shx-nEAAYASABEgLq__D_BwE",
+            "sessionsCount": "1"
+          }
+        ]
+      },
+      {
+        "metricName": "PopularPages",
+        "information": [
+          {
+            "url": "https://www.octup.com/",
+            "visitsCount": "8"
+          },
+          {
+            "url": "https://www.octup.com/features/billing",
+            "visitsCount": "4"
+          },
+          {
+            "url": "https://www.octup.com/pricing",
+            "visitsCount": "3"
+          },
+          {
+            "url": "https://www.octup.com/get-demo",
+            "visitsCount": "3"
+          },
+          {
+            "url": "https://gtm-msr.appspot.com/render",
+            "visitsCount": "3"
+          },
+          {
+            "url": "https://www.octup.com/features/analytics",
+            "visitsCount": "2"
+          },
+          {
+            "url": "https://www.octup.com/about",
+            "visitsCount": "2"
+          },
+          {
+            "url": "https://www.octup.com/blog-posts/how-3pls-shift-from-reactive-to-proactive-operations",
+            "visitsCount": "1"
+          },
+          {
+            "url": "https://www.octup.com/warehouse-operations",
+            "visitsCount": "1"
+          },
+          {
+            "url": "https://www.octup.com/press-releases",
+            "visitsCount": "1"
+          }
+        ]
+      }
+    ],
+    "byUrl": [
+      {
+        "metricName": "DeadClickCount",
+        "information": [
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "ExcessiveScroll",
+        "information": [
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "RageClickCount",
+        "information": [
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "QuickbackClick",
+        "information": [
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 100,
+            "sessionsWithoutMetricPercentage": 0,
+            "pagesViews": "1",
+            "subTotal": "1",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "ScriptErrorCount",
+        "information": [
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "ErrorClickCount",
+        "information": [
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "ScrollDepth",
+        "information": [
+          {
+            "averageScrollDepth": 10.8,
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "averageScrollDepth": 17,
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "averageScrollDepth": 79,
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "averageScrollDepth": 31,
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "averageScrollDepth": 100,
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "averageScrollDepth": 100,
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "averageScrollDepth": 44,
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "averageScrollDepth": 18,
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "averageScrollDepth": 48,
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "averageScrollDepth": 20,
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "averageScrollDepth": 24,
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "averageScrollDepth": 32,
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "averageScrollDepth": 47,
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "Traffic",
+        "information": [
+          {
+            "totalSessionCount": "5",
+            "totalBotSessionCount": "3",
+            "distinctUserCount": "8",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/features/billing?utm_term=&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490483111&hsa_ad=0&hsa_src=&hsa_tgt=&hsa_kw=&hsa_mt=b&hsa_net=adwords&hsa_ver=3"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "2",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "3",
+            "distinctUserCount": "3",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://gtm-msr.appspot.com/render?id=GTM-5W2XK6T"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/blog"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/features/integrations"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "totalSessionCount": "2",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "2",
+            "pagesPerSessionPercentage": 1.5,
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/pricing?utm_term=&utm_campaign=&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=&hsa_grp=&hsa_ad=0&hsa_src=&hsa_tgt=&hsa_kw=&hsa_mt=b&hsa_net=adwords&hsa_ver=3"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "2",
+            "distinctUserCount": "3",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/warehouse-operations"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Url": "https://www.octup.com/blog-posts/how-3pls-shift-from-reactive-to-proactive-operations"
+          }
+        ]
+      },
+      {
+        "metricName": "EngagementTime",
+        "information": [
+          {
+            "totalTime": "168",
+            "activeTime": "107",
+            "Url": "https://www.octup.com/"
+          },
+          {
+            "totalTime": "3",
+            "activeTime": "3",
+            "Url": "https://www.octup.com/pricing?utm_term=linnworks%20pricing&utm_campaign=SW+Conquest&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23470432522&hsa_grp=198490482951&hsa_ad=805746653459&hsa_src=g&hsa_tgt=kwd-319779115618&hsa_kw=linnworks%20pricing&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23470432522&gbraid=0AAAABCk5JgmkyhxHj-gT45y7Vi5NU9SLv&gclid=CjwKCAjwzLHPBhBTEiwABaLsSr2Kx-7uOcSo-oBEZbn0V4brVYgppN8v66F6fI9lLSORwWosKipskBoCZsEQAvD_BwE"
+          },
+          {
+            "totalTime": "3",
+            "activeTime": "0",
+            "Url": "https://www.octup.com/press-releases"
+          },
+          {
+            "totalTime": "162",
+            "activeTime": "162",
+            "Url": "https://www.octup.com/features/analytics?utm_term=logistics%20analytics%20software&utm_campaign=SW+Analytics&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23727931137&hsa_grp=196788624684&hsa_ad=804248467663&hsa_src=g&hsa_tgt=kwd-303461539133&hsa_kw=logistics%20analytics%20software&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=23727931137&gclid=Cj0KCQjw77bPBhC_ARIsAGAjjV-_LlE4tJdiA6k5UxQJRSnaQ8Grp_GhSBC97TnHWqTT4AnC1WqACmAaAm_vEALw_wcB"
+          },
+          {
+            "totalTime": "6",
+            "activeTime": "6",
+            "Url": "https://www.octup.com/features/octup-ai"
+          },
+          {
+            "totalTime": "11",
+            "activeTime": "11",
+            "Url": "https://www.octup.com/about"
+          },
+          {
+            "totalTime": "2",
+            "activeTime": "0",
+            "Url": "https://www.octup.com/pricing"
+          },
+          {
+            "totalTime": "121",
+            "activeTime": "121",
+            "Url": "https://www.octup.com/get-demo?utm_content=PMax_Conquest&utm_campaign=SW:+Performance+Max&utm_source=google&utm_medium=cpc&hsa_acc=7489993974&hsa_cam=23485567407&hsa_grp=&hsa_ad=&hsa_src=x&hsa_tgt=&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gad_source=5&gad_campaignid=23485569273&gclid=EAIaIQobChMI0su7pIGKlAMV2QatBh1wxQ6oEAAYASAAEgJ60_D_BwE"
+          },
+          {
+            "totalTime": "344",
+            "activeTime": "35",
+            "Url": "https://www.octup.com/get-a-demo-ga-v-a"
+          },
+          {
+            "totalTime": "413",
+            "activeTime": "56",
+            "Url": "https://www.octup.com/get-demo"
+          },
+          {
+            "totalTime": "0",
+            "activeTime": "0",
+            "Url": "https://www.octup.com/features/billing"
+          },
+          {
+            "totalTime": "1",
+            "activeTime": "0",
+            "Url": "https://www.octup.com/features/analytics"
+          },
+          {
+            "totalTime": "3",
+            "activeTime": "0",
+            "Url": "https://www.octup.com/warehouse-operations"
+          }
+        ]
+      }
+    ],
+    "byDevice": [
+      {
+        "metricName": "DeadClickCount",
+        "information": [
+          {
+            "sessionsCount": "4",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "Mobile"
+          },
+          {
+            "sessionsCount": "11",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "ExcessiveScroll",
+        "information": [
+          {
+            "sessionsCount": "4",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "Mobile"
+          },
+          {
+            "sessionsCount": "11",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "RageClickCount",
+        "information": [
+          {
+            "sessionsCount": "4",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "Mobile"
+          },
+          {
+            "sessionsCount": "11",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "QuickbackClick",
+        "information": [
+          {
+            "sessionsCount": "4",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "Mobile"
+          },
+          {
+            "sessionsCount": "11",
+            "sessionsWithMetricPercentage": 9.09,
+            "sessionsWithoutMetricPercentage": 90.91,
+            "pagesViews": "1",
+            "subTotal": "1",
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "ScriptErrorCount",
+        "information": [
+          {
+            "sessionsCount": "4",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "Mobile"
+          },
+          {
+            "sessionsCount": "11",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "ErrorClickCount",
+        "information": [
+          {
+            "sessionsCount": "4",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "Mobile"
+          },
+          {
+            "sessionsCount": "11",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "ScrollDepth",
+        "information": [
+          {
+            "averageScrollDepth": 19.5,
+            "Device": "Mobile"
+          },
+          {
+            "averageScrollDepth": 41.31,
+            "Device": "PC"
+          }
+        ]
+      },
+      {
+        "metricName": "Traffic",
+        "information": [
+          {
+            "totalSessionCount": "4",
+            "totalBotSessionCount": "1",
+            "distinctUserCount": "5",
+            "pagesPerSessionPercentage": 1.6,
+            "Device": "Mobile"
+          },
+          {
+            "totalSessionCount": "11",
+            "totalBotSessionCount": "9",
+            "distinctUserCount": "20",
+            "pagesPerSessionPercentage": 1.1,
+            "Device": "PC"
+          },
+          {
+            "totalSessionCount": "0",
+            "totalBotSessionCount": "3",
+            "distinctUserCount": "3",
+            "pagesPerSessionPercentage": 1,
+            "Device": "Other"
+          }
+        ]
+      },
+      {
+        "metricName": "EngagementTime",
+        "information": [
+          {
+            "totalTime": "406",
+            "activeTime": "228",
+            "Device": "Mobile"
+          },
+          {
+            "totalTime": "63",
+            "activeTime": "7",
+            "Device": "PC"
+          }
+        ]
+      }
+    ],
+    "byCountry": [
+      {
+        "metricName": "DeadClickCount",
+        "information": [
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Canada"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Germany"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Israel"
+          },
+          {
+            "sessionsCount": "3",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Norway"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Sweden"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United Kingdom"
+          },
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "ExcessiveScroll",
+        "information": [
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Canada"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Germany"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Israel"
+          },
+          {
+            "sessionsCount": "3",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Norway"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Sweden"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United Kingdom"
+          },
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "RageClickCount",
+        "information": [
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Canada"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Germany"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Israel"
+          },
+          {
+            "sessionsCount": "3",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Norway"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Sweden"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United Kingdom"
+          },
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "QuickbackClick",
+        "information": [
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Canada"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Germany"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 50,
+            "sessionsWithoutMetricPercentage": 50,
+            "pagesViews": "1",
+            "subTotal": "1",
+            "Country": "Israel"
+          },
+          {
+            "sessionsCount": "3",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Norway"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Sweden"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United Kingdom"
+          },
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "ScriptErrorCount",
+        "information": [
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Canada"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Germany"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Israel"
+          },
+          {
+            "sessionsCount": "3",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Norway"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Sweden"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United Kingdom"
+          },
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "ErrorClickCount",
+        "information": [
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Canada"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Germany"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Israel"
+          },
+          {
+            "sessionsCount": "3",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Norway"
+          },
+          {
+            "sessionsCount": "1",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "Sweden"
+          },
+          {
+            "sessionsCount": "2",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United Kingdom"
+          },
+          {
+            "sessionsCount": "5",
+            "sessionsWithMetricPercentage": 0,
+            "sessionsWithoutMetricPercentage": 100,
+            "pagesViews": "0",
+            "subTotal": "0",
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "ScrollDepth",
+        "information": [
+          {
+            "averageScrollDepth": 17,
+            "Country": "Canada"
+          },
+          {
+            "averageScrollDepth": 24,
+            "Country": "Germany"
+          },
+          {
+            "averageScrollDepth": 69.67,
+            "Country": "Israel"
+          },
+          {
+            "averageScrollDepth": 56.67,
+            "Country": "Norway"
+          },
+          {
+            "averageScrollDepth": 32,
+            "Country": "Sweden"
+          },
+          {
+            "averageScrollDepth": 24,
+            "Country": "United Kingdom"
+          },
+          {
+            "averageScrollDepth": 20,
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "Traffic",
+        "information": [
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 3,
+            "Country": "Canada"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Country": "Germany"
+          },
+          {
+            "totalSessionCount": "2",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "2",
+            "pagesPerSessionPercentage": 1.5,
+            "Country": "Israel"
+          },
+          {
+            "totalSessionCount": "3",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "3",
+            "pagesPerSessionPercentage": 1,
+            "Country": "Norway"
+          },
+          {
+            "totalSessionCount": "1",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "1",
+            "pagesPerSessionPercentage": 1,
+            "Country": "Sweden"
+          },
+          {
+            "totalSessionCount": "2",
+            "totalBotSessionCount": "0",
+            "distinctUserCount": "2",
+            "pagesPerSessionPercentage": 1,
+            "Country": "United Kingdom"
+          },
+          {
+            "totalSessionCount": "5",
+            "totalBotSessionCount": "13",
+            "distinctUserCount": "18",
+            "pagesPerSessionPercentage": 1.1111111111111112,
+            "Country": "United States"
+          }
+        ]
+      },
+      {
+        "metricName": "EngagementTime",
+        "information": [
+          {
+            "totalTime": "1339",
+            "activeTime": "626",
+            "Country": "Canada"
+          },
+          {
+            "totalTime": "0",
+            "activeTime": "0",
+            "Country": "Germany"
+          },
+          {
+            "totalTime": "11",
+            "activeTime": "11",
+            "Country": "Israel"
+          },
+          {
+            "totalTime": "3",
+            "activeTime": "0",
+            "Country": "Norway"
+          },
+          {
+            "totalTime": "1",
+            "activeTime": "0",
+            "Country": "Sweden"
+          },
+          {
+            "totalTime": "82",
+            "activeTime": "82",
+            "Country": "United Kingdom"
+          },
+          {
+            "totalTime": "158",
+            "activeTime": "35",
+            "Country": "United States"
+          }
+        ]
+      }
+    ],
+    "byUrlDevice": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    },
+    "byBrowser": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    }
+  }
+}
