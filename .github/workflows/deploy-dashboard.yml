@@ -4,13 +4,18 @@
 name: Deploy Dashboard to Cloud Run
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'etl-pipeline/dashboard/**'
-      - '.github/workflows/deploy-dashboard.yml'
-  workflow_dispatch:  # Allow manual trigger
+  # Auto-deploy disabled while dashboard has untracked components on main.
+  # src/App.jsx imports HistoricalPerformance + others that exist locally
+  # but were never committed, so the build fails on every push.
+  # Re-enable by uncommenting the `push` block below once the dashboard
+  # build passes locally and all referenced components are committed.
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'etl-pipeline/dashboard/**'
+  #     - '.github/workflows/deploy-dashboard.yml'
+  workflow_dispatch:  # Manual trigger only — use Actions tab to deploy
 
 env:
   PROJECT_ID: octup-testing
