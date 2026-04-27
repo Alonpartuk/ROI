@@ -1,0 +1,24 @@
+{
+  "pulledAt": "2026-04-27T08:32:37.433Z",
+  "date": "2026-04-27",
+  "queries": {
+    "overall": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    },
+    "byUrl": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    },
+    "byDevice": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    },
+    "byCountry": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    },
+    "byUrlDevice": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    },
+    "byBrowser": {
+      "error": "Clarity API 429: Exceeded daily limit"
+    }
+  }
+}
